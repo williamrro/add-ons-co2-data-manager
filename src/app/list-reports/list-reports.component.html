@@ -1,0 +1,132 @@
+<div class="mainWholeContainer">
+    <div  *ngIf="displayGrid"  style="
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;">
+        <div style="width: 20%;"></div>
+        <h4 style="
+      width: 46.3%;font-size:18px; 
+  ">{{reportTypeValue}}</h4>
+        <div style="width: 20%;position: relative;">
+            <ng-select class=" ngselect popups" [(ngModel)]="downloadData" [options]="download" placeholder="Select"
+                [allowClear]="true">
+                <ng-option *ngFor="let downloadValue of download" [value]="downloadValue.value" >
+                    {{ downloadValue.label}}
+                </ng-option>
+                
+            </ng-select>
+            <span style="position: absolute;
+            top: 10px;
+            right: 63px;
+            cursor: pointer;"><i class="fa fa-download"  title="Download" (click)="downloadSelected()"></i></span>
+        </div>
+    </div>
+    <div class="d-flex">
+        <div style="padding-top: 25px;width: 24%;background-color: #F0F3F4;">
+            <form [formGroup]="searchForm">
+                <div class="mb-20" style="padding:15px;">
+                    <label class="form-label">
+                        PLATFORM
+                    </label>
+                    <div>
+                        <ng-select formControlName="invoiceDateRange" class="ngselect popups"
+                            [(ngModel)]="defaultinvoiceDateRange" [options]="platforms" placeholder="Select"
+                            [clearable]="false">
+                            <ng-option *ngFor="let client of platforms" [value]="client.value">{{ client.label }}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+                <hr>
+                <h6 style="padding:15px;margin:0px;font-weight:600;">SEARCH</h6>
+                <div style="padding:15px; margin:0px 20px;background-color: #fff;border: 0.5px solid #ccc;">
+                    <div class="input-wrapper mb-20" data-automation-id="search-carrierWrapper">
+                        <label class="form-label" data-automation-id="search-carrierLabel">Type<span
+                                class="asterreq">&#42;</span></label>
+                        <ng-select formControlName="type" class="ngselect popups" placeholder="Select"
+                            [allowClear]="true" (open)="typeData()">
+                            <ng-option *ngFor="let client of typeOptions" [value]="client.itemName">{{ client.itemName
+                                }}
+                            </ng-option>
+                        </ng-select>
+                        <div *ngIf="searchForm.controls['type'].errors?.required && showFieldsError" style="color:red">
+                            <div [hidden]="!searchForm.controls['type'].errors.required">Type is required.</div>
+                        </div>
+                    </div>
+
+                    <div class="input-wrapper mb-20">
+                        <label class="form-label" data-automation-id="search-clientLabel">Report<span
+                                class="asterreq">&#42;</span></label>
+
+                        <ng-select formControlName="report" class="ngselect popups" placeholder="Select"
+                            (change)="reportSelected($event)" [allowClear]="true" (open)="reportTypeData($event)">
+                            <ng-option *ngFor="let client of reportOptions" [value]="client.value">{{ client.value }}
+                            </ng-option>
+                        </ng-select>
+                        <div *ngIf="searchForm.controls['report'].errors?.required && showFieldsError"
+                            style="color:red">
+                            <div [hidden]="!searchForm.controls['report'].errors.required">Report is required.</div>
+                        </div>
+                    </div>
+
+                    <div class="input-wrapper mb-20" data-automation-id="search-carrierWrapper">
+                        <label class="form-label" data-automation-id="search-carrierLabel">Client<span
+                                class="asterreq">&#42;</span></label>
+                        <ng-select formControlName="client" class="ngselect popups" placeholder="Select"
+                            [allowClear]="true" (change)="onClientSelected($event)">
+                            <ng-option *ngFor="let client of clientsList" [value]="client.value">{{ client.value }}
+                            </ng-option>
+                        </ng-select>
+                        <div *ngIf="searchForm.controls['client'].errors?.required && showFieldsError"
+                            style="color:red">
+                            <div [hidden]="!searchForm.controls['client'].errors.required">Client is required.</div>
+                        </div>
+                    </div>
+                    <div class="mb-20">
+                        <label class="form-label">
+                            Date Range<span class="asterreq">&#42;</span>
+                        </label>
+                        <div>
+
+                            <ng-select formControlName="dateRange" class="ngselect popups" placeholder="Select"
+                                [allowClear]="true" (change)="onDateSelected($event)">
+                                <ng-option *ngFor="let client of invoiceDateRangeOptions" [value]="client.value">{{
+                                    client.label }}
+                                </ng-option>
+                            </ng-select>
+                            <div *ngIf="searchForm.controls['dateRange'].errors?.required && showFieldsError"
+                                style="color:red">
+                                <div [hidden]="!searchForm.controls['dateRange'].errors.required">Date Range is
+                                    required.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-wrapper mb-20" data-automation-id="search-carrierWrapper">
+                        <label class="form-label" data-automation-id="search-carrierLabel">Carrier
+                        </label>
+                        <ng-select formControlName="carriers" class="ngselect popups" placeholder="Select"
+                            [allowClear]="true">
+                            <ng-option *ngFor="let client of carrierOptions" [value]="client.value">{{ client.value }}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+
+                </div>
+                <div style="display: flex;justify-content: space-between;margin-top: 20px;padding: 20px;">
+                    <button type="submit" style="padding:0px 15px" (click)="reset()">Reset</button>
+                    <button type="submit" class="formSubmitBtn" (click)="onSubmit()">View</button>
+                </div>
+            </form>
+        </div>
+
+        <div style="margin:20px;width:74%;" *ngIf="displayGrid">
+            <ag-grid-angular style="height: calc(100vh - 170px) !important;" class="ag-theme-balham" [rowHeight]="'40'"
+                [columnDefs]="columnDefs" [rowModelType]="rowModelType" [serverSideStoreType]="'partial'"
+                [pagination]="true" [defaultColDef]="defaultColDef" [paginationPageSize]="paginationPageSize"
+                [cacheBlockSize]="cacheBlockSize" [animateRows]="true" [rowData]="rowData"
+                (gridReady)="onGridReadyPagination($event)" [animateRows]="true"
+                (filterChanged)="onFilterChanged($event)"></ag-grid-angular>
+        </div>
+    </div>
+</div>

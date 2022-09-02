@@ -1,0 +1,4 @@
+{
+  "jira.baseUrl": "https://veraction.atlassian.net/",
+  "jira.projectNames": "CPM"
+}
