@@ -5,6 +5,7 @@ import * as faker from "faker";
 import * as moment from "moment";
 import { Date as webixDate } from "webix";
 import { AppService } from "../app.service";
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: "app-datatable",
@@ -13,15 +14,13 @@ import { AppService } from "../app.service";
   styleUrls: ["./datatable.component.scss"]
 })
  export class DTComponent implements OnInit {
-//export class DTComponent {
   modes : any;
   carrier : any;
   data = { action: '', payload: {} };
-
+  myForm: FormGroup; 
   public rows: any;
   public columns: any = [];
   public tableOptions: any ;
-
   cars = [
     { id: 1, name: 'Volvo' },
     { id: 2, name: 'Saab' },
@@ -36,12 +35,24 @@ plafForm =[
   'FPS'
 ];
 shipDate = [
-  'Last 7 days'
+  'Last 7 days',
+  'Last 30 days', 
+  'Last 60 days', 
+  'Last 90 days'
 ];
-constructor(private appSerice: AppService){
+constructor(private appSerice: AppService, private fb: FormBuilder){
 
 }
 ngOnInit() {
+
+  this.myForm = this.fb.group({
+    platform : "FPS",
+    client : "ABBVIE",
+    shipDate : "Last 7 days",
+    carrier : "ALL",
+    mode : "ALL",
+  });
+
   this.tableOptions = {
     isColumnFilterEnable: true,
     isColumnManagerEnable: false,
@@ -141,7 +152,7 @@ ngOnInit() {
         type: 'string',
         fillspace: true,
         default: true,
-        minWidth: 120,
+        minWidth: 100,
         edit: true
       },
       {
@@ -150,7 +161,7 @@ ngOnInit() {
         type: 'string',
         fillspace: true,
         default: true,
-        minWidth: 50,
+        minWidth: 120,
         edit: true
       },
       {
@@ -159,12 +170,12 @@ ngOnInit() {
         type: 'number',
         fillspace: true,
         default: true,
-        minWidth: 50,
+        minWidth: 100,
         edit: true
       },
     ];
    this.getmetaData();
-    this.getAllConfigs();
+   this.getAllConfigs();
 }
 getmetaData(){
   this.appSerice.getmetaData().subscribe((res : any)  =>
@@ -192,9 +203,32 @@ getAllConfigs() {
   );
 }
 
+getTableDataOnCriteria() {
+  this.appSerice.getTableDataOnCriteria(this.myForm.value).subscribe((res : any)  =>
+    { 
+        this.setRows(res);
+    },
+  );
+}
+
 setRows(configs) {
   this.rows = configs;
   console.log('all data configs', configs);
 }
 
+getOnSubmit() {
+  console.log(this.myForm.value);
+  console.log(this.myForm.value.platform);
+  this.getTableDataOnCriteria();
+}
+
+onReset() {
+  this.myForm = this.fb.group({
+    platform : "FPS",
+    client : "ABBVIE",
+    shipDate : "Last 7 days",
+    carrier : "ALL",
+    mode : "ALL",
+  });
+}
 }

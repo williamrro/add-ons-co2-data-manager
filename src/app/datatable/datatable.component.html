@@ -1,15 +1,15 @@
 <div class="mainWholeContainer">
   <div class="d-flex" style="background-color: #F0F3F4;">
       <div style="padding-top: 25px;width: 24%;background-color: #E6EBED; height: 500px;">
-          <form>  
+          <form [formGroup]="myForm">  
             <div>
               <div>
-                <button type="reset" style="float: right; font-size: 16px; margin-right: 10px;padding:0px 15px ; height: 22px;width: 60px;  border: none; color: black; border-radius: 5px;background-color: #E6EBED; ">Reset</button>
+                <button style="float: right; font-size: 16px; margin-right: 10px;padding:0px 15px ; height: 22px;width: 60px;  border: none; color: black; border-radius: 5px;background-color: #E6EBED; "  (click)="onReset()">Reset</button>
               </div>
               <div class="input-wrapper mb-20" style="padding:15px; margin-bottom: 1px;; margin-top: 5px; background-color:  #E6EBED;">
                 <label class="form-label" data-automation-id="search-carrierLabel" style="font-size: 14px;">Platform</label>
                   <div>
-                    <ng-select  class="ngselect popups" formControlName="type" style="background-color: white;">
+                    <ng-select  class="ngselect popups" formControlName="platform" style="background-color: white;">
                       <ng-option *ngFor="let data of plafForm" [value]="data" style="background-color: white;">{{data}}</ng-option>
                    </ng-select>
                   </div>
@@ -17,7 +17,7 @@
               <div class="input-wrapper mb-20" style="padding:15px; margin-bottom: 1px;; margin-top: 1px; background-color:  #E6EBED;">
                 <label class="form-label" data-automation-id="search-carrierLabel" style="font-size: 14px;">Client</label>
                   <div>
-                    <ng-select class="ngselect popups" formControlName="type" style="background-color: white;"  [closeOnSelect]="false">
+                    <ng-select class="ngselect popups" formControlName="client" style="background-color: white;"  [closeOnSelect]="false">
                       <ng-option *ngFor="let data of clients" [value]="data">{{data}}</ng-option>
                    </ng-select>
                 </div>
@@ -25,7 +25,7 @@
               <div class="input-wrapper mb-20" style="padding:15px; margin-bottom: 1px;; margin-top: 1px; background-color:  #E6EBED;">
                 <label class="form-label" data-automation-id="search-carrierLabel" style="font-size: 14px;">Carrier</label>
                   <div>
-                    <ng-select class="ngselect popups" formControlName="type" style="background-color: white;">
+                    <ng-select class="ngselect popups" formControlName="carrier" style="background-color: white;">
                       <ng-option *ngFor="let data of carrier" [value]="data">{{data}}</ng-option>
                    </ng-select>
                   </div>
@@ -33,7 +33,7 @@
               <div class="input-wrapper mb-20" style="padding:15px; margin-bottom: 1px;; margin-top: 1px; background-color:  #E6EBED;">
                 <label class="form-label" data-automation-id="search-carrierLabel" style="font-size: 14px;">Mode</label>
                   <div style="background-color: white;">
-                    <ng-select class="ngselect popups" formControlName="type" style="background-color: white;">
+                    <ng-select class="ngselect popups" formControlName="mode" style="background-color: white;">
                       <ng-option *ngFor="let data of modes" [value]="data">{{data}}</ng-option>
                    </ng-select>
                   </div>
@@ -41,7 +41,7 @@
               <div class="input-wrapper mb-20" style="padding:15px; margin-bottom: 1px;; margin-top: 1px; background-color:  #E6EBED;">
                 <label class="form-label" data-automation-id="search-carrierLabel" style="font-size: 14px;">Ship Date</label>
                   <div style="background-color: white;">
-                    <ng-select class="ngselect popups" formControlName="type" style="background-color: white;">
+                    <ng-select class="ngselect popups" formControlName="shipDate" style="background-color: white;">
                       <ng-option *ngFor="let data of shipDate" [value]="data">{{data}}</ng-option>
                    </ng-select>
                   </div>
@@ -55,13 +55,13 @@
                   </div>
               </div> --> 
               <div style="display: flex;justify-content: space-between;padding: 20px; background-color:  #E6EBED;">
-                  <button type="submit" style="padding:0px 15px ; height:40px;width:300px; background-color:#00A98B; border: none; color: white; border-radius: 5px;"  (click)="reset()">Search</button>
+                  <button type="submit" style="padding:0px 15px ; height:40px;width:300px; background-color:#00A98B; border: none; color: white; border-radius: 5px;"  (click)="getOnSubmit()">Search</button>
               </div>
             </div>
           </form>
       </div>
 
-      <div style="margin:20px;width:74%;">
+      <div style="margin:20px;width:74%;"> 
          <app-data-table [onChange]="data" [columns]="columns" [buttons]="buttons" [rows]="rows" [types]="types"
           [dropdownsData]="dropdowns" [tableOptions]="tableOptions" [filterPreferences]="filterPreferences"
           (filters)="filtersChanged($event)" (serverEvents)="detailServerEvents($event)"

@@ -15,6 +15,7 @@ import { LoaderComponent } from "./shared/loader/loader.component";
 import { DTComponent } from "./datatable/datatable.component";
 import { DataTableModule } from "@trax/datatable";
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     AppRoutingModule,
     SidebarModule,
     DataTableModule,
-    NgSelectModule
+    NgSelectModule,
+    ReactiveFormsModule,
   ],
   providers: [HttpInterceptorProviders, HttpClient, Broadcaster, AppService],
   bootstrap: [AppComponent]

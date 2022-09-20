@@ -22,4 +22,8 @@ export class AppService {
     getTableData(){
         return  this.http.get(this.BASE_URL+'co2emission/metadata/getCo2Values');
        }
+    getTableDataOnCriteria(obj){
+        return  this.http.post(this.BASE_URL+'co2emission/metadata/getCo2ValuesOnCriteria', obj);
+       }
+
 }
