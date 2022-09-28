@@ -32,7 +32,8 @@
     "sortablejs": "^1.8.4",
     "web-animations-js": "^2.3.1",
     "webix": "^6.4.0",
-    "zone.js": "^0.8.19"
+    "zone.js": "^0.8.19",
+    "angular2-tag-input": "1.2.3"
   },
   "devDependencies": {
     "@angular/cli": "~1.7.3",

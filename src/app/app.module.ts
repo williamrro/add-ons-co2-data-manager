@@ -16,6 +16,7 @@ import { DTComponent } from "./datatable/datatable.component";
 import { DataTableModule } from "@trax/datatable";
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RlTagInputModule } from "angular2-tag-input";
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     DataTableModule,
     NgSelectModule,
     ReactiveFormsModule,
+    RlTagInputModule,
   ],
   providers: [HttpInterceptorProviders, HttpClient, Broadcaster, AppService],
   bootstrap: [AppComponent]

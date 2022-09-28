@@ -21,6 +21,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   public rows: any;
   public columns: any = [];
   public tableOptions: any ;
+  trackingNumTags: Array<any> = [];
+  errorMsg : any ;
   cars = [
     { id: 1, name: 'Volvo' },
     { id: 2, name: 'Saab' },
@@ -51,6 +53,7 @@ ngOnInit() {
     shipDate : "Last 7 days",
     carrier : "ALL",
     mode : "ALL",
+    trackingNumbers: [],
   });
 
   this.tableOptions = {
@@ -229,6 +232,36 @@ onReset() {
     shipDate : "Last 7 days",
     carrier : "ALL",
     mode : "ALL",
+    trackingNumbers: [],
   });
 }
+
+tagAdded(event, key) {
+  let tags = [];
+
+  if (event.search(/\r?\n|\r/) != -1) {
+    tags = event.split(/\r?\n|\r/);
+  } else if (event.includes(" ")) {
+    tags = event.split(" ");
+  } else if (event.includes("\t")) {
+    tags = event.split("\t");
+  }
+
+  if (tags.length) {
+    this.trackingNumTags.forEach((trackingNumTag, index) => {
+      if (trackingNumTag == event) {
+        this.trackingNumTags.splice(index, 1);
+        this.trackingNumTags = this.trackingNumTags.concat(tags);
+      }
+    });
+  }
+  this.errorMsg = "";
+}
+  focus(tag) {
+    let item = tag.children[0].children[0].children[0];
+    setTimeout(() => {
+      item.focus();
+    });
+  }
+
 }
