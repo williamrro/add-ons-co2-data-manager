@@ -58,13 +58,13 @@ ngOnInit() {
 
   this.tableOptions = {
     isColumnFilterEnable: true,
-    isColumnManagerEnable: false,
+    isColumnManagerEnable: true,
     isBulkEditEnable: false,
     bulkEdit: 'selected', // selected or all
     isAddEnable: false,
     isDeleteEnable: false,
     isEditEnable: false,
-    isExportEnable: false,
+    isExportEnable: true,
     hover: 'rowHover',
     idField: 'importId',
     filters: true,
@@ -76,15 +76,17 @@ ngOnInit() {
         type: 'string',
         default: true,
         minWidth: 90,
-        fillspace: true
+        fillspace: true,
+        editorColumn: true,
       },
       {
         id: 'clientCode',
         headerText: 'Client Code',
         type: 'string',
         default: true,
-        minWidth: 10,
-        fillspace: true
+        minWidth: 100,
+        fillspace: true,
+        editorColumn: true,
       },
       {
         id: 'carrierCode',
@@ -93,7 +95,8 @@ ngOnInit() {
         fillspace: true,
         default: true,
         minWidth: 100,
-        edit: true
+        edit: true,
+        editorColumn: true,
       },
       {
         id: 'carrierName',
@@ -102,7 +105,8 @@ ngOnInit() {
         fillspace: true,
         default: true,
         minWidth: 110,
-        edit: true
+        edit: true,
+        editorColumn: true,
       },
       {
         id: 'region',
@@ -111,7 +115,8 @@ ngOnInit() {
         fillspace: true,
         default: true,
         minWidth: 70,
-        edit: true
+        edit: true,
+        editorColumn: true,
       },
       {
         id: 'modeName',
@@ -119,8 +124,9 @@ ngOnInit() {
         type: 'string',
         fillspace: true,
         default: true,
-        minWidth: 50,
-        edit: true
+        minWidth: 60,
+        edit: true,
+        editorColumn: true,
       },
       {
         id: 'modeType',
@@ -129,7 +135,8 @@ ngOnInit() {
         fillspace: true,
         default: true,
         minWidth: 100,
-        edit: true
+        edit: true,
+        editorColumn: true,
       },
       {
         id: 'modeNorm',
@@ -138,7 +145,8 @@ ngOnInit() {
         fillspace: true,
         default: true,
         minWidth: 100,
-        edit: true
+        edit: true,
+        editorColumn: true,
       },
       {
         id: 'service',
@@ -147,7 +155,8 @@ ngOnInit() {
         fillspace: true,
         default: true,
         minWidth: 70,
-        edit: true
+        edit: true,
+        editorColumn: true,
       },
       {
         id: 'tempControl',
@@ -156,7 +165,8 @@ ngOnInit() {
         fillspace: true,
         default: true,
         minWidth: 100,
-        edit: true
+        edit: true,
+        editorColumn: true,
       },
       {
         id: 'shipDate',
@@ -165,7 +175,8 @@ ngOnInit() {
         fillspace: true,
         default: true,
         minWidth: 120,
-        edit: true
+        edit: true,
+        editorColumn: true,
       },
       {
         id: 'weightActualKG',
@@ -174,7 +185,8 @@ ngOnInit() {
         fillspace: true,
         default: true,
         minWidth: 100,
-        edit: true
+        edit: true,
+        editorColumn: true,
       },
     ];
    this.getmetaData();
@@ -264,4 +276,13 @@ tagAdded(event, key) {
     });
   }
 
+  layoutChanges(event) {
+   // this.loader = true;
+    let insertObj = {
+      layoutName: event.payload.name,
+      columns: event.payload.columns.map((item) => {
+        return item.id;
+      }),
+    };
+  }
 }
