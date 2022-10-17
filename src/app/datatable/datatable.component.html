@@ -6,7 +6,7 @@
               <div>
                 <button style="float: right; font-size: 16px; margin-right: 10px;padding:0px 15px ; height: 22px;width: 60px;  border: none; color: black; border-radius: 5px;background-color: #E6EBED; "  (click)="onReset()">Reset</button>
               </div>
-              <div class="input-wrapper mb-20" style="padding-left:15px; padding-right:15px; margin-bottom: 1px;; margin-top: 5px; background-color:  #E6EBED;">
+              <div class="input-wrapper mb-20" style="padding-left:15px; padding-right:15px; margin-bottom: 1px;  background-color:  #E6EBED;">
                 <label class="form-label" data-automation-id="search-carrierLabel" style="font-size: 14px;">Platform</label>
                   <div>
                     <ng-select  class="ngselect popups" formControlName="platform" style="background-color: white;">
@@ -81,20 +81,13 @@
       <div style="margin:20px;width:74%;"> 
         <!-- <button type="submit" style="padding:15px 15px ; height:40px;width:146px; background-color:#FFFFFF;; border-color: black; color: black; border-radius: 5px; margin-left: 700px; margin-bottom: 7px; font-weight: 600;">Table Layout</button> -->
          <app-data-table [onChange]="data" 
-          [columns]="columns"
-          [buttons]="buttons" 
-          [rows]="rows" 
-          [types]="types"
-          [dropdownsData]="dropdowns" 
-          [tableOptions]="tableOptions" 
-          [filterPreferences]="filterPreferences"
-          (filters)="filtersChanged($event)" 
-          (serverEvents)="detailServerEvents($event)"
-          (buttonClick)="buttonClickEvents($event)" 
-          (countChange)="countChange($event)"
-          (selectionEvents)="selectionEvents($event)"  
-          (selectedRowsChange)="selectedRows($event)">
+            [columns]="columns"
+            [rows]="rows"
+            [tableOptions]="tableOptions"
+            (buttonClick)="buttonClickEvents($event)"  
+            (selectedRowsChange)="selectedRows($event)">
           </app-data-table>
+
       </div>
   </div>
 </div>
