@@ -15,15 +15,15 @@ export class AppService {
     constructor( private http: HttpClient, private broadcaster: Broadcaster ) {
     }
 
-    getmetaData(){
-     return  this.http.get(this.BASE_URL+'co2emission/metadata/getMetaData');
+    getmetaData(obj){
+     return  this.http.post(this.BASE_URL+'co2emission/metadata/getMetaData', obj);
     }
 
-    getTableData(){
-        return  this.http.get(this.BASE_URL+'co2emission/metadata/getCo2Values');
+    getTableData(obj){
+        return  this.http.post(this.BASE_URL+'co2emission/metadata/getCo2Values', obj);
        }
     getTableDataOnCriteria(obj){
-        return  this.http.post(this.BASE_URL+'co2emission/metadata/getCo2ValuesOnCriteria', obj);
+        return  this.http.post(this.BASE_URL+'co2emission/metadata/getCo2ValuesOnCriteria', obj); 
        }
 
 }

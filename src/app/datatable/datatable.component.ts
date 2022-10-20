@@ -14,6 +14,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ["./datatable.component.scss"]
 })
  export class DTComponent implements OnInit {
+  metadata : any;
   modes : any;
   carrier : any;
   data = { action: '', payload: {} };
@@ -27,7 +28,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
     { id: 1, name: 'Volvo' },
     { id: 2, name: 'Saab' },
     { id: 3, name: 'Opel' },
-    { id: 4, name: 'Audi' },
+    { id: 4, name: 'Audi' }, 
 ];
 
 clients = [
@@ -193,11 +194,12 @@ ngOnInit() {
    this.getAllConfigs();
 }
 getmetaData(){
-  this.appSerice.getmetaData().subscribe((res : any)  =>
+  this.appSerice.getmetaData(this.myForm.value).subscribe((res : any)  =>
     { 
-      this.modes = res.mode;
-      this.carrier = res.carrier;
-      console.log(res);
+      this.metadata = res.data;
+      this.modes = this.metadata.mode;
+      this.carrier = this.metadata.carrier; 
+      console.log(res); 
     })
 }
 
@@ -211,9 +213,9 @@ buttonClickEvents(data) {
 }
 
 getAllConfigs() {
-  this.appSerice.getTableData().subscribe((res : any)  =>
+  this.appSerice.getTableData(this.myForm.value).subscribe((res : any)  =>
     { 
-        this.setRows(res);
+        this.setRows(res.data);
     },
   );
 }
@@ -221,7 +223,7 @@ getAllConfigs() {
 getTableDataOnCriteria() {
   this.appSerice.getTableDataOnCriteria(this.myForm.value).subscribe((res : any)  =>
     { 
-        this.setRows(res);
+        this.setRows(res.data);
     },
   );
 }

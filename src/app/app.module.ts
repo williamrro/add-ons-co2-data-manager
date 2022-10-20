@@ -17,6 +17,7 @@ import { DataTableModule } from "@trax/datatable";
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RlTagInputModule } from "angular2-tag-input";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { RlTagInputModule } from "angular2-tag-input";
     NgSelectModule,
     ReactiveFormsModule,
     RlTagInputModule,
+    CommonModule
   ],
   providers: [HttpInterceptorProviders, HttpClient, Broadcaster, AppService],
   bootstrap: [AppComponent]
