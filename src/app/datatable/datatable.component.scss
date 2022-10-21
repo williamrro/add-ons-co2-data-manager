@@ -441,7 +441,13 @@ ng-select>div>div.single>div.placeholder {
   background-color: #fafafa;
   cursor: default;
 }
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input{
+  background-color: #fafafa;
+}
 
+.ng-select.ng-select-single .ng-select-container{
+  background-color: #fafafa;
+}
 .one-third {
   //margin: 3px 5px 5px 5px;
   flex: 1;

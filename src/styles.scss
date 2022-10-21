@@ -823,6 +823,7 @@ ngx-daterangepicker-material {
 
 .ng-select {
   width: 65%;
+  background-color: white !important;
 }
 
 .ng-select .ng-select-container {
@@ -859,7 +860,13 @@ ngx-daterangepicker-material {
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container {
   height: 30px !important;
 }
-
+.ng-select.ng-select-single .ng-select-container{
+  background-color: #fafafa;
+  font-size: 14px;
+}
+.ng-dropdown-panel .scroll-host{
+  font-size: 14px;
+}
 .md-drppicker {
   border-radius: 0px !important;
   padding: 4px 4px 6px 4px !important;
