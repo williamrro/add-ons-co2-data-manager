@@ -12,18 +12,18 @@ export class AppService {
     private BASE_URL: string = environment.apiUrl;
 
     
-    constructor( private http: HttpClient, private broadcaster: Broadcaster ) {
+    constructor( private http: HttpClient) {
     }
 
     getmetaData(obj){
-     return  this.http.post(this.BASE_URL+'co2emission/metadata/getMetaData', obj);
+     return  this.http.post(this.BASE_URL+'co2emission/api/metadata/getMetaData', obj);
     }
 
     getTableData(obj){
-        return  this.http.post(this.BASE_URL+'co2emission/metadata/getCo2Values', obj);
+        return  this.http.post(this.BASE_URL+'co2emission/api/metadata/getCo2Values', obj);
        }
     getTableDataOnCriteria(obj){
-        return  this.http.post(this.BASE_URL+'co2emission/metadata/getCo2ValuesOnCriteria', obj); 
+        return  this.http.post(this.BASE_URL+'co2emission/api/metadata/getCo2ValuesOnCriteria', obj); 
        }
 
 }

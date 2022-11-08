@@ -1,10 +1,11 @@
 <div class="mainWholeContainer">
-  <div class="d-flex" style="background-color: #F0F3F4;">
-      <div style="padding-top: 25px;width: 28%;background-color: #E6EBED; height: 500px;">
+  <div class="d-flex">
+      <div class = "criteriaSection" >
           <form [formGroup]="myForm">  
             <div style="display : grid;">
               <div>
-                <button style="float: right; font-size: 16px; margin-right: 10px;padding:0px 15px ; height: 22px;width: 60px;  border: none; color: black; border-radius: 5px;background-color: #E6EBED; "  (click)="onReset()">Reset</button>
+                <button style="float: right; font-size: 16px; margin-right: 10px;padding-top: 0px;border: ridge;
+                padding-right: 15px;padding-bottom: 0px;padding-left: 10px; height: 22px;width: 60px; color: black; border-radius: 5px;background-color: #E6EBED; border-color: white;"  (click)="onReset()">Reset</button>
               </div>
               <div class="input-wrapper mb-20" style="padding-left:15px; padding-right:15px; margin-bottom: 1px;  background-color:  #E6EBED;">
                 <label class="form-label" data-automation-id="search-carrierLabel" style="font-size: 14px;">Platform</label>
@@ -58,7 +59,7 @@
               </div> --> 
 
               <div class="one-third" data-automation-id="search-trackingNumberWrapper" style="padding-left:15px; padding-right:15px; ">
-                <label class="form-label" data-automation-id="search-carrierLabel" style="font-size: 14px;">Tracking Number's</label>
+                <label class="form-label" data-automation-id="search-carrierLabel" style="font-size: 14px;">Tracking Numbers</label>
                 <div class="tagInputs trackingNum" style="border-top: 0px; background-color: white;"
                   #tags2
                   (click)="focus(tags2)" >
@@ -84,7 +85,6 @@
             [columns]="columns"
             [rows]="rows"
             [tableOptions]="tableOptions"
-            (buttonClick)="buttonClickEvents($event)"  
             (selectedRowsChange)="selectedRows($event)">
           </app-data-table>
 
