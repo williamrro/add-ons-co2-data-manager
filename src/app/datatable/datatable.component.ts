@@ -24,7 +24,8 @@ export class DTComponent implements OnInit {
     'ABBVIE'
   ];
   plafForm = [
-    'FPS'
+    'FPS',
+    'TTSM'
   ];
   shipDate = [
     'Last 7 days',
@@ -37,15 +38,15 @@ export class DTComponent implements OnInit {
   }
   ngOnInit() {
 
-    // this.myForm = this.fb.group({
-    //   platform : "FPS",
-    //   client : "ABBVIE",
-    //   shipDate : "Last 7 days",
-    //   carrier : "ALL",
-    //   mode : "ALL",
-    //   trackingNumbers: [],
-    // });
-    this.onReset();
+    this.myForm = this.fb.group({
+      platform : "FPS",
+      client : "ABBVIE",
+      shipDate : "Last 7 days",
+      carrier : "ALL",
+      mode : "ALL",
+      trackingNumbers: [],
+    });
+    //this.onReset();
 
     this.tableOptions = {
       isColumnFilterEnable: true,
@@ -697,7 +698,10 @@ export class DTComponent implements OnInit {
     console.log(this.myForm.value.platform);
     this.getTableDataOnCriteria();
   }
-
+  changeFn(val) {
+    console.log(val);
+   this.getmetaData()
+}
   onReset() {
     this.myForm = this.fb.group({
       platform: "FPS",
