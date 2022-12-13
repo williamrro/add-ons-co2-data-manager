@@ -10,7 +10,7 @@
               <div class="input-wrapper mb-20" style="padding-left:15px; padding-right:15px; margin-bottom: 1px;  background-color:  #E6EBED;">
                 <label class="form-label" data-automation-id="search-carrierLabel" style="font-size: 14px;">Platform</label>
                   <div>
-                    <ng-select  class="ngselect popups" formControlName="platform" style="background-color: white;" [clearable]="false">
+                    <ng-select (change)="changeFn($event)" class="ngselect popups" formControlName="platform" style="background-color: white;" [clearable]="false">
                       <ng-option *ngFor="let data of plafForm" [value]="data" style="background-color: white;">{{data}}</ng-option>
                    </ng-select>
                   </div>
