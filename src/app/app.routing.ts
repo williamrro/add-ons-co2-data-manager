@@ -8,8 +8,8 @@ const routes: Routes = [
   //   path: "",
   //   component: DTComponent
   // },
-  { path: '', redirectTo: '/co2_ecm_ui', pathMatch: 'full' },
-  { path: 'co2_ecm_ui', component: DTComponent },
+  { path: '', redirectTo: '/co2emission', pathMatch: 'full' },
+  { path: 'co2emission', component: DTComponent },
 ];
 
 @NgModule({
