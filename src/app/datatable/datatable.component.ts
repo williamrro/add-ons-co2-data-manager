@@ -676,14 +676,14 @@ export class DTComponent implements OnInit {
 
   getAllConfigs() {
     this.appSerice.getTableData(this.myForm.value).subscribe((res: any) => {
-      this.setRows(res.data);
+      this.setRows(res.data.data);
     },
     );
   }
 
   getTableDataOnCriteria() {
     this.appSerice.getTableDataOnCriteria(this.myForm.value).subscribe((res: any) => {
-      this.setRows(res.data);
+      this.setRows(res.data.data);
     },
     );
   }
