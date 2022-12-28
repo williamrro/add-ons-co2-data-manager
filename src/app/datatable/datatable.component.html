@@ -3,9 +3,13 @@
       <div class = "criteriaSection" >
           <form [formGroup]="myForm">  
             <div style="display : grid;">
-              <div>
-                <button style="float: right; font-size: 16px; margin-right: 10px;padding-top: 0px;border: ridge;
-                padding-right: 15px;padding-bottom: 0px;padding-left: 10px; height: 22px;width: 60px; color: black; border-radius: 5px;background-color: #E6EBED; border-color: white;"  (click)="onReset()">Reset</button>
+              <div style="padding: 0 15px;">
+                <span style="float: right;color: black;cursor: pointer;" (click)="onReset()" >Reset</span>
+                <i class="fa fa-refresh" style="float: right;  cursor: pointer;  padding-top: 4px;
+                float: right;
+                padding-right: 5px;
+                font-size: 15px;
+                color: black;" (click)="onReset()"></i>
               </div>
               <div class="input-wrapper mb-20" style="padding-left:15px; padding-right:15px; margin-bottom: 1px;  background-color:  #E6EBED;">
                 <label class="form-label" data-automation-id="search-carrierLabel" style="font-size: 14px;">Platform</label>
@@ -79,7 +83,7 @@
           </form>
       </div>
 
-      <div style="margin:10px;width:74%;"> 
+      <div style="margin:10px;width:74%;" class="dataTable"> 
         <!-- <button type="submit" style="padding:15px 15px ; height:40px;width:146px; background-color:#FFFFFF;; border-color: black; color: black; border-radius: 5px; margin-left: 700px; margin-bottom: 7px; font-weight: 600;">Table Layout</button> -->
          <app-data-table [onChange]="data" 
             [columns]="columns"

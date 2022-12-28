@@ -518,3 +518,6 @@ ng-select>div>div.single>div.placeholder {
     }
   }
 }
+ ::ng-deep .dataTable  app-data-table .webix_ss_header td{
+  background: black  !important;
+}
