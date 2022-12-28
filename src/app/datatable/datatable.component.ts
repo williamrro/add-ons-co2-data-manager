@@ -19,7 +19,7 @@ export class DTComponent implements OnInit {
   public tableOptions: any;
   trackingNumTags: Array<any> = [];
   errorMsg: any;
-
+  buttons = [];
   clients = [
     'ABBVIE'
   ];
@@ -33,6 +33,7 @@ export class DTComponent implements OnInit {
     'Last 60 days',
     'Last 90 days'
   ];
+
   constructor(private appSerice: AppService, private fb: FormBuilder) {
 
   }
@@ -58,9 +59,19 @@ export class DTComponent implements OnInit {
       isEditEnable: false,
       isExportEnable: true,
       hover: 'rowHover',
-      idField: 'importId',
+      idField: 'sidFbid',
       filters: true,
+      multiselect: true,
+      checkboxColumn: true,
     };
+    this.buttons = [
+      {
+        id: 1,
+        name: "Reprocess",
+        type: "click",
+        action: "retrigger"
+      },
+    ];
     this.columns = [
       {
         id: 'sourceSystem',
@@ -563,7 +574,7 @@ export class DTComponent implements OnInit {
         editorColumn: true,
       },
       {
-        id: 'sIDOrFbID',
+        id: 'sidFbid',
         headerText: 'SID or FBID',
         type: 'string',
         fillspace: true,
@@ -669,8 +680,30 @@ export class DTComponent implements OnInit {
   }
 
   selectedRows(data) {
-    this.data = data;
-    console.log('selected Rows', data);
+   // this.data = data;
+   let dataToSend = [];
+   var sIDOrFbIDs ='';
+    if(data.payload.length > 0){
+      console.log('selected Rows', data.payload.length);
+    for (let i = 0; i < data.payload.length; i++) {
+
+      console.log('first row data is ', data.payload[i]);
+
+      dataToSend.push(data.payload[i]);
+      if(i == 0){
+        sIDOrFbIDs = data.payload[i].sidFbid;
+      }else{
+        sIDOrFbIDs = sIDOrFbIDs+','+data.payload[i].sidFbid;
+      }
+    }
+    console.log('dataToSend', sIDOrFbIDs);
+
+    this.appSerice.reTrigger(sIDOrFbIDs).subscribe((res: any) => {
+      console.log('Response is', res);
+    },
+    );
+
+    }
   }
 
 
@@ -711,6 +744,17 @@ export class DTComponent implements OnInit {
       mode: "ALL",
       trackingNumbers: [],
     });
+  }
+
+  buttonClickEvents(data) {
+ 
+    if (data.action === "retrigger") {
+      let rows = {
+        action: "retrigger",
+        payload: data.rows
+      };
+      this.selectedRows(rows);
+    }
   }
 
   tagAdded(event, key) {
