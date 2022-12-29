@@ -26,4 +26,7 @@ export class AppService {
         return  this.http.post(this.BASE_URL+'co2emission/api/metadata/getCo2ValuesOnCriteria', obj); 
        }
 
+    reTrigger(obj){
+        return  this.http.post(this.BASE_URL+'co2emission/api/v1/calculateCo2EmissionByFbids', obj); 
+       }
 }

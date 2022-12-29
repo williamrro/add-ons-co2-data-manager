@@ -89,6 +89,8 @@
             [columns]="columns"
             [rows]="rows"
             [tableOptions]="tableOptions"
+            [buttons]="buttons"
+            (buttonClick)="buttonClickEvents($event)"
             (selectedRowsChange)="selectedRows($event)">
           </app-data-table>
 
