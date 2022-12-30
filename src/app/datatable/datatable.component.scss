@@ -521,3 +521,15 @@ ng-select>div>div.single>div.placeholder {
  ::ng-deep .dataTable  app-data-table .webix_ss_header td{
   background: black  !important;
 }
+::ng-deep rl-tag-input .ng2-tag-input-remove{
+  background:url("../../assets/img/delete.jpg") !important;
+  background-repeat: no-repeat !important;
+  font-size: 0px !important;
+  color: white  !important;
+  border-radius: 0  !important;
+  line-height: 22px !important;
+
+}
+::ng-deep rl-tag-input rl-tag-input-item{
+  background-color: white !important;
+}
