@@ -698,7 +698,8 @@ export class DTComponent implements OnInit {
     }
     console.log('dataToSend', sIDOrFbIDs);
    let reqJson={
-      fbids:sIDOrFbIDs
+      fbids:sIDOrFbIDs,
+      platform:this.myForm.value.platform
     }
 
     this.appSerice.reTrigger(reqJson).subscribe((res: any) => {
