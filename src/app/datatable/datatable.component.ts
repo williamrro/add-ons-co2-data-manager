@@ -725,6 +725,7 @@ export class DTComponent implements OnInit {
      this.appSerice.normalize(reqJson).subscribe((res: any) => {
        console.log('Response is', res);
        if(res.status == "Success"){
+        this.getAllConfigs();
         this.successMessage= "Normalization completed Successfully";
         this.clearMassage();
        }
@@ -736,13 +737,13 @@ export class DTComponent implements OnInit {
      );
     }
     else if(this.modeNormValue == false && this.modeNameValue == false){
-      this.errorMessage = "Mode Norm Must be Null And " + "  Mode mustn't be null"
+      this.errorMessage = "Mode Norm must be Null And Mode should not be null for the selected record(s)"
     }
     else if(this.modeNormValue == false && this.modeNameValue){
-  this.errorMessage=  "Mode Norm Must be Null";
+     this.errorMessage=  "Mode Norm must be Null for the selected record(s)";
     }
     else if(this.modeNameValue == false && this.modeNormValue){
-      this.errorMessage= "Mode mustn't be null";
+      this.errorMessage= "Mode should not be null for the selected record(s)";
         }
       this.clearMassage();
        
