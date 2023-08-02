@@ -105,3 +105,15 @@
       </div>
   </div>
 </div>
+<div class="error-message-display-success withIcon" *ngIf=successMessage?.length>
+  <div class="successMessageIcon">
+      <img src="assets/img/whiteCheck.svg" />
+  </div>
+  <div class="successMessage">{{successMessage}}</div>
+</div>
+<div class="error-message-display" style="display: flex;" *ngIf=errorMessage?.length>
+  <div class="successMessageIcon">
+    <img src="assets/img/Warning.svg" style="margin-right: 10px;"/>
+</div>
+  {{errorMessage}}
+</div>

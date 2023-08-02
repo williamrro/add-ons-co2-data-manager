@@ -10,6 +10,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class DTComponent implements OnInit {
   metadata: any;
+  modeNormValue:boolean=true;
+  modeNameValue:boolean=true;
+  errorMessage="";
+  successMessage=""
   modes: any;
   carrier: any;
   data = { action: '', payload: {} };
@@ -71,6 +75,12 @@ export class DTComponent implements OnInit {
         type: "click",
         action: "retrigger"
       },
+      {
+        id:2,
+        name:"Normalize",
+        type:"click",
+        action:"normalize"
+      }
     ];
     this.columns = [
       {
@@ -679,6 +689,71 @@ export class DTComponent implements OnInit {
     })
   }
 
+  selectedNormalizeRows(data) {
+    // this.data = data;
+    let dataToSend = [];
+    var sIDOrFbIDs ='';
+    var modeNormArray=[];
+    var modeNameArray=[];
+    console.log(data.payload);
+     if(data.payload.length > 0){
+       console.log('selected Rows', data.payload.length);
+     for (let i = 0; i < data.payload.length; i++) {
+ 
+       console.log('first row data is ', data.payload[i]);
+ 
+       dataToSend.push(data.payload[i]);
+     
+       if(i == 0){
+         sIDOrFbIDs = data.payload[i].sidFbid;
+         modeNormArray.push(data.payload[i].modeNorm);
+         modeNameArray.push(data.payload[i].modeName)
+       }else{
+         sIDOrFbIDs = sIDOrFbIDs+','+data.payload[i].sidFbid;
+         modeNormArray.push(data.payload[i].modeNorm);
+         modeNameArray.push(data.payload[i].modeName)
+      }
+     }
+      this.modeNormValue = modeNormArray.every(item => item === "");
+     this.modeNameValue = !modeNameArray.includes("");
+     if(this.modeNormValue && this.modeNameValue){
+    let reqJson={
+       fbids:sIDOrFbIDs,
+       platform:this.myForm.value.platform
+     }
+ 
+     this.appSerice.normalize(reqJson).subscribe((res: any) => {
+       console.log('Response is', res);
+       if(res.status == "Success"){
+        this.successMessage= "Normalization completed Successfully";
+        this.clearMassage();
+       }
+       else{
+          this.errorMessage="System Error";
+          this.clearMassage();
+       }
+     },
+     );
+    }
+    else if(this.modeNormValue == false && this.modeNameValue == false){
+      this.errorMessage = "Mode Norm Must be Null And " + "  Mode mustn't be null"
+    }
+    else if(this.modeNormValue == false && this.modeNameValue){
+  this.errorMessage=  "Mode Norm Must be Null";
+    }
+    else if(this.modeNameValue == false && this.modeNormValue){
+      this.errorMessage= "Mode mustn't be null";
+        }
+      this.clearMassage();
+       
+     }
+   }
+ clearMassage(){
+  setTimeout((x => {
+    this.errorMessage = "";
+    this.successMessage=""
+  }), 5000)
+ }
   selectedRows(data) {
    // this.data = data;
    let dataToSend = [];
@@ -758,6 +833,14 @@ export class DTComponent implements OnInit {
         payload: data.rows
       };
       this.selectedRows(rows);
+    }
+    else if(data.action === "normalize"){
+      let normalizeRows ={
+        action:"normalize",
+        payload:data.rows
+      };
+      console.log(normalizeRows);
+      this.selectedNormalizeRows(normalizeRows);
     }
   }
 

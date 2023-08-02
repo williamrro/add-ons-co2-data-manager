@@ -533,3 +533,60 @@ ng-select>div>div.single>div.placeholder {
 ::ng-deep rl-tag-input rl-tag-input-item{
   background-color: white !important;
 }
+
+.error-message-display{
+  margin-top: 50px;  
+  margin-left: 50px;  
+  position: fixed;  
+  padding: 12px 0px 12px 18px;  
+  width: 100%;
+  //width: 500px;  
+      background: #E4150C;  
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.4);  
+      border-radius: 5px;  
+      color: #f9f9f9;  
+      font-family: Source Sans Pro;  
+      font-style: normal;  
+      font-weight: 600;  
+      font-size: 16px;  
+      top: 0;
+      left: 0;
+
+}
+
+.error-message-display-success {
+  &.withIcon {
+    display: flex;
+    .successMessage, .successMessageIcon {
+      display: flex;
+      align-items: center;
+      justify-content: ce;
+    }
+    .successMessage {
+      position: relative;
+      bottom: 2px;
+    }
+    img {
+      width: 15px;
+      height: 12px;
+      margin-right: 20px;
+    }
+  }
+}
+.error-message-display-success{
+  //margin-top: 20px;  
+  margin-left: 60px;  
+  position: fixed;  
+  padding: 12px 0px 12px 18px;  
+  width: 100%;  
+      background: #0B990B;  
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.4);  
+      border-radius: 5px;  
+      color: #f9f9f9;  
+      font-family: Source Sans Pro;  
+      font-style: normal;  
+      font-weight: 600;  
+      font-size: 16px;  
+      top: 0;
+      left: 0;
+}
