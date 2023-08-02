@@ -29,4 +29,7 @@ export class AppService {
     reTrigger(obj){
         return  this.http.post(this.BASE_URL+'co2emission/api/v1/calculateCo2EmissionByFbids', obj); 
        }
+       normalize(obj){
+        return  this.http.post(this.BASE_URL+'co2emission/api/v1/normalizeCo2EmissionByFbids', obj); 
+       }
 }
