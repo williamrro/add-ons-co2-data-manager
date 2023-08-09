@@ -90,7 +90,10 @@
             </div>
           </form>
       </div>
-
+      <button class="primaryButton reProcessButton" (click)="selectedNormalizeRows()">
+        <!-- <span><img class="buttonIcon" ></span> -->
+        <span class="engage-right" style="display: flex;justify-content: center;"> normalize </span>
+      </button>
       <div style="margin:10px;width:74%;" class="dataTable"> 
         <!-- <button type="submit" style="padding:15px 15px ; height:40px;width:146px; background-color:#FFFFFF;; border-color: black; color: black; border-radius: 5px; margin-left: 700px; margin-bottom: 7px; font-weight: 600;">Table Layout</button> -->
          <app-data-table [onChange]="data" 
@@ -99,7 +102,8 @@
             [tableOptions]="tableOptions"
             [buttons]="buttons"
             (buttonClick)="buttonClickEvents($event)"
-            (selectedRowsChange)="selectedRows($event)">
+            (selectedRowsChange)="selectedRows($event)"
+            (selectionEvents)="selectionEvents($event)">
           </app-data-table>
 
       </div>
