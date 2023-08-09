@@ -551,6 +551,7 @@ ng-select>div>div.single>div.placeholder {
       font-size: 16px;  
       top: 0;
       left: 0;
+      z-index: 3;
 
 }
 
@@ -576,7 +577,7 @@ ng-select>div>div.single>div.placeholder {
 .error-message-display-success{
   //margin-top: 20px;  
   margin-left: 60px;  
-  position: fixed;  
+  position: absolute;  
   padding: 12px 0px 12px 18px;  
   width: 100%;  
       background: #0B990B;  
@@ -589,4 +590,31 @@ ng-select>div>div.single>div.placeholder {
       font-size: 16px;  
       top: 0;
       left: 0;
+      z-index: 3;
+}
+
+.reProcessButton{
+  font-size: .75rem!important;
+  padding: 5px 15px;
+  font-weight: 500;
+  cursor: pointer !important;
+  margin: 0 2px;
+  width: 100px;
+  height: 25px;
+  position: fixed;
+  right: 378px;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  /* padding-top: 10px; */
+  margin-top: 20px;
+  padding: 10px 40px;
+  background: 0 0;
+  color: #67b5ab;
+  text-transform: uppercase;
+  font-size: .9em;
+  cursor: pointer;
+  display: inline-block;
+  border: 1px solid #67b5ab !important;
+  z-index: 1;
 }
