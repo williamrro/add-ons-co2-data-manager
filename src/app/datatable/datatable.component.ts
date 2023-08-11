@@ -10,6 +10,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class DTComponent implements OnInit {
   metadata: any;
+  modeNormValue:boolean=true;
+  modeNameValue:boolean=true;
+  errorMessage="";
+  successMessage=""
   modes: any;
   carrier: any;
   data = { action: '', payload: {} };
@@ -20,6 +24,7 @@ export class DTComponent implements OnInit {
   trackingNumTags: Array<any> = [];
   errorMsg: any;
   buttons = [];
+  selectedItems: any = [];
   clients = [
     'ABBVIE'
   ];
@@ -71,6 +76,7 @@ export class DTComponent implements OnInit {
         type: "click",
         action: "retrigger"
       },
+
     ];
     this.columns = [
       {
@@ -679,7 +685,78 @@ export class DTComponent implements OnInit {
     })
   }
 
+  selectedNormalizeRows() {
+    var data =this.selectedItems;
+    console.log(data);
+    // this.data = data;
+    let dataToSend = [];
+    var sIDOrFbIDs ='';
+    var modeNormArray=[];
+    var modeNameArray=[];
+    console.log(data);
+     if(data.length > 0){
+       console.log('selected Rows', data.length);
+     for (let i = 0; i < data.length; i++) {
+ 
+       console.log('first row data is ', data[i]);
+ 
+       dataToSend.push(data[i]);
+     
+       if(i == 0){
+         sIDOrFbIDs = data[i].sidFbid;
+         modeNormArray.push(data[i].modeNorm);
+         modeNameArray.push(data[i].modeName)
+       }else{
+         sIDOrFbIDs = sIDOrFbIDs+','+data[i].sidFbid;
+         modeNormArray.push(data[i].modeNorm);
+         modeNameArray.push(data[i].modeName)
+      }
+     }
+      this.modeNormValue = modeNormArray.every(item => item === "");
+     this.modeNameValue = !modeNameArray.includes("");
+     if(this.modeNormValue && this.modeNameValue){
+    let reqJson={
+       fbids:sIDOrFbIDs,
+       platform:this.myForm.value.platform
+     }
+    //  this.getAllConfigs1();
+    
+     this.appSerice.normalize(reqJson).subscribe((res: any) => {
+       console.log('Response is', res);
+       if(res.status == "Success"){
+        this.getmetaData();
+        this.getAllConfigs();
+        this.successMessage= "Normalization completed Successfully";
+        this.clearMassage();
+       }
+       else{
+          this.errorMessage="System Error";
+          this.clearMassage();
+       }
+     },
+     );
+    }
+    else if(this.modeNormValue == false && this.modeNameValue == false){
+      this.errorMessage = "Mode Norm must be Null And Mode should not be null for the selected record(s)"
+    }
+    else if(this.modeNormValue == false && this.modeNameValue){
+     this.errorMessage=  "Mode Norm must be Null for the selected record(s)";
+    }
+    else if(this.modeNameValue == false && this.modeNormValue){
+      this.errorMessage= "Mode should not be null for the selected record(s)";
+        }
+      this.clearMassage();
+       
+     }
+   }
+ clearMassage(){
+  setTimeout((x => {
+    this.errorMessage = "";
+    this.successMessage=""
+  }), 5000)
+ }
   selectedRows(data) {
+   console.log(data);
    // this.data = data;
    let dataToSend = [];
    var sIDOrFbIDs ='';
@@ -751,7 +828,7 @@ export class DTComponent implements OnInit {
   }
 
   buttonClickEvents(data) {
- 
+    // console.log(data);
     if (data.action === "retrigger") {
       let rows = {
         action: "retrigger",
@@ -759,6 +836,7 @@ export class DTComponent implements OnInit {
       };
       this.selectedRows(rows);
     }
+
   }
 
   tagAdded(event, key) {
@@ -798,4 +876,12 @@ export class DTComponent implements OnInit {
   //     }),
   //   };
   // }
+
+  selectionEvents($event) {
+    console.log($event);
+    if ($event.type === 'selectedRows') {
+      this.selectedItems = $event.payload;
+      console.log(this.selectedItems);
+    }
+  }
 }
