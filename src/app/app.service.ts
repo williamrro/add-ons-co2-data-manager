@@ -15,6 +15,10 @@ export class AppService {
     constructor( private http: HttpClient) {
     }
 
+    getClients(obj: any){
+        return  this.http.post(this.BASE_URL + 'co2emission/api/v1/clients', obj);
+    }
+
     getmetaData(obj){
      return  this.http.post(this.BASE_URL+'co2emission/api/metadata/getMetaData', obj);
     }

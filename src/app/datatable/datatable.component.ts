@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { AppService } from "../app.service";
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: "app-datatable",
@@ -25,9 +26,7 @@ export class DTComponent implements OnInit {
   errorMsg: any;
   buttons = [];
   selectedItems: any = [];
-  clients = [
-    'ABBVIE'
-  ];
+  clients = [];
   plafForm = [
     'FPS',
     'TTSM'
@@ -46,7 +45,7 @@ export class DTComponent implements OnInit {
 
     this.myForm = this.fb.group({
       platform : "FPS",
-      client : "ABBVIE",
+      client : "",
       shipDate : "Last 7 days",
       carrier : "ALL",
       mode : "ALL",
@@ -670,9 +669,32 @@ export class DTComponent implements OnInit {
         editorColumn: true,
       },
     ];
+    this.getClients();
+  }
+
+  onClientChange() {
     this.getmetaData();
     this.getAllConfigs();
   }
+
+  clearClientsList() {
+    this.clients = [];
+    this.myForm.controls.client.setValue("");
+  }
+
+  getClients() {
+    this.clearClientsList();
+
+    this.appSerice.getClients({"platform" : this.myForm.value.platform}).pipe(finalize(() => {
+      this.onClientChange();
+    })).subscribe((res: any) => {
+      if(res && res.data && res.data.clients && res.data.clients.length > 0) {
+        this.clients = res.data.clients;
+        this.myForm.controls.client.setValue(res.data.clients[0]);
+      }
+    })
+  }
+
   getmetaData() {
     this.appSerice.getmetaData(this.myForm.value).subscribe((res: any) => {
       if (res.status === "Success") {
@@ -724,8 +746,7 @@ export class DTComponent implements OnInit {
      this.appSerice.normalize(reqJson).subscribe((res: any) => {
        console.log('Response is', res);
        if(res.status == "Success"){
-        this.getmetaData();
-        this.getAllConfigs();
+        this.onClientChange();
         this.successMessage= "Normalization completed Successfully";
         this.clearMassage();
        }
@@ -814,12 +835,12 @@ export class DTComponent implements OnInit {
   }
   changeFn(val) {
     console.log(val);
-   this.getmetaData()
+    this.getClients();
 }
   onReset() {
     this.myForm = this.fb.group({
       platform: "FPS",
-      client: "ABBVIE",
+      client: "",
       shipDate: "Last 7 days",
       carrier: "ALL",
       mode: "ALL",
