@@ -30,7 +30,7 @@
               <div class="input-wrapper mb-20" style="padding-left:15px; padding-right:15px; margin-bottom: 1px;; margin-top: 1px; background-color:  #E6EBED;">
                 <label class="form-label" data-automation-id="search-carrierLabel" style="font-size: 14px;">Client</label>
                   <div>
-                    <ng-select class="ngselect popups" formControlName="client" style="background-color: white;"  [closeOnSelect]="false" [clearable]="false">
+                    <ng-select (change)="onClientChange()" class="ngselect popups" formControlName="client" style="background-color: white;" [clearable]="false">
                       <ng-option *ngFor="let data of clients" [value]="data">{{data}}</ng-option>
                    </ng-select>
                 </div>
