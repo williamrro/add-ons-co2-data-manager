@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { AppService } from "../app.service";
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 
 @Component({
@@ -42,17 +42,7 @@ export class DTComponent implements OnInit {
 
   }
   ngOnInit() {
-
-    this.myForm = this.fb.group({
-      platform : "FPS",
-      client : "",
-      shipDate : "Last 7 days",
-      carrier : "ALL",
-      mode : "ALL",
-      trackingNumbers: [],
-    });
-    //this.onReset();
-
+    this.onReset();
     this.tableOptions = {
       isColumnFilterEnable: true,
       isColumnManagerEnable: true,
@@ -831,7 +821,12 @@ export class DTComponent implements OnInit {
   getOnSubmit() {
     console.log(this.myForm.value);
     console.log(this.myForm.value.platform);
-    this.getTableDataOnCriteria();
+    if(this.myForm.valid) {
+      this.getTableDataOnCriteria();
+    } else {
+      this.errorMessage="Client is required for search";
+      this.clearMassage();
+    }
   }
   changeFn(val) {
     console.log(val);
@@ -840,7 +835,7 @@ export class DTComponent implements OnInit {
   onReset() {
     this.myForm = this.fb.group({
       platform: "FPS",
-      client: "",
+      client: new FormControl('', Validators.required),
       shipDate: "Last 7 days",
       carrier: "ALL",
       mode: "ALL",
