@@ -42,7 +42,6 @@ export class DTComponent implements OnInit {
 
   }
   ngOnInit() {
-    this.onReset();
     this.tableOptions = {
       isColumnFilterEnable: true,
       isColumnManagerEnable: true,
@@ -659,7 +658,7 @@ export class DTComponent implements OnInit {
         editorColumn: true,
       },
     ];
-    this.getClients();
+    this.onReset();
   }
 
   onClientChange() {
@@ -841,6 +840,7 @@ export class DTComponent implements OnInit {
       mode: "ALL",
       trackingNumbers: [],
     });
+    this.changeFn(this.myForm.value.platform); // Trigger platform change event
   }
 
   buttonClickEvents(data) {
