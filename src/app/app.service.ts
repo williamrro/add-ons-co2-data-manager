@@ -26,8 +26,8 @@ export class AppService {
     getTableData(obj){
         return  this.http.post(this.BASE_URL+'co2emission/api/metadata/getCo2Values', obj);
        }
-    getTableDataOnCriteria(obj){
-        return  this.http.post(this.BASE_URL+'co2emission/api/metadata/getCo2ValuesOnCriteria', obj); 
+       getTableDataOnCriteria(obj,offset){
+        return  this.http.post(this.BASE_URL+'co2emission/api/metadata/getCo2ValuesOnCriteria?offset='+offset, obj); 
        }
 
     reTrigger(obj){
