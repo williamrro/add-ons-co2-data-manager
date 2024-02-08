@@ -19,6 +19,9 @@ export class DTComponent implements OnInit {
   carrier: any;
   data = { action: '', payload: {} };
   myForm: FormGroup;
+  offset:any;
+  nextPageAvailable:boolean;
+  preventMultiScrool:boolean=false
   public rows: any;
   public columns: any = [];
   public tableOptions: any;
@@ -800,13 +803,17 @@ export class DTComponent implements OnInit {
 
   getAllConfigs() {
     this.appSerice.getTableData(this.myForm.value).subscribe((res: any) => {
+      this.preventMultiScrool=true;
       this.setRows(res.data.data);
     },
     );
   }
 
   getTableDataOnCriteria() {
-    this.appSerice.getTableDataOnCriteria(this.myForm.value).subscribe((res: any) => {
+    this.preventMultiScrool=true;
+    this.appSerice.getTableDataOnCriteria(this.myForm.value,this.offset).subscribe((res: any) => {
+      this.nextPageAvailable=res.nextPageAvailable;
+      this.offset=res.offset;
       this.setRows(res.data.data);
     },
     );
@@ -821,6 +828,7 @@ export class DTComponent implements OnInit {
     console.log(this.myForm.value);
     console.log(this.myForm.value.platform);
     if(this.myForm.valid) {
+      this.offset=0;
       this.getTableDataOnCriteria();
     } else {
       this.errorMessage="Client is required for search";
@@ -898,6 +906,16 @@ export class DTComponent implements OnInit {
     if ($event.type === 'selectedRows') {
       this.selectedItems = $event.payload;
       console.log(this.selectedItems);
+    }
+  }
+  co2scrollEvents(event){
+    this.preventMultiScrool=false;
+    if (event.type == "scrollEnd" && event.status) {
+      if (this.nextPageAvailable) {
+        console.log(this.offset);
+        this.getTableDataOnCriteria();
+      }
+     
     }
   }
 }
