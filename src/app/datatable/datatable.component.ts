@@ -804,7 +804,7 @@ export class DTComponent implements OnInit {
   getAllConfigs() {
     this.appSerice.getTableData(this.myForm.value).subscribe((res: any) => {
       this.preventMultiScrool=true;
-      this.setRows(res.data.data);
+      this.setRows(res);
     },
     );
   }
@@ -814,13 +814,13 @@ export class DTComponent implements OnInit {
     this.appSerice.getTableDataOnCriteria(this.myForm.value,this.offset).subscribe((res: any) => {
       this.nextPageAvailable=res.nextPageAvailable;
       this.offset=res.offset;
-      this.setRows(res.data.data);
+      this.setRows(res);
     },
     );
   }
 
   setRows(configs) {
-    this.rows = configs;
+    this.rows = configs && configs.data && configs.data.data && configs.data.data.length > 0 ? configs.data.data : [];
     console.log('all data configs', configs);
   }
 
