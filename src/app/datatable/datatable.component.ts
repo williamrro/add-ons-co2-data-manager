@@ -802,19 +802,25 @@ export class DTComponent implements OnInit {
 
 
   getAllConfigs() {
-    this.appSerice.getTableData(this.myForm.value).subscribe((res: any) => {
+    let newRes = null;
+    this.appSerice.getTableData(this.myForm.value).pipe(finalize(() => {
       this.preventMultiScrool=true;
-      this.setRows(res);
+      this.setRows(newRes);
+    })).subscribe((res: any) => {
+      newRes = res;
     },
     );
   }
 
   getTableDataOnCriteria() {
     this.preventMultiScrool=true;
-    this.appSerice.getTableDataOnCriteria(this.myForm.value,this.offset).subscribe((res: any) => {
-      this.nextPageAvailable=res.nextPageAvailable;
-      this.offset=res.offset;
-      this.setRows(res);
+    let newRes = null;
+    this.appSerice.getTableDataOnCriteria(this.myForm.value,this.offset).pipe(finalize(() => {
+      this.nextPageAvailable = newRes ? newRes.nextPageAvailable : false;
+      this.offset = newRes ? newRes.offset : this.offset;
+      this.setRows(newRes);
+    })).subscribe((res: any) => {
+      newRes = res;
     },
     );
   }
