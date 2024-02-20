@@ -819,7 +819,8 @@ export class DTComponent implements OnInit {
       this.nextPageAvailable = newRes ? newRes.nextPageAvailable : false;
       this.offset = newRes ? newRes.offset : this.offset;
       if(eventType=='infiniteScroll'){
-                this.data = { action: 'append', payload: newRes };
+        console.log(newRes);
+                this.data = { action: 'append', payload: newRes.data.data };
             }
             else{
       this.setRows(newRes);
