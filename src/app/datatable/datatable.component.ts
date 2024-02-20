@@ -812,13 +812,18 @@ export class DTComponent implements OnInit {
     );
   }
 
-  getTableDataOnCriteria() {
+  getTableDataOnCriteria(eventType) {
     this.preventMultiScrool=true;
     let newRes = null;
     this.appSerice.getTableDataOnCriteria(this.myForm.value,this.offset).pipe(finalize(() => {
       this.nextPageAvailable = newRes ? newRes.nextPageAvailable : false;
       this.offset = newRes ? newRes.offset : this.offset;
+      if(eventType=='infiniteScroll'){
+                this.data = { action: 'append', payload: newRes };
+            }
+            else{
       this.setRows(newRes);
+            }
     })).subscribe((res: any) => {
       newRes = res;
     },
@@ -835,7 +840,7 @@ export class DTComponent implements OnInit {
     console.log(this.myForm.value.platform);
     if(this.myForm.valid) {
       this.offset=0;
-      this.getTableDataOnCriteria();
+      this.getTableDataOnCriteria('initialLoad');
     } else {
       this.errorMessage="Client is required for search";
       this.clearMassage();
@@ -919,7 +924,7 @@ export class DTComponent implements OnInit {
     if (event.type == "scrollEnd" && event.status) {
       if (this.nextPageAvailable) {
         console.log(this.offset);
-        this.getTableDataOnCriteria();
+        this.getTableDataOnCriteria('infiniteScroll');
       }
      
     }
