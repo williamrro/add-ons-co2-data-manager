@@ -660,6 +660,60 @@ export class DTComponent implements OnInit {
         edit: true,
         editorColumn: true,
       },
+      {
+        id: 'tot',
+        headerText: 'TOT',
+        type: 'string',
+        default: false,
+        minWidth: 90,
+        fillspace: true,
+        editorColumn: true,
+      },
+      {
+        id: 'ops',
+        headerText: 'OPS',
+        type: 'string',
+        default: false,
+        minWidth: 90,
+        fillspace: true,
+        editorColumn: true,
+      },
+      {
+        id: 'ene',
+        headerText: 'ENE',
+        type: 'string',
+        default: false,
+        minWidth: 90,
+        fillspace: true,
+        editorColumn: true,
+      },
+      {
+        id: 'tkm',
+        headerText: 'TKM',
+        type: 'string',
+        default: false,
+        minWidth: 90,
+        fillspace: true,
+        editorColumn: true,
+      },
+      {
+        id: 'totEI',
+        headerText: 'TOT_EI',
+        type: 'string',
+        default: false,
+        minWidth: 90,
+        fillspace: true,
+        editorColumn: true,
+      },
+      {
+        id: 'status',
+        headerText: 'Status',
+        type: 'string',
+        default: false,
+        minWidth: 90,
+        fillspace: true,
+        editorColumn: true,
+      },      
     ];
     this.onReset();
   }
@@ -813,7 +867,6 @@ export class DTComponent implements OnInit {
   }
 
   getTableDataOnCriteria(eventType) {
-    this.preventMultiScrool=true;
     let newRes = null;
     this.appSerice.getTableDataOnCriteria(this.myForm.value,this.offset).pipe(finalize(() => {
       this.nextPageAvailable = newRes ? newRes.nextPageAvailable : false;
@@ -826,6 +879,7 @@ export class DTComponent implements OnInit {
       this.setRows(newRes);
             }
     })).subscribe((res: any) => {
+      this.preventMultiScrool=true;
       newRes = res;
     },
     );
