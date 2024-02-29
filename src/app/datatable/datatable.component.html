@@ -101,6 +101,7 @@
             [columns]="columns"
             [rows]="rows"
             [tableOptions]="tableOptions"
+            (serverEvents)="serverEvents($event)"
             [buttons]="buttons"
             (buttonClick)="buttonClickEvents($event)"
             (selectedRowsChange)="selectedRows($event)"
