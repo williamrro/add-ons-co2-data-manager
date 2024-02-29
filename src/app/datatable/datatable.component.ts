@@ -22,6 +22,7 @@ export class DTComponent implements OnInit {
   offset:any;
   nextPageAvailable:boolean;
   preventMultiScrool:boolean=false
+  preventFilterScrool:boolean=false;
   public rows: any;
   public columns: any = [];
   public tableOptions: any;
@@ -868,18 +869,23 @@ export class DTComponent implements OnInit {
 
   getTableDataOnCriteria(eventType) {
     let newRes = null;
+    if(eventType=='infiniteScroll'){
+      this.preventMultiScrool=true;
+    }
     this.appSerice.getTableDataOnCriteria(this.myForm.value,this.offset).pipe(finalize(() => {
       this.nextPageAvailable = newRes ? newRes.nextPageAvailable : false;
       this.offset = newRes ? newRes.offset : this.offset;
       if(eventType=='infiniteScroll'){
+        // this.preventMultiScrool=true;
         console.log(newRes);
                 this.data = { action: 'append', payload: newRes.data.data };
             }
             else{
+              this.preventMultiScrool=false;
       this.setRows(newRes);
             }
     })).subscribe((res: any) => {
-      this.preventMultiScrool=true;
+     this.preventMultiScrool=false;
       newRes = res;
     },
     );
@@ -975,13 +981,24 @@ export class DTComponent implements OnInit {
     }
   }
   co2scrollEvents(event){
-    this.preventMultiScrool=false;
+    // this.preventMultiScrool=false;
     if (event.type == "scrollEnd" && event.status) {
-      if (this.nextPageAvailable) {
+      if (this.nextPageAvailable  && this.preventMultiScrool==false) {
         console.log(this.offset);
+      //  this.preventMultiScrool=false;
+      if(!this.preventFilterScrool){
         this.getTableDataOnCriteria('infiniteScroll');
+      }
       }
      
     }
+  }
+  serverEvents(event){
+    this.preventFilterScrool=false;
+    event.payload.map(i => {
+      if(i.filter.applied && i.filter.condition != 'clear'){
+       this.preventFilterScrool=true;
+      }
+  })
   }
 }
