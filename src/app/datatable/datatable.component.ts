@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { AppService } from "../app.service";
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: "app-datatable",
@@ -18,6 +19,10 @@ export class DTComponent implements OnInit {
   carrier: any;
   data = { action: '', payload: {} };
   myForm: FormGroup;
+  offset:any;
+  nextPageAvailable:boolean;
+  preventMultiScrool:boolean=false
+  preventFilterScrool:boolean=false;
   public rows: any;
   public columns: any = [];
   public tableOptions: any;
@@ -25,9 +30,7 @@ export class DTComponent implements OnInit {
   errorMsg: any;
   buttons = [];
   selectedItems: any = [];
-  clients = [
-    'ABBVIE'
-  ];
+  clients = [];
   plafForm = [
     'FPS',
     'TTSM'
@@ -43,17 +46,6 @@ export class DTComponent implements OnInit {
 
   }
   ngOnInit() {
-
-    this.myForm = this.fb.group({
-      platform : "FPS",
-      client : "ABBVIE",
-      shipDate : "Last 7 days",
-      carrier : "ALL",
-      mode : "ALL",
-      trackingNumbers: [],
-    });
-    //this.onReset();
-
     this.tableOptions = {
       isColumnFilterEnable: true,
       isColumnManagerEnable: true,
@@ -669,10 +661,87 @@ export class DTComponent implements OnInit {
         edit: true,
         editorColumn: true,
       },
+      {
+        id: 'tot',
+        headerText: 'TOT',
+        type: 'string',
+        default: true,
+        minWidth: 90,
+        fillspace: true,
+        editorColumn: true,
+      },
+      {
+        id: 'ops',
+        headerText: 'OPS',
+        type: 'string',
+        default: true,
+        minWidth: 90,
+        fillspace: true,
+        editorColumn: true,
+      },
+      {
+        id: 'ene',
+        headerText: 'ENE',
+        type: 'string',
+        default: true,
+        minWidth: 90,
+        fillspace: true,
+        editorColumn: true,
+      },
+      {
+        id: 'tkm',
+        headerText: 'TKM',
+        type: 'string',
+        default: true,
+        minWidth: 90,
+        fillspace: true,
+        editorColumn: true,
+      },
+      {
+        id: 'totEI',
+        headerText: 'TOT_EI',
+        type: 'string',
+        default: true,
+        minWidth: 90,
+        fillspace: true,
+        editorColumn: true,
+      },
+      {
+        id: 'status',
+        headerText: 'Status',
+        type: 'string',
+        default: true,
+        minWidth: 90,
+        fillspace: true,
+        editorColumn: true,
+      },      
     ];
+    this.onReset();
+  }
+
+  onClientChange() {
     this.getmetaData();
     this.getAllConfigs();
   }
+
+  clearClientsList() {
+    this.clients = [];
+    this.myForm.controls.client.setValue("");
+  }
+
+  getClients() {
+    this.clearClientsList();
+
+    this.appSerice.getClients({"platform" : this.myForm.value.platform}).pipe(finalize(() => {
+      this.onClientChange();
+    })).subscribe((res: any) => {
+      if(res && res.data && res.data.clients && res.data.clients.length > 0) {
+        this.clients = res.data.clients;
+        this.myForm.controls.client.setValue(res.data.clients[0]);
+      }
+    })
+  }
+
   getmetaData() {
     this.appSerice.getmetaData(this.myForm.value).subscribe((res: any) => {
       if (res.status === "Success") {
@@ -724,8 +793,7 @@ export class DTComponent implements OnInit {
      this.appSerice.normalize(reqJson).subscribe((res: any) => {
        console.log('Response is', res);
        if(res.status == "Success"){
-        this.getmetaData();
-        this.getAllConfigs();
+        this.onClientChange();
         this.successMessage= "Normalization completed Successfully";
         this.clearMassage();
        }
@@ -789,42 +857,70 @@ export class DTComponent implements OnInit {
 
 
   getAllConfigs() {
-    this.appSerice.getTableData(this.myForm.value).subscribe((res: any) => {
-      this.setRows(res.data.data);
+    let newRes = null;
+    this.appSerice.getTableData(this.myForm.value).pipe(finalize(() => {
+      this.preventMultiScrool=true;
+      this.setRows(newRes);
+    })).subscribe((res: any) => {
+      newRes = res;
     },
     );
   }
 
-  getTableDataOnCriteria() {
-    this.appSerice.getTableDataOnCriteria(this.myForm.value).subscribe((res: any) => {
-      this.setRows(res.data.data);
+  getTableDataOnCriteria(eventType) {
+    let newRes = null;
+    if(eventType=='infiniteScroll'){
+      this.preventMultiScrool=true;
+    }
+    this.appSerice.getTableDataOnCriteria(this.myForm.value,this.offset).pipe(finalize(() => {
+      this.nextPageAvailable = newRes ? newRes.nextPageAvailable : false;
+      this.offset = newRes ? newRes.offset : this.offset;
+      if(eventType=='infiniteScroll'){
+        // this.preventMultiScrool=true;
+        console.log(newRes);
+                this.data = { action: 'append', payload: newRes.data.data };
+            }
+            else{
+              this.preventMultiScrool=false;
+      this.setRows(newRes);
+            }
+    })).subscribe((res: any) => {
+     this.preventMultiScrool=false;
+      newRes = res;
     },
     );
   }
 
   setRows(configs) {
-    this.rows = configs;
+    this.rows = configs && configs.data && configs.data.data && configs.data.data.length > 0 ? configs.data.data : [];
     console.log('all data configs', configs);
   }
 
   getOnSubmit() {
     console.log(this.myForm.value);
     console.log(this.myForm.value.platform);
-    this.getTableDataOnCriteria();
+    if(this.myForm.valid) {
+      this.offset=0;
+      this.getTableDataOnCriteria('initialLoad');
+    } else {
+      this.errorMessage="Client is required for search";
+      this.clearMassage();
+    }
   }
   changeFn(val) {
     console.log(val);
-   this.getmetaData()
+    this.getClients();
 }
   onReset() {
     this.myForm = this.fb.group({
       platform: "FPS",
-      client: "ABBVIE",
+      client: new FormControl('', Validators.required),
       shipDate: "Last 7 days",
       carrier: "ALL",
       mode: "ALL",
       trackingNumbers: [],
     });
+    this.changeFn(this.myForm.value.platform); // Trigger platform change event
   }
 
   buttonClickEvents(data) {
@@ -883,5 +979,26 @@ export class DTComponent implements OnInit {
       this.selectedItems = $event.payload;
       console.log(this.selectedItems);
     }
+  }
+  co2scrollEvents(event){
+    // this.preventMultiScrool=false;
+    if (event.type == "scrollEnd" && event.status) {
+      if (this.nextPageAvailable  && this.preventMultiScrool==false) {
+        console.log(this.offset);
+      //  this.preventMultiScrool=false;
+      if(!this.preventFilterScrool){
+        this.getTableDataOnCriteria('infiniteScroll');
+      }
+      }
+     
+    }
+  }
+  serverEvents(event){
+    this.preventFilterScrool=false;
+    event.payload.map(i => {
+      if(i.filter.applied && i.filter.condition != 'clear'){
+       this.preventFilterScrool=true;
+      }
+  })
   }
 }

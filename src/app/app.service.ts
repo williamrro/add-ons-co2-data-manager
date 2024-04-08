@@ -15,6 +15,10 @@ export class AppService {
     constructor( private http: HttpClient) {
     }
 
+    getClients(obj: any){
+        return  this.http.post(this.BASE_URL + 'co2emission/api/v1/clients', obj);
+    }
+
     getmetaData(obj){
      return  this.http.post(this.BASE_URL+'co2emission/api/metadata/getMetaData', obj);
     }
@@ -22,8 +26,8 @@ export class AppService {
     getTableData(obj){
         return  this.http.post(this.BASE_URL+'co2emission/api/metadata/getCo2Values', obj);
        }
-    getTableDataOnCriteria(obj){
-        return  this.http.post(this.BASE_URL+'co2emission/api/metadata/getCo2ValuesOnCriteria', obj); 
+       getTableDataOnCriteria(obj,offset){
+        return  this.http.post(this.BASE_URL+'co2emission/api/metadata/getCo2ValuesOnCriteria?offset='+offset, obj); 
        }
 
     reTrigger(obj){
