@@ -918,7 +918,7 @@ export class DTComponent implements OnInit {
       shipDate: "Last 7 days",
       carrier: "ALL",
       mode: "ALL",
-      trackingNumbers: [],
+      trackingNumbers: new FormControl([]),
     });
     this.changeFn(this.myForm.value.platform); // Trigger platform change event
   }
