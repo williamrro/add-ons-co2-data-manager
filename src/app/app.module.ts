@@ -12,7 +12,7 @@ import { Broadcaster } from './shared/broadcaster';
 import { SidebarModule } from '@trax/sidebar';
 import { HeaderbarComponent } from './shared/headerbar/headerbar.component';
 import { LoaderComponent } from './shared/loader/loader.component';
-import { DTComponent } from './datatable/datatable.component';
+import { DTComponent } from './components/fps/datatable/datatable.component';
 import { DataTableModule } from '@trax/datatable';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ReactiveFormsModule } from '@angular/forms';

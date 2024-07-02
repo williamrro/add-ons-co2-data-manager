@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DTComponent } from '../app/datatable/datatable.component';
+import { DTComponent } from './components/fps/datatable/datatable.component';
 import { environment } from '../environments/environment';
 
 const routes: Routes = [
