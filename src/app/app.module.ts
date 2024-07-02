@@ -18,9 +18,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RlTagInputModule } from 'angular2-tag-input';
 import { CommonModule } from '@angular/common';
+import { LandingComponent } from './shared/landing/landing.component';
 
 @NgModule({
-	declarations: [AppComponent, HeaderbarComponent, LoaderComponent, DTComponent],
+	declarations: [AppComponent, HeaderbarComponent, LoaderComponent, DTComponent, LandingComponent],
 	imports: [
 		BrowserAnimationsModule,
 		BrowserModule,
