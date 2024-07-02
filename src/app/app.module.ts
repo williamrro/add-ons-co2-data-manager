@@ -19,9 +19,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RlTagInputModule } from 'angular2-tag-input';
 import { CommonModule } from '@angular/common';
 import { LandingComponent } from './shared/landing/landing.component';
+import { SummaryComponent } from './components/t4/summary/summary.component';
 
 @NgModule({
-	declarations: [AppComponent, HeaderbarComponent, LoaderComponent, DTComponent, LandingComponent],
+	declarations: [AppComponent, HeaderbarComponent, LoaderComponent, DTComponent, LandingComponent, SummaryComponent],
 	imports: [
 		BrowserAnimationsModule,
 		BrowserModule,
