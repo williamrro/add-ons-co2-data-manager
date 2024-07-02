@@ -1,84 +1,334 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>CO2 Data Manager</title>
+		<base href="/" />
 
-<head>
-  <meta charset="utf-8">
-  <title>CO2 Data Manager</title>
-  <base href="/">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+		<link rel="stylesheet" href="assets/fonts/line-awesome/style.css" />
+		<!-- <link rel="stylesheet" href="assets/webix.css"> -->
+		<!-- <link rel="stylesheet" href="http://cdn.webix.com/edge/webix.css" type="text/css"> -->
+		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+		<style>
+			/* UI FIX FOR BROWSER SUPPORT (TARGET: IE) */
+			@-ms-viewport {
+				width: device-width;
+			}
+			@-ms-viewport {
+				width: device-width;
+			}
+			@-o-viewport {
+				width: device-width;
+			}
+			@viewport {
+				width: device-width;
+			}
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
-  <link rel="stylesheet" href="assets/fonts/line-awesome/style.css">
-  <!-- <link rel="stylesheet" href="assets/webix.css"> -->
-  <!-- <link rel="stylesheet" href="http://cdn.webix.com/edge/webix.css" type="text/css"> -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <style>
-    /* UI FIX FOR BROWSER SUPPORT (TARGET: IE) */
-    @-ms-viewport{width:device-width}@-ms-viewport{width:device-width}@-o-viewport{width:device-width}@viewport{width:device-width}
+			body {
+				background: #f9f9f9;
+				margin: 0;
+				/* font-size: 0.9em; */
+				font-family: 'Source Sans Pro';
+			}
 
-    body {
-      background: #f9f9f9;
-      margin: 0;
-      /* font-size: 0.9em; */
-      font-family: "Source Sans Pro";
-    }
+			html,
+			body {
+				height: 100%;
+			}
 
-    html,
-    body {
-      height: 100%;
-    }
+			/* LOADER ICON */
+			.loading .mask,
+			.loading .tsi-app {
+				display: -webkit-box;
+				display: -ms-flexbox;
+				-webkit-box-orient: vertical;
+				-webkit-box-direction: normal;
+			}
+			.loading .mask,
+			.loading .tsi-app,
+			.loading .tsi-nav {
+				-webkit-box-direction: normal;
+			}
+			.loading {
+				padding: 0;
+				margin: 0;
+				box-sizing: border-box;
+				font-family: Verdana Open Sans, sans-serif;
+				background-color: #fff;
+				box-shadow: 0 7px 7px -7px rgba(0, 0, 0, 0.2);
+				position: relative;
+				z-index: 0;
+			}
+			.loading .mask {
+				background-color: rgba(0, 0, 0, 0.3);
+				position: fixed;
+				height: 100vh;
+				left: 0;
+				right: 0;
+				top: 0;
+				display: flex;
+				-ms-flex-direction: column;
+				flex-direction: column;
+				-webkit-box-pack: center;
+				-ms-flex-pack: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-ms-flex-align: center;
+				align-items: center;
+				z-index: 99;
+			}
+			.loading .mask__gif {
+				width: 104px;
+				margin-top: -100px;
+			}
+			.loading .mask__loading {
+				display: block;
+				font-size: 16px;
+				color: #000;
+			}
+			.loading .main-sidebar_i {
+				position: fixed;
+				top: 50px;
+				left: 0;
+				bottom: 0;
+				background-color: #262626;
+				width: 50px;
+			}
+			.main-sidebar_i > section {
+				padding: 2px 0 0 2px;
+			}
+			.loading .group_i {
+				padding: 0;
+				margin: 0;
+				list-style-type: none;
+			}
+			.loading .tsi-app {
+				display: flex;
+				-ms-flex-direction: column;
+				flex-direction: column;
+				-webkit-box-flex: 1;
+				-ms-flex: 1;
+				flex: 1;
+				padding-left: 18px;
+				margin-top: 14px;
+				color: #74b9bc;
+			}
+			@-webkit-keyframes placeHolderShimmer {
+				0% {
+					background-position: -468px 0;
+				}
+				100% {
+					background-position: 468px 0;
+				}
+			}
+			@keyframes placeHolderShimmer {
+				0% {
+					background-position: -468px 0;
+				}
+				100% {
+					background-position: 468px 0;
+				}
+			}
+			.loading .animated-background {
+				-webkit-animation-duration: 7s;
+				animation-duration: 7s;
+				-webkit-animation-fill-mode: forwards;
+				animation-fill-mode: forwards;
+				-webkit-animation-iteration-count: infinite;
+				animation-iteration-count: infinite;
+				-webkit-animation-name: placeHolderShimmer;
+				animation-name: placeHolderShimmer;
+				-webkit-animation-timing-function: linear;
+				animation-timing-function: linear;
+				height: 20px;
+				width: 108px;
+				background-size: 800px 104px;
+				position: relative;
+			}
+			.loading .__title {
+				padding: 0;
+				margin: 0;
+				text-transform: uppercase;
+				font-size: 20px;
+				font-weight: 400;
+				height: 20px;
+				text-shadow: 4px;
+				background: -webkit-linear-gradient(left, rgb(203, 248, 144) C 8%, #85c4bc 18%, #74b9bc 33%);
+				background: linear-gradient(to right, #74b9bc 8%, #85c4bc 18%, #74b9bc 33%);
+				width: 108px;
+				box-shadow: 0 0 5px 3px #74b9bc;
+			}
+			.loading .__details {
+				padding: 0;
+				margin: 8px 0;
+				font-size: 12px;
+				color: #fff;
+				text-shadow: 4px;
+				background: #eee;
+				background: -webkit-linear-gradient(left, #eee 8%, #ddd 18%, #eee 33%);
+				background: linear-gradient(to right, #eee 8%, #ddd 18%, #eee 33%);
+				height: 10px;
+				width: 180px;
+				box-shadow: 0 0 5px 3px #eee;
+			}
+			.loading .__topnav {
+				width: 100%;
+				z-index: 1000;
+			}
+			.loading .tsi-nav {
+				background-color: #fff;
+				color: #eee;
+				display: -webkit-box;
+				display: -ms-flexbox;
+				display: flex;
+				-webkit-box-orient: horizontal;
+				-ms-flex-direction: row;
+				flex-direction: row;
+				height: 50px;
+			}
+			.loading .__logo {
+				width: 60px;
+				background: url(assets/img/logo.svg) no-repeat;
+				background-size: 40px;
+			}
+			.loading .__logodiv {
+				width: 50px;
+				background-color: #404041;
+			}
+			.llogo {
+				background: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDMyIDI1IiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAzMiAyNSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PGc+PHBhdGggZmlsbD0iIzc0QjlCQyIgZD0iTTE2LjAzMywyMy41NjNDMTEuNzc3LDE4LjkzOCw3LjUzOSwxNC4zMSwzLjk4NSw5LjExQzIuNjY5LDcuMTg0LDEuNDI3LDUuMjEyLDAuMjYsMy4xMTVDMC43NSwzLjE2OSwxLjE3MiwzLjIyLDEuNTk0LDMuMjYxQzIuOTcsMy4zOTMsNC4zNDUsMy41MjgsNS43MjMsMy42NDVjMC4yMzQsMC4wMiwwLjMzOCwwLjEyLDAuNDI4LDAuMzJjMi4xMjMsNC43MTIsNS4wOTUsOC44Miw4LjgyOCwxMi4zODRjMS4xODYsMS4xMzIsMi40MTksMi4yMTMsMy43MDcsMy4yMjljMC4yMTYsMC4xNywwLjI1NCwwLjI3MiwwLjA2NSwwLjUwOEMxNy44MzcsMjEuMjI3LDE2Ljk0NywyMi4zODgsMTYuMDMzLDIzLjU2M3oiLz48cGF0aCBmaWxsPSIjNzRCOUJDIiBkPSJNMzEuNzQsMi44ODljLTAuMDAyLDAuMTYzLTAuMDk1LDAuMjQ0LTAuMTU2LDAuMzM4Yy0xLjI2NSwxLjk1Mi0yLjYwNywzLjg1LTMuOTk2LDUuNzE1Yy0wLjEwNiwwLjE0My0wLjIwNSwwLjI1Mi0wLjQxNywwLjI1NWMtNC4yMzYsMC4wNTgtOC4xMTItMS4wMTgtMTEuNTA0LTMuNjNDMTUuMTUxLDUuMTY5LDE0LjY2LDQuNzQxLDE0LjIsNC4yNzljLTAuMDYzLTAuMDYzLTAuMTIxLTAuMTMxLTAuMjM2LTAuMjU0QzE5Ljk2MSw0LjEwMywyNS44NjYsMy43NzUsMzEuNzQsMi44ODl6Ii8+PHBhdGggZmlsbD0iIzc0QjlCQyIgZD0iTTYuNTI2LDMuNzE0YzAuODM0LDAuMDUxLDEuNjU3LDAuMTczLDIuNDcyLDAuMTNjMC43NDgtMC4wMzksMS4wNzYsMC4zMDYsMS40MjMsMC44OTljMS45MTYsMy4yNzksNC42MDIsNS44MTIsNy43NzksNy44NTFjMS4zNTEsMC44NjcsMi43NTIsMS42NDUsNC4xOTksMi4zMzZjMC4zMTIsMC4xNDksMC4zMTEsMC4yNTgsMC4wOTksMC40OTljLTAuMzg0LDAuNDM2LTAuNzQzLDAuODkzLTEuMTAyLDEuMzUxYy0wLjExOCwwLjE1MS0wLjIxNSwwLjE5My0wLjQwNywwLjExMmMtNC4wMzctMS42OS03LjU2OC00LjA5OS0xMC41LTcuMzY0Yy0xLjQ1OC0xLjYyMi0yLjcwMS0zLjQtMy43NDctNS4zMTRDNi42Niw0LjA2NSw2LjU0NSwzLjkyOCw2LjUyNiwzLjcxNHoiLz48cGF0aCBmaWxsPSIjNzRCOUJDIiBkPSJNMTAuMzI5LDQuMDIyYzEuMDM1LDAsMi4wNjgsMC4wMDIsMy4xLTAuMDAyYzAuMTM3LDAsMC4yMDksMC4wODIsMC4yODcsMC4xNjljMy4wNzgsMy40MjQsNy4wMTksNS4yMTQsMTEuNDYyLDYuMDUzYzAuMzk4LDAuMDc1LDAuNzk4LDAuMTQ2LDEuMjQ3LDAuMjI4Yy0wLjUxMSwwLjY1NS0xLjAwMiwxLjI4NC0xLjQ5MywxLjkxM2MtMC4wMjEsMC4wMjctMC4wNTEsMC4wNTEtMC4wNjYsMC4wODFjLTAuMzIzLDAuNjYzLTAuODA2LDAuNjgtMS40NzYsMC41MTJjLTUuMjg3LTEuMzI3LTkuNTg2LTQuMTE0LTEyLjc5NS04LjU0MmMtMC4wODItMC4xMTMtMC4xNTktMC4yMjktMC4yMzYtMC4zNDVDMTAuMzQsNC4wNjEsMTAuMzMxLDQuMDI3LDEwLjMyOSw0LjAyMnoiLz48L2c+PC9zdmc+')
+					center no-repeat;
+				background-size: 40px;
+				height: 35px;
+				width: 50px;
+			}
+			.txtr {
+				padding-top: 2px;
+				font-size: 10px;
+				color: #74b9bc;
+				text-align: center;
+			}
+			.loading .circle {
+				height: 20px;
+				width: 20px;
+				border-radius: 50%;
+				background-color: #b3b3b3;
+				position: relative;
+				top: 10px;
+				left: 22px;
+				margin-top: 10px;
+				margin-bottom: 26px;
+				-webkit-transition: height 0.25s ease, width 0.25s ease;
+				transition: height 0.25s ease, width 0.25s ease;
+				-webkit-transform: translate(-50%, -50%);
+				transform: translate(-50%, -50%);
+			}
+			.loading .circle:after,
+			.loading .circle:before {
+				content: '';
+				display: block;
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				border-radius: 00%;
+				border: 1px solid #b3b3b3;
+			}
+			.loading .circle:before {
+				-webkit-animation: ripple 4s linear infinite;
+				animation: ripple 4s linear infinite;
+			}
+			.loading .circle:after {
+				-webkit-animation: ripple 4s linear 1s infinite;
+				animation: ripple 4s linear 1s infinite;
+			}
+			@-webkit-keyframes ripple {
+				0% {
+					-webkit-transform: scale(1);
+					transform: scale(1);
+				}
+				75% {
+					-webkit-transform: scale(1.75);
+					transform: scale(1.75);
+					opacity: 1;
+				}
+				100% {
+					-webkit-transform: scale(2);
+					transform: scale(2);
+					opacity: 0;
+				}
+			}
+			@keyframes ripple {
+				0% {
+					-webkit-transform: scale(1);
+					transform: scale(1);
+				}
+				75% {
+					-webkit-transform: scale(1.75);
+					transform: scale(1.75);
+					opacity: 1;
+				}
+				100% {
+					-webkit-transform: scale(2);
+					transform: scale(2);
+					opacity: 0;
+				}
+			}
+		</style>
+		<script>
+			/* IE(10) FIX */
+			if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+				var msViewportStyle = document.createElement('style');
+				msViewportStyle.appendChild(document.createTextNode('@-ms-viewport{width:auto!important}')),
+					document.querySelector('head').appendChild(msViewportStyle);
+			}
+		</script>
+	</head>
 
-    /* LOADER ICON */
-    .loading .mask,.loading .tsi-app{display:-webkit-box;display:-ms-flexbox;-webkit-box-orient:vertical;-webkit-box-direction:normal}.loading .mask,.loading .tsi-app,.loading .tsi-nav{-webkit-box-direction:normal}.loading{padding:0;margin:0;box-sizing:border-box;font-family:Verdana Open Sans,sans-serif;background-color:#fff;box-shadow:0 7px 7px -7px rgba(0,0,0,.2);position:relative;z-index:0}.loading .mask{background-color:rgba(0,0,0,.3);position:fixed;height:100vh;left:0;right:0;top:0;display:flex;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;z-index:99}.loading .mask__gif{width:104px;margin-top:-100px}.loading .mask__loading{display:block;font-size:16px;color:#000}.loading .main-sidebar_i{position:fixed;top:50px;left:0;bottom:0;background-color:#262626;width:50px}.main-sidebar_i>section{padding:2px 0 0 2px}.loading .group_i{padding:0;margin:0;list-style-type:none}.loading .tsi-app{display:flex;-ms-flex-direction:column;flex-direction:column;-webkit-box-flex:1;-ms-flex:1;flex:1;padding-left:18px;margin-top:14px;color:#74B9BC}@-webkit-keyframes placeHolderShimmer{0%{background-position:-468px 0}100%{background-position:468px 0}}@keyframes placeHolderShimmer{0%{background-position:-468px 0}100%{background-position:468px 0}}.loading .animated-background{-webkit-animation-duration:7s;animation-duration:7s;-webkit-animation-fill-mode:forwards;animation-fill-mode:forwards;-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite;-webkit-animation-name:placeHolderShimmer;animation-name:placeHolderShimmer;-webkit-animation-timing-function:linear;animation-timing-function:linear;height:20px;width:108px;background-size:800px 104px;position:relative}.loading .__title{padding:0;margin:0;text-transform:uppercase;font-size:20px;font-weight:400;height:20px;text-shadow:4px;background:-webkit-linear-gradient(left,rgb(203, 248, 144)C 8%,#85C4BC 18%,#74B9BC 33%);background:linear-gradient(to right,#74B9BC 8%,#85C4BC 18%,#74B9BC 33%);width:108px;box-shadow:0 0 5px 3px #74B9BC}.loading .__details{padding:0;margin:8px 0;font-size:12px;color:#fff;text-shadow:4px;background:#eee;background:-webkit-linear-gradient(left,#eee 8%,#ddd 18%,#eee 33%);background:linear-gradient(to right,#eee 8%,#ddd 18%,#eee 33%);height:10px;width:180px;box-shadow:0 0 5px 3px #eee}.loading .__topnav{width:100%;z-index:1000}.loading .tsi-nav{background-color:#fff;color:#eee;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-ms-flex-direction:row;flex-direction:row;height:50px}.loading .__logo{width:60px;background:url(assets/img/logo.svg) no-repeat;background-size:40px}.loading .__logodiv{width:50px;background-color:#404041}.llogo{background:url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDMyIDI1IiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAzMiAyNSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PGc+PHBhdGggZmlsbD0iIzc0QjlCQyIgZD0iTTE2LjAzMywyMy41NjNDMTEuNzc3LDE4LjkzOCw3LjUzOSwxNC4zMSwzLjk4NSw5LjExQzIuNjY5LDcuMTg0LDEuNDI3LDUuMjEyLDAuMjYsMy4xMTVDMC43NSwzLjE2OSwxLjE3MiwzLjIyLDEuNTk0LDMuMjYxQzIuOTcsMy4zOTMsNC4zNDUsMy41MjgsNS43MjMsMy42NDVjMC4yMzQsMC4wMiwwLjMzOCwwLjEyLDAuNDI4LDAuMzJjMi4xMjMsNC43MTIsNS4wOTUsOC44Miw4LjgyOCwxMi4zODRjMS4xODYsMS4xMzIsMi40MTksMi4yMTMsMy43MDcsMy4yMjljMC4yMTYsMC4xNywwLjI1NCwwLjI3MiwwLjA2NSwwLjUwOEMxNy44MzcsMjEuMjI3LDE2Ljk0NywyMi4zODgsMTYuMDMzLDIzLjU2M3oiLz48cGF0aCBmaWxsPSIjNzRCOUJDIiBkPSJNMzEuNzQsMi44ODljLTAuMDAyLDAuMTYzLTAuMDk1LDAuMjQ0LTAuMTU2LDAuMzM4Yy0xLjI2NSwxLjk1Mi0yLjYwNywzLjg1LTMuOTk2LDUuNzE1Yy0wLjEwNiwwLjE0My0wLjIwNSwwLjI1Mi0wLjQxNywwLjI1NWMtNC4yMzYsMC4wNTgtOC4xMTItMS4wMTgtMTEuNTA0LTMuNjNDMTUuMTUxLDUuMTY5LDE0LjY2LDQuNzQxLDE0LjIsNC4yNzljLTAuMDYzLTAuMDYzLTAuMTIxLTAuMTMxLTAuMjM2LTAuMjU0QzE5Ljk2MSw0LjEwMywyNS44NjYsMy43NzUsMzEuNzQsMi44ODl6Ii8+PHBhdGggZmlsbD0iIzc0QjlCQyIgZD0iTTYuNTI2LDMuNzE0YzAuODM0LDAuMDUxLDEuNjU3LDAuMTczLDIuNDcyLDAuMTNjMC43NDgtMC4wMzksMS4wNzYsMC4zMDYsMS40MjMsMC44OTljMS45MTYsMy4yNzksNC42MDIsNS44MTIsNy43NzksNy44NTFjMS4zNTEsMC44NjcsMi43NTIsMS42NDUsNC4xOTksMi4zMzZjMC4zMTIsMC4xNDksMC4zMTEsMC4yNTgsMC4wOTksMC40OTljLTAuMzg0LDAuNDM2LTAuNzQzLDAuODkzLTEuMTAyLDEuMzUxYy0wLjExOCwwLjE1MS0wLjIxNSwwLjE5My0wLjQwNywwLjExMmMtNC4wMzctMS42OS03LjU2OC00LjA5OS0xMC41LTcuMzY0Yy0xLjQ1OC0xLjYyMi0yLjcwMS0zLjQtMy43NDctNS4zMTRDNi42Niw0LjA2NSw2LjU0NSwzLjkyOCw2LjUyNiwzLjcxNHoiLz48cGF0aCBmaWxsPSIjNzRCOUJDIiBkPSJNMTAuMzI5LDQuMDIyYzEuMDM1LDAsMi4wNjgsMC4wMDIsMy4xLTAuMDAyYzAuMTM3LDAsMC4yMDksMC4wODIsMC4yODcsMC4xNjljMy4wNzgsMy40MjQsNy4wMTksNS4yMTQsMTEuNDYyLDYuMDUzYzAuMzk4LDAuMDc1LDAuNzk4LDAuMTQ2LDEuMjQ3LDAuMjI4Yy0wLjUxMSwwLjY1NS0xLjAwMiwxLjI4NC0xLjQ5MywxLjkxM2MtMC4wMjEsMC4wMjctMC4wNTEsMC4wNTEtMC4wNjYsMC4wODFjLTAuMzIzLDAuNjYzLTAuODA2LDAuNjgtMS40NzYsMC41MTJjLTUuMjg3LTEuMzI3LTkuNTg2LTQuMTE0LTEyLjc5NS04LjU0MmMtMC4wODItMC4xMTMtMC4xNTktMC4yMjktMC4yMzYtMC4zNDVDMTAuMzQsNC4wNjEsMTAuMzMxLDQuMDI3LDEwLjMyOSw0LjAyMnoiLz48L2c+PC9zdmc+') center no-repeat;background-size:40px;height:35px;width:50px}.txtr{padding-top:2px;font-size:10px;color:#74B9BC;text-align:center}.loading .circle{height:20px;width:20px;border-radius:50%;background-color:#b3b3b3;position:relative;top:10px;left:22px;margin-top:10px;margin-bottom:26px;-webkit-transition:height .25s ease,width .25s ease;transition:height .25s ease,width .25s ease;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}.loading .circle:after,.loading .circle:before{content:'';display:block;position:absolute;top:0;right:0;bottom:0;left:0;border-radius:00%;border:1px solid #b3b3b3}.loading .circle:before{-webkit-animation:ripple 4s linear infinite;animation:ripple 4s linear infinite}.loading .circle:after{-webkit-animation:ripple 4s linear 1s infinite;animation:ripple 4s linear 1s infinite}@-webkit-keyframes ripple{0%{-webkit-transform:scale(1);transform:scale(1)}75%{-webkit-transform:scale(1.75);transform:scale(1.75);opacity:1}100%{-webkit-transform:scale(2);transform:scale(2);opacity:0}}@keyframes ripple{0%{-webkit-transform:scale(1);transform:scale(1)}75%{-webkit-transform:scale(1.75);transform:scale(1.75);opacity:1}100%{-webkit-transform:scale(2);transform:scale(2);opacity:0}}
-  </style>
-  <script>
-    /* IE(10) FIX */
-    if(navigator.userAgent.match(/IEMobile\/10\.0/)){var msViewportStyle=document.createElement("style");msViewportStyle.appendChild(document.createTextNode("@-ms-viewport{width:auto!important}")),document.querySelector("head").appendChild(msViewportStyle)}
-  </script> 
-</head>
-
-<body>
-  <app-root>
-      <div class="loading">
-          <div class="mask">
-              <span class="mask__gif ng2v-gif-loading"></span>
-              <span class="mask__loading"></span>
-          </div>
-          <div class="tsi-insights">
-              <div class="tsi-insights __topnav">
-                  <div class="tsi-nav">
-                      <div class="tsi-nav __left">
-                          <!-- <span class="tsi-nav __logo"></span> -->
-                          <div class="__logodiv">
-                            <div class="llogo"></div>
-                            <div class="txtr">TTSM</div>
-                          </div>
-                          <div class="tsi-app">
-                              <a routerLink="reports/custom-reports">
-                                  <h3 class="tsi-app __title animated-background"> </h3>
-                                  <!-- <p class="tsi-app __details animated-background "></p> -->
-                              </a>                              
-                          </div>                                                    
-                      </div>                     
-                  </div>
-              </div>
-          </div>
-          <div class="main-sidebar_i">
-              <section>
-                  <div class="sidebar_i">
-                      <ul class="group_i">
-                          <li class="circle"></li>
-                          <li class="circle"></li>
-                          <li class="circle"></li>
-                          <li class="circle"></li>
-                          <li class="circle"></li>
-                      </ul>
-                  </div>
-              </section>
-          </div>
-      </div>
-  </app-root>
-</body>
-
+	<body>
+		<app-root>
+			<div class="loading">
+				<div class="mask">
+					<span class="mask__gif ng2v-gif-loading"></span>
+					<span class="mask__loading"></span>
+				</div>
+				<div class="tsi-insights">
+					<div class="tsi-insights __topnav">
+						<div class="tsi-nav">
+							<div class="tsi-nav __left">
+								<!-- <span class="tsi-nav __logo"></span> -->
+								<div class="__logodiv">
+									<div class="llogo"></div>
+									<div class="txtr">TTSM</div>
+								</div>
+								<div class="tsi-app">
+									<a routerLink="reports/custom-reports">
+										<h3 class="tsi-app __title animated-background"></h3>
+										<!-- <p class="tsi-app __details animated-background "></p> -->
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="main-sidebar_i">
+					<section>
+						<div class="sidebar_i">
+							<ul class="group_i">
+								<li class="circle"></li>
+								<li class="circle"></li>
+								<li class="circle"></li>
+								<li class="circle"></li>
+								<li class="circle"></li>
+							</ul>
+						</div>
+					</section>
+				</div>
+			</div>
+		</app-root>
+	</body>
 </html>

@@ -1,15 +1,21 @@
 <div class="app">
-  <app-headerbar></app-headerbar>
-  <main>
-    <aside>
-      <left-side-menu-select [styles]="{top: '52px', position: 'absolute'}" [type]="'normal'" [assetsPath]="''"
-        [isVarianceNavigation]="true" [isOpen]=false
-        [loadURL]="'/co2emission/api/ttsmconfig?param=side_menu&version=1'" [position]="''">
-      </left-side-menu-select>
-    </aside>
-    <div class="flex column content">
-      <router-outlet></router-outlet>
-    </div>
-  </main>
-  <veraction-loader [loading]="svgLoader" [mask]="mask"></veraction-loader>
+	<app-headerbar></app-headerbar>
+	<main>
+		<aside>
+			<left-side-menu-select
+				[styles]="{ top: '52px', position: 'absolute' }"
+				[type]="'normal'"
+				[assetsPath]="''"
+				[isVarianceNavigation]="true"
+				[isOpen]="false"
+				[loadURL]="'/co2emission/api/ttsmconfig?param=side_menu&version=1'"
+				[position]="''"
+			>
+			</left-side-menu-select>
+		</aside>
+		<div class="flex column content">
+			<router-outlet></router-outlet>
+		</div>
+	</main>
+	<veraction-loader [loading]="svgLoader" [mask]="mask"></veraction-loader>
 </div>

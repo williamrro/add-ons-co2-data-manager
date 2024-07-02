@@ -1,17 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-headerbar',
-  templateUrl: './headerbar.component.html',
-  styleUrls: ['./headerbar.component.scss']
+	selector: 'app-headerbar',
+	templateUrl: './headerbar.component.html',
+	styleUrls: ['./headerbar.component.scss'],
 })
 export class HeaderbarComponent implements OnInit {
+	public rlink: any;
 
-  public rlink:any;
-  
-  constructor() { }
+	constructor() {}
 
-  ngOnInit() {
-  }
-
+	ngOnInit() {}
 }
