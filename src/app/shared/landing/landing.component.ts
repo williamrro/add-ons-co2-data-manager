@@ -1,5 +1,7 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ISubscription } from 'rxjs/Subscription';
+import { AuthGuard } from '../../guards/auth.guard';
 
 @Component({
 	selector: 'app-landing',
@@ -9,12 +11,34 @@ import { Router } from '@angular/router';
 export class LandingComponent implements OnInit {
 	@HostBinding('class') class = 'autoFlexColumn';
 
-	constructor(private router: Router) {}
+	hasFpsAccess: boolean = true;
+	fpsAccessSub$: ISubscription;
 
-	ngOnInit() {}
+	hasT4Access: boolean = true;
+	t4AccessSub$: ISubscription;
+
+	constructor(private router: Router, private authGuard: AuthGuard) {}
+
+	ngOnInit() {
+		this.fpsAccessSub$ = this.authGuard.checkFpsAccess.subscribe((val: boolean) => {
+			this.hasFpsAccess = val;
+		});
+		this.t4AccessSub$ = this.authGuard.checkT4Access.subscribe((val: boolean) => {
+			this.hasT4Access = val;
+		});
+	}
 
 	onNavigate(isFps: boolean) {
 		if (isFps) this.router.navigateByUrl('/fps');
 		else this.router.navigateByUrl('/t4');
+	}
+
+	ngOnDestroy() {
+		if (this.fpsAccessSub$) {
+			this.fpsAccessSub$.unsubscribe();
+		}
+		if (this.t4AccessSub$) {
+			this.t4AccessSub$.unsubscribe();
+		}
 	}
 }

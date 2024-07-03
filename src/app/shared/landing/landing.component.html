@@ -1,26 +1,31 @@
 <div class="container autoFlexColumn">
-	<div class="title">Select An Application</div>
-	<div class="selector">
-		<div class="selector--item">
-			<div class="selector--item__title">FPS CO2 Application</div>
-			<div class="selector--item__image">
-				<img width="280px" height="280px" src="assets/img/fps-application.svg" alt="FPS Application" />
+	<div class="title error" *ngIf="!(hasFpsAccess || hasT4Access)">
+		You don't have access to view the FPS or T4 application
+	</div>
+	<div class="applicationContainer autoFlexColumn" *ngIf="hasFpsAccess || hasT4Access">
+		<div class="title">Select An Application</div>
+		<div class="selector">
+			<div class="selector--item" *ngIf="hasFpsAccess">
+				<div class="selector--item__title">FPS CO2 Application</div>
+				<div class="selector--item__image">
+					<img width="280px" height="280px" src="assets/img/fps-application.svg" alt="FPS Application" />
+				</div>
+				<div class="selector--item__button">
+					<button tabindex="0" class="actionButton actionButton__green" (click)="onNavigate(true)">
+						<span class="text">Select</span>
+					</button>
+				</div>
 			</div>
-			<div class="selector--item__button">
-				<button tabindex="0" class="actionButton actionButton__green" (click)="onNavigate(true)">
-					<span class="text">Select</span>
-				</button>
-			</div>
-		</div>
-		<div class="selector--item">
-			<div class="selector--item__title">T4 CO2 Application</div>
-			<div class="selector--item__image">
-				<img width="280px" height="280px" src="assets/img/t4-application.svg" alt="T4 Application" />
-			</div>
-			<div class="selector--item__button">
-				<button tabindex="0" class="actionButton actionButton__green" (click)="onNavigate(false)">
-					<span class="text">Select</span>
-				</button>
+			<div class="selector--item" *ngIf="hasT4Access">
+				<div class="selector--item__title">T4 CO2 Application</div>
+				<div class="selector--item__image">
+					<img width="280px" height="280px" src="assets/img/t4-application.svg" alt="T4 Application" />
+				</div>
+				<div class="selector--item__button">
+					<button tabindex="0" class="actionButton actionButton__green" (click)="onNavigate(false)">
+						<span class="text">Select</span>
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>

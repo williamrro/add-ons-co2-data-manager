@@ -7,6 +7,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { HttpInterceptorProviders } from './shared/http-custom-interceptor/index';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
+import { AuthGuard } from './guards/auth.guard';
 import { AppService } from './app.service';
 import { Broadcaster } from './shared/broadcaster';
 import { SidebarModule } from '@trax/sidebar';
@@ -34,7 +35,7 @@ import { LandingComponent } from './shared/landing/landing.component';
 		RlTagInputModule,
 		CommonModule,
 	],
-	providers: [HttpInterceptorProviders, HttpClient, Broadcaster, AppService],
+	providers: [HttpInterceptorProviders, HttpClient, Broadcaster, AppService, AuthGuard],
 	bootstrap: [AppComponent],
 })
 export class AppModule {}

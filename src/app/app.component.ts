@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AppService } from './app.service';
+import { AuthGuard } from './guards/auth.guard';
 import { Broadcaster } from './shared/broadcaster';
 
 @Component({
@@ -16,7 +16,7 @@ export class AppComponent {
 	private svgloaderB: any;
 	private maskloaderB: any;
 
-	constructor(private appService: AppService, private broadcaster: Broadcaster) {}
+	constructor(private authGuard: AuthGuard, private broadcaster: Broadcaster) {}
 
 	ngOnInit() {
 		this.svgloaderB = this.broadcaster.on<string>('svgLoader').subscribe((isVisible: any) => {
@@ -25,6 +25,10 @@ export class AppComponent {
 		this.maskloaderB = this.broadcaster.on<boolean>('mask').subscribe((isMask: boolean) => {
 			this.mask = isMask;
 		});
+
+		// // In case of authentication for FPS and T4 applications, use below code to set access
+		// this.authGuard.setFpsAccess(true);
+		// this.authGuard.setT4Access(false);
 	}
 
 	ngOnDestroy() {
