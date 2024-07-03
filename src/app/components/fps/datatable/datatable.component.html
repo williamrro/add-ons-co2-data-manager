@@ -3,26 +3,20 @@
 		<div class="criteriaSection">
 			<form [formGroup]="myForm">
 				<div style="display: grid">
-					<div style="padding: 0 15px">
-						<span style="float: right; color: black; cursor: pointer" (click)="onReset()">Reset</span>
-						<img
-							src="assets/img/refresh.svg"
-							style="
-								width: 11px;
-								position: relative;
-								top: 1px;
-								left: -3px;
-								float: right;
-								cursor: pointer;
-								padding-top: 4px;
-							"
-							(click)="onReset()"
-						/>
-						<!-- <i class="fa fa-refresh" style="float: right;  cursor: pointer;  padding-top: 4px;
-                float: right;
-                padding-right: 5px;  
-                font-size: 15px; 
-                color: black;" (click)="onReset()"></i> -->
+					<div class="buttonsContainer">
+						<button tabindex="0" class="actionButton actionButton__green" (click)="onNavigate()">
+							<span class="text">Switch to T4 Application</span>
+						</button>
+						<div class="resetContainer">
+							<img
+								width="11px"
+								height="11px"
+								src="assets/img/refresh.svg"
+								class="resetContainer--icon"
+								(click)="onReset()"
+							/>
+							<span class="resetContainer--text" (click)="onReset()">Reset</span>
+						</div>
 					</div>
 					<div
 						class="input-wrapper mb-20"

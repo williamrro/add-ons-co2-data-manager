@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppService } from '../../../app.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-datatable',
@@ -34,7 +35,7 @@ export class DTComponent implements OnInit {
 	plafForm = ['FPS', 'TTSM'];
 	shipDate = ['Last 7 days', 'Last 30 days', 'Last 60 days', 'Last 90 days'];
 
-	constructor(private appSerice: AppService, private fb: FormBuilder) {}
+	constructor(private appSerice: AppService, private fb: FormBuilder, private router: Router) {}
 	ngOnInit() {
 		this.tableOptions = {
 			isColumnFilterEnable: true,
@@ -986,5 +987,9 @@ export class DTComponent implements OnInit {
 				this.preventFilterScrool = true;
 			}
 		});
+	}
+
+	onNavigate() {
+		this.router.navigateByUrl('co2_t4_summary');
 	}
 }
