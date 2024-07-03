@@ -36,6 +36,10 @@ app-datatable {
 		padding: 0 15px;
 		margin-bottom: 20px;
 
+		&.noButton {
+			justify-content: end;
+		}
+
 		.resetContainer {
 			display: flex;
 			align-items: center;

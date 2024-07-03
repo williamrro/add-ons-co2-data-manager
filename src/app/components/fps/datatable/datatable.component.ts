@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthGuard } from '../../../guards/auth.guard';
 import { AppService } from '../../../app.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
 	selector: 'app-datatable',
@@ -35,8 +37,20 @@ export class DTComponent implements OnInit {
 	plafForm = ['FPS', 'TTSM'];
 	shipDate = ['Last 7 days', 'Last 30 days', 'Last 60 days', 'Last 90 days'];
 
-	constructor(private appSerice: AppService, private fb: FormBuilder, private router: Router) {}
+	hasT4Access: boolean = false;
+	accessInfoSub$: ISubscription;
+
+	constructor(
+		private authGuard: AuthGuard,
+		private appSerice: AppService,
+		private fb: FormBuilder,
+		private router: Router
+	) {}
 	ngOnInit() {
+		this.accessInfoSub$ = this.authGuard.getAccessInfo.subscribe((info: any) => {
+			this.hasT4Access = info && info.t4Access === true;
+		});
+
 		this.tableOptions = {
 			isColumnFilterEnable: true,
 			isColumnManagerEnable: true,
@@ -991,5 +1005,11 @@ export class DTComponent implements OnInit {
 
 	onNavigate() {
 		this.router.navigateByUrl('/t4');
+	}
+
+	ngOnDestroy() {
+		if (this.accessInfoSub$) {
+			this.accessInfoSub$.unsubscribe();
+		}
 	}
 }

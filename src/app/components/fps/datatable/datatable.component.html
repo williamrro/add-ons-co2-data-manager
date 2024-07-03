@@ -3,8 +3,8 @@
 		<div class="criteriaSection">
 			<form [formGroup]="myForm">
 				<div style="display: grid">
-					<div class="buttonsContainer">
-						<button tabindex="0" class="actionButton actionButton__green" (click)="onNavigate()">
+					<div class="buttonsContainer" [class.noButton]="!hasT4Access">
+						<button tabindex="0" *ngIf="hasT4Access" class="actionButton actionButton__green" (click)="onNavigate()">
 							<span class="text">Switch to T4 Application</span>
 						</button>
 						<div class="resetContainer">
