@@ -7,27 +7,20 @@ import { Observable } from 'rxjs/Observable';
 export class AuthGuard implements CanActivate, CanLoad {
 	constructor(private router: Router) {}
 
-	private hasFpsAccess: boolean = true;
-	private fpsSource = new BehaviorSubject<any>(this.hasFpsAccess);
-	checkFpsAccess = this.fpsSource.asObservable();
-
-	private hasT4Access: boolean = true;
-	private t4Source = new BehaviorSubject<any>(this.hasT4Access);
-	checkT4Access = this.t4Source.asObservable();
+	private accessInfo: any = { fpsAccess: <boolean>true, t4Access: <boolean>true };
+	private accessInfoSource = new BehaviorSubject<any>(this.accessInfo);
+	getAccessInfo = this.accessInfoSource.asObservable();
 
 	checkAccess(routeConfig: Route) {
 		const { path = '' } = routeConfig || {};
-		const { hasFpsAccess, hasT4Access } = this;
+		const { fpsAccess, t4Access } = this.accessInfo;
 
-		if ((path === 'fps' && hasFpsAccess) || (path === 't4' && hasT4Access)) return true;
+		if ((path === 'fps' && fpsAccess) || (path === 't4' && t4Access)) return true;
 		this.router.navigateByUrl('/application');
 		return false;
 	}
 
-	canActivate(
-		next: ActivatedRouteSnapshot,
-		state: RouterStateSnapshot
-	): Observable<boolean> | Promise<boolean> | boolean {
+	canActivate(next: ActivatedRouteSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 		return this.checkAccess(next ? next.routeConfig : {});
 	}
 
@@ -35,13 +28,8 @@ export class AuthGuard implements CanActivate, CanLoad {
 		return this.checkAccess(routeConfig);
 	}
 
-	setFpsAccess(val: boolean) {
-		this.hasFpsAccess = val;
-		this.fpsSource.next(val);
-	}
-
-	setT4Access(val: boolean) {
-		this.hasT4Access = val;
-		this.t4Source.next(val);
+	setAccessInfo(fpsAccess: boolean, t4Access: boolean) {
+		this.accessInfo = { fpsAccess, t4Access };
+		this.accessInfoSource.next({ fpsAccess, t4Access });
 	}
 }

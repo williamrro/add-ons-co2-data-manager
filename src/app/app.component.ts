@@ -26,9 +26,8 @@ export class AppComponent {
 			this.mask = isMask;
 		});
 
-		// // In case of authentication for FPS and T4 applications, use below code to set access
-		// this.authGuard.setFpsAccess(true);
-		// this.authGuard.setT4Access(false);
+		// In case of authentication for FPS and T4 applications, use below code to set access (first param for FPS and second for T4)
+		// this.authGuard.setAccessInfo(true, false);
 	}
 
 	ngOnDestroy() {
