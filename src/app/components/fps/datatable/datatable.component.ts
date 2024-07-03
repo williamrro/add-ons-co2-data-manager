@@ -990,6 +990,6 @@ export class DTComponent implements OnInit {
 	}
 
 	onNavigate() {
-		this.router.navigateByUrl('co2_t4_summary');
+		this.router.navigateByUrl('/t4');
 	}
 }

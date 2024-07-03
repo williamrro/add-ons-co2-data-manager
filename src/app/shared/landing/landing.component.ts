@@ -14,7 +14,7 @@ export class LandingComponent implements OnInit {
 	ngOnInit() {}
 
 	onNavigate(isFps: boolean) {
-		if (isFps) this.router.navigateByUrl('/co2_fps_dashboard');
-		else this.router.navigateByUrl('/co2_t4_summary');
+		if (isFps) this.router.navigateByUrl('/fps');
+		else this.router.navigateByUrl('/t4');
 	}
 }

@@ -12,17 +12,15 @@ import { Broadcaster } from './shared/broadcaster';
 import { SidebarModule } from '@trax/sidebar';
 import { HeaderbarComponent } from './shared/headerbar/headerbar.component';
 import { LoaderComponent } from './shared/loader/loader.component';
-import { DTComponent } from './components/fps/datatable/datatable.component';
 import { DataTableModule } from '@trax/datatable';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RlTagInputModule } from 'angular2-tag-input';
 import { CommonModule } from '@angular/common';
 import { LandingComponent } from './shared/landing/landing.component';
-import { SummaryComponent } from './components/t4/summary/summary.component';
 
 @NgModule({
-	declarations: [AppComponent, HeaderbarComponent, LoaderComponent, DTComponent, LandingComponent, SummaryComponent],
+	declarations: [AppComponent, HeaderbarComponent, LoaderComponent, LandingComponent],
 	imports: [
 		BrowserAnimationsModule,
 		BrowserModule,
