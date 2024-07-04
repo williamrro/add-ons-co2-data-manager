@@ -3,5 +3,31 @@
 	<div class="appHeader--title">
 		<span class="appHeader--title__name">CO2 Manager</span>
 	</div>
-	<nav class="appHeader--navlinks"></nav>
+	<nav class="appHeader--navLinks">
+		<ul class="appHeader--navLinks__group" *ngIf="isT4User">
+			<li class="navLinkItem">
+				<a class="navLink" routerLink="/t4/summary" routerLinkActive="active" ariaCurrentWhenActive="page">
+					Executive Summary
+				</a>
+			</li>
+			<li class="navLinkItem">
+				<a class="navLink" routerLink="/t4/detail" routerLinkActive="active" ariaCurrentWhenActive="page">Detail</a>
+			</li>
+			<li class="navLinkItem">
+				<a class="navLink" routerLink="/t4/intensity" routerLinkActive="active" ariaCurrentWhenActive="page">
+					Intensity
+				</a>
+			</li>
+			<li class="navLinkItem">
+				<a class="navLink" routerLink="/t4/total" routerLinkActive="active" ariaCurrentWhenActive="page">
+					Total Emissions by Carrier
+				</a>
+			</li>
+			<li class="navLinkItem">
+				<a class="navLink" routerLink="/t4/exceptions" routerLinkActive="active" ariaCurrentWhenActive="page">
+					Exceptions
+				</a>
+			</li>
+		</ul>
+	</nav>
 </header>
