@@ -33,4 +33,8 @@ export class AppService {
 	normalize(obj) {
 		return this.http.post(this.BASE_URL + 'co2emission/api/v1/normalizeCo2EmissionByFbids', obj);
 	}
+
+	getCurrentFilters() {
+		return this.http.get('/assets/filters.json');
+	}
 }

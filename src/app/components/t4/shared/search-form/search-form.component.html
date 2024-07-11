@@ -1,0 +1,31 @@
+<div class="searchContainer">
+	<form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+		<div class="searchForm">
+			<div class="searchForm--item" *ngFor="let filter of filtersList">
+				<div class="searchForm--item__label" [class.required]="filter.required">{{ filter.value }}</div>
+				<div class="searchForm--item__control">
+					<angular2-multiselect
+						[data]="filterValues"
+						formControlName="{{ filter.key }}"
+						[settings]="filter.multiSelect ? MULTI_SELECT_SETTINGS : SINGLE_SELECT_SETTINGS"
+						(onOpen)="onFilterOpen(filter.key)"
+					></angular2-multiselect>
+				</div>
+			</div>
+		</div>
+		<div class="buttonContainer">
+			<button tabindex="0" class="actionButton actionButton__green" (click)="onNavigate()">
+				<span class="text">Switch to FPS Application</span>
+			</button>
+			<button tabindex="0" class="actionButton actionButton__green">
+				<span class="icon">
+					<img width="16px" height="16px" src="assets/img/t4-refresh.svg" alt="Reset Search Form" />
+				</span>
+				<span class="text">Refresh</span>
+			</button>
+			<button tabindex="0" class="actionButton actionButton__greenBorder" type="submit">
+				<span class="text">Go</span>
+			</button>
+		</div>
+	</form>
+</div>

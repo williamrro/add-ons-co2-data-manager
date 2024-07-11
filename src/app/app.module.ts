@@ -9,13 +9,15 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { AuthGuard } from './guards/auth.guard';
 import { AppService } from './app.service';
+import { UtilService } from './services/util.service';
 import { Broadcaster } from './shared/broadcaster';
 import { SidebarModule } from '@trax/sidebar';
 import { HeaderbarComponent } from './shared/headerbar/headerbar.component';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { DataTableModule } from '@trax/datatable';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { ReactiveFormsModule } from '@angular/forms';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RlTagInputModule } from 'angular2-tag-input';
 import { CommonModule } from '@angular/common';
 import { LandingComponent } from './shared/landing/landing.component';
@@ -31,11 +33,13 @@ import { LandingComponent } from './shared/landing/landing.component';
 		SidebarModule,
 		DataTableModule,
 		NgSelectModule,
+		AngularMultiSelectModule,
+		FormsModule,
 		ReactiveFormsModule,
 		RlTagInputModule,
 		CommonModule,
 	],
-	providers: [HttpInterceptorProviders, HttpClient, Broadcaster, AppService, AuthGuard],
+	providers: [HttpInterceptorProviders, HttpClient, Broadcaster, AppService, UtilService, AuthGuard],
 	bootstrap: [AppComponent],
 })
 export class AppModule {}

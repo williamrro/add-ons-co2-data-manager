@@ -1,0 +1,62 @@
+[
+	{
+		"value": "Show By",
+		"key": "show_by",
+		"required": true,
+		"multiSelect": false
+	},
+	{
+		"value": "Intensity Measure",
+		"key": "intensity_measure",
+		"required": true,
+		"multiSelect": true
+	},
+	{
+		"value": "Month Year",
+		"key": "month_year",
+		"required": true,
+		"multiSelect": true
+	},
+	{
+		"value": "Mode",
+		"key": "mode",
+		"required": false,
+		"multiSelect": true
+	},
+	{
+		"value": "Carrier Name",
+		"key": "carrier_name",
+		"required": false,
+		"multiSelect": true
+	},
+	{
+		"value": "Service Level",
+		"key": "service_level",
+		"required": false,
+		"multiSelect": true
+	},
+	{
+		"value": "Origin Country",
+		"key": "origin_country",
+		"required": false,
+		"multiSelect": true
+	},
+	{
+		"value": "Destination Country",
+		"key": "destination_country",
+		"required": false,
+		"multiSelect": true
+	},
+	{
+		"value": "Origin City",
+		"key": "origin_city",
+		"required": false,
+		"multiSelect": true
+	},
+	{
+		"value": "Destination City",
+		"key": "destination_city",
+		"required": false,
+		"multiSelect": true
+	}
+]
