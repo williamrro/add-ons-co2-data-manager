@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
+import { ISubscription } from 'rxjs/Subscription';
+import { AuthGuard } from '../../../../guards/auth.guard';
 import { AppService } from '../../../../app.service';
 import { UtilService } from '../../../../services/util.service';
 
@@ -11,6 +13,8 @@ import { UtilService } from '../../../../services/util.service';
 	styleUrls: ['./search-form.component.scss'],
 })
 export class SearchFormComponent implements OnInit {
+	@HostBinding('class') class = 'autoFlexColumn';
+
 	MULTI_SELECT_SETTINGS = {
 		singleSelection: false,
 		text: 'Select Values',
@@ -21,46 +25,60 @@ export class SearchFormComponent implements OnInit {
 	};
 	SINGLE_SELECT_SETTINGS = { ...this.MULTI_SELECT_SETTINGS, singleSelection: true };
 
+	CLIENT_CODE_FILTER_KEY: string = 'client_code';
 	REQ_PAYLOAD: any = { platform: 'T4' };
-
 	PREDEFINED_FILTERS: any = [
 		{
-			value: 'Client Code',
-			key: 'client_code',
-			required: true,
-			multiSelect: false,
+			label: 'Client Code',
+			key: this.CLIENT_CODE_FILTER_KEY,
+			singleSelect: true,
 		},
 	];
 
-	filtersList: any[] = [];
+	hasFpsAccess: boolean = false;
+	accessInfoSub$: ISubscription;
+
+	standardFiltersList: any[] = [];
+	customFiltersList: any[] = [];
 	filterValues: any[] = [];
 
 	searchForm: FormGroup = new FormGroup({});
 
-	constructor(private router: Router, private appService: AppService, private utilService: UtilService) {}
+	constructor(
+		private router: Router,
+		private authGuard: AuthGuard,
+		private appService: AppService,
+		private utilService: UtilService
+	) {}
 
 	ngOnInit() {
-		this.fetchCurrentFilters();
+		this.accessInfoSub$ = this.authGuard.getAccessInfo.subscribe((info: any) => {
+			this.hasFpsAccess = info && info.fpsAccess === true;
+		});
+
+		this.fetchFiltersToDisplay();
 	}
 
-	fetchCurrentFilters() {
+	fetchFiltersToDisplay() {
 		this.appService
-			.getCurrentFilters()
+			.getFiltersToDisplay()
 			.pipe(
 				finalize(() => {
 					this.initializeForm();
 				})
 			)
 			.subscribe((res: any) => {
-				if (res && res.length > 0) {
-					this.filtersList = [...this.PREDEFINED_FILTERS, ...res];
-				}
+				const { standardFilters = [], customFilters = [] } = res || {};
+				this.standardFiltersList = [...this.PREDEFINED_FILTERS, ...standardFilters];
+				this.customFiltersList = customFilters;
 			});
 	}
 
 	initializeForm() {
+		const { standardFiltersList, customFiltersList } = this;
+
 		const searchFormGroup: any = {};
-		this.filtersList.forEach((item: any) => {
+		[...standardFiltersList, ...customFiltersList].forEach((item: any) => {
 			searchFormGroup[item.key] = new FormControl('');
 		});
 		this.searchForm = new FormGroup(searchFormGroup);
@@ -69,7 +87,7 @@ export class SearchFormComponent implements OnInit {
 	onFilterOpen(filterKey: any) {
 		this.filterValues = [];
 
-		if (filterKey === 'client_code') this.fetchClientFilterValue();
+		if (filterKey === this.CLIENT_CODE_FILTER_KEY) this.fetchClientFilterValue();
 		else this.fetchFilterValues(filterKey);
 	}
 
@@ -91,7 +109,17 @@ export class SearchFormComponent implements OnInit {
 		this.router.navigateByUrl('/fps');
 	}
 
+	onReset() {}
+
+	onManageFilters() {}
+
 	onSearch() {
 		console.log(this.utilService.formatT4SearchPayload(this.searchForm.value));
+	}
+
+	ngOnDestroy() {
+		if (this.accessInfoSub$) {
+			this.accessInfoSub$.unsubscribe();
+		}
 	}
 }

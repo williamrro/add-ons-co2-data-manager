@@ -962,6 +962,40 @@ timepicker {
 	height: 100%;
 }
 
+/* region Layout*/
+.criteriaSection {
+	padding-top: 25px;
+	width: 28%;
+	background-color: #e6ebed;
+	height: 500px;
+
+	.buttonsContainer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0 15px;
+		margin-bottom: 20px;
+
+		&.noButton {
+			justify-content: end;
+		}
+	}
+
+	.formIconContainer {
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+
+		&--text {
+			margin-left: 8px;
+			color: black;
+			font-size: 14px;
+			font-weight: 400;
+		}
+	}
+}
+/*#endregion */
+
 /*#region Button*/
 .iconButton {
 	border: none;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 
 @Component({
 	selector: 'app-t4',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
 	styleUrls: ['./t4.component.scss'],
 })
 export class T4Component implements OnInit {
+	@HostBinding('class') class = 'autoFlexColumn';
+
 	constructor() {}
 
 	ngOnInit() {}

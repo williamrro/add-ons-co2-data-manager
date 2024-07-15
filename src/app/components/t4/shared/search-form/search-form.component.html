@@ -1,30 +1,67 @@
 <div class="searchContainer">
-	<form [formGroup]="searchForm" (ngSubmit)="onSearch()">
-		<div class="searchForm">
-			<div class="searchForm--item" *ngFor="let filter of filtersList">
-				<div class="searchForm--item__label" [class.required]="filter.required">{{ filter.value }}</div>
-				<div class="searchForm--item__control">
-					<angular2-multiselect
-						[data]="filterValues"
-						formControlName="{{ filter.key }}"
-						[settings]="filter.multiSelect ? MULTI_SELECT_SETTINGS : SINGLE_SELECT_SETTINGS"
-						(onOpen)="onFilterOpen(filter.key)"
-					></angular2-multiselect>
+	<div class="buttonsContainer" [class.noButton]="!hasFpsAccess">
+		<button tabindex="0" *ngIf="hasFpsAccess" class="actionButton actionButton__green" (click)="onNavigate()">
+			<span class="text">Switch to FPS Application</span>
+		</button>
+		<div class="formIconContainer">
+			<img
+				width="11px"
+				height="11px"
+				src="assets/img/refresh.svg"
+				class="formIconContainer--icon"
+				(click)="onReset()"
+			/>
+			<span class="formIconContainer--text" (click)="onReset()">Reset</span>
+		</div>
+	</div>
+	<form [formGroup]="searchForm" class="searchForm" (ngSubmit)="onSearch()">
+		<div class="searchFormGroup">
+			<div class="searchFormTitle">Standard Filters</div>
+			<div class="searchFormBody" *ngIf="standardFiltersList.length > 0">
+				<div class="searchFormBody--item" *ngFor="let filter of standardFiltersList">
+					<div class="searchFormBody--item__label">{{ filter.label }}</div>
+					<div class="searchFormBody--item__control">
+						<angular2-multiselect
+							[data]="filterValues"
+							formControlName="{{ filter.key }}"
+							[settings]="filter.singleSelect ? SINGLE_SELECT_SETTINGS : MULTI_SELECT_SETTINGS"
+							(onOpen)="onFilterOpen(filter.key)"
+						></angular2-multiselect>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="buttonContainer">
-			<button tabindex="0" class="actionButton actionButton__green" (click)="onNavigate()">
-				<span class="text">Switch to FPS Application</span>
-			</button>
-			<button tabindex="0" class="actionButton actionButton__green">
-				<span class="icon">
-					<img width="16px" height="16px" src="assets/img/t4-refresh.svg" alt="Reset Search Form" />
-				</span>
-				<span class="text">Refresh</span>
-			</button>
-			<button tabindex="0" class="actionButton actionButton__greenBorder" type="submit">
-				<span class="text">Go</span>
+		<div class="searchFormGroup">
+			<div class="searchFormTitle">
+				Custom Filters
+				<div class="formIconContainer">
+					<img
+						width="16px"
+						height="16px"
+						src="assets/img/settings.svg"
+						class="formIconContainer--icon"
+						(click)="onManageFilters()"
+					/>
+					<span class="formIconContainer--text" (click)="onManageFilters()">Manage Filters</span>
+				</div>
+			</div>
+			<div class="searchFormBody" *ngIf="customFiltersList.length > 0">
+				<div class="searchFormBody--item" *ngFor="let filter of customFiltersList">
+					<div class="searchFormBody--item__label">{{ filter.label }}</div>
+					<div class="searchFormBody--item__control">
+						<angular2-multiselect
+							[data]="filterValues"
+							formControlName="{{ filter.key }}"
+							[settings]="filter.singleSelect ? SINGLE_SELECT_SETTINGS : MULTI_SELECT_SETTINGS"
+							(onOpen)="onFilterOpen(filter.key)"
+						></angular2-multiselect>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="formButton">
+			<button tabindex="0" class="actionButton actionButton__green" type="submit">
+				<span class="text">Search</span>
 			</button>
 		</div>
 	</form>

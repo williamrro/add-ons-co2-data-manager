@@ -1,0 +1,83 @@
+{
+	"standardFilters": [
+		{
+			"label": "Show By",
+			"key": "show_by",
+			"singleSelect": true
+		},
+		{
+			"label": "Intensity Measure",
+			"key": "intensity_measure"
+		},
+		{
+			"label": "Month Year",
+			"key": "month_year"
+		},
+		{
+			"label": "Mode",
+			"key": "mode"
+		},
+		{
+			"label": "Carrier Name",
+			"key": "carrier_name"
+		},
+		{
+			"label": "Service Level",
+			"key": "service_level"
+		},
+		{
+			"label": "Origin Country",
+			"key": "origin_country"
+		},
+		{
+			"label": "Destination Country",
+			"key": "destination_country"
+		},
+		{
+			"label": "Origin City",
+			"key": "origin_city"
+		},
+		{
+			"label": "Destination City",
+			"key": "destination_city"
+		}
+	],
+	"customFilters": [
+		{
+			"label": "Custom Attr 1",
+			"key": "custom_attr_1"
+		},
+		{
+			"label": "Custom Attr 2",
+			"key": "custom_attr_2"
+		},
+		{
+			"label": "Custom Attr 3",
+			"key": "custom_attr_3"
+		},
+		{
+			"label": "Custom Attr 4",
+			"key": "custom_attr_4"
+		},
+		{
+			"label": "Custom Attr 5",
+			"key": "custom_attr_5"
+		},
+		{
+			"label": "Custom Attr 6",
+			"key": "custom_attr_6"
+		},
+		{
+			"label": "Custom Attr 7",
+			"key": "custom_attr_7"
+		},
+		{
+			"label": "Custom Attr 8",
+			"key": "custom_attr_8"
+		},
+		{
+			"label": "Custom Attr 9",
+			"key": "custom_attr_9"
+		}
+	]
+}
