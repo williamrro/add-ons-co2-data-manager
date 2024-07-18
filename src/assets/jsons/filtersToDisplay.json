@@ -1,6 +1,11 @@
 {
 	"standardFilters": [
 		{
+			"label": "Client Code",
+			"key": "client_code",
+			"singleSelect": true
+		},
+		{
 			"label": "Show By",
 			"key": "show_by",
 			"singleSelect": true

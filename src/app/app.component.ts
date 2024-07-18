@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { AuthGuard } from './guards/auth.guard';
-import { Broadcaster } from './shared/broadcaster';
 import { ISubscription } from 'rxjs/Subscription';
+import { Broadcaster } from './shared/broadcaster';
+import { SearchService } from './services/search.service';
+import { AuthGuard } from './guards/auth.guard';
 
 @Component({
 	selector: 'app-root',
@@ -21,7 +22,12 @@ export class AppComponent {
 	isT4User: boolean = false;
 	routerSub$: ISubscription;
 
-	constructor(private router: Router, private authGuard: AuthGuard, private broadcaster: Broadcaster) {}
+	constructor(
+		private router: Router,
+		private searchService: SearchService,
+		private authGuard: AuthGuard,
+		private broadcaster: Broadcaster
+	) {}
 
 	ngOnInit() {
 		this.svgloaderB = this.broadcaster.on<string>('svgLoader').subscribe((isVisible: any) => {
@@ -34,7 +40,9 @@ export class AppComponent {
 			.filter((event) => event instanceof NavigationEnd)
 			.subscribe((route: any) => {
 				const { url = '' } = route || {};
-				this.isT4User = url.includes('/t4');
+				const isT4Route = url.includes('/t4');
+				this.isT4User = isT4Route;
+				if (isT4Route) this.searchService.setCurrentT4Tab(/[^/]*$/.exec(url)[0]);
 			});
 
 		// In case of authentication for FPS and T4 applications, use below code to set access (first param for FPS and second for T4)

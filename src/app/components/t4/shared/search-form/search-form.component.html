@@ -18,17 +18,19 @@
 		<div class="searchFormGroup">
 			<div class="searchFormTitle">Standard Filters</div>
 			<div class="searchFormBody" *ngIf="standardFiltersList.length > 0">
-				<div class="searchFormBody--item" *ngFor="let filter of standardFiltersList">
-					<div class="searchFormBody--item__label">{{ filter.label }}</div>
-					<div class="searchFormBody--item__control">
-						<angular2-multiselect
-							[data]="filterValues"
-							formControlName="{{ filter.key }}"
-							[settings]="filter.singleSelect ? SINGLE_SELECT_SETTINGS : MULTI_SELECT_SETTINGS"
-							(onOpen)="onFilterOpen(filter.key)"
-						></angular2-multiselect>
+				<ng-container *ngFor="let filter of standardFiltersList">
+					<div class="searchFormBody--item" *ngIf="!(!isIntensityTab && filter.key === INTENSITY_FILTER_KEY)">
+						<div class="searchFormBody--item__label">{{ filter.label }}</div>
+						<div class="searchFormBody--item__control">
+							<angular2-multiselect
+								[data]="filterValues"
+								formControlName="{{ filter.key }}"
+								[settings]="filter.singleSelect ? SINGLE_SELECT_SETTINGS : MULTI_SELECT_SETTINGS"
+								(onOpen)="onFilterOpen(filter.key)"
+							></angular2-multiselect>
+						</div>
 					</div>
-				</div>
+				</ng-container>
 			</div>
 		</div>
 		<div class="searchFormGroup">

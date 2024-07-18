@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app.routing';
 import { AuthGuard } from './guards/auth.guard';
 import { AppService } from './app.service';
 import { UtilService } from './services/util.service';
+import { SearchService } from './services/search.service';
 import { Broadcaster } from './shared/broadcaster';
 import { SidebarModule } from '@trax/sidebar';
 import { HeaderbarComponent } from './shared/headerbar/headerbar.component';
@@ -39,7 +40,7 @@ import { LandingComponent } from './shared/landing/landing.component';
 		RlTagInputModule,
 		CommonModule,
 	],
-	providers: [HttpInterceptorProviders, HttpClient, Broadcaster, AppService, UtilService, AuthGuard],
+	providers: [HttpInterceptorProviders, HttpClient, Broadcaster, AppService, UtilService, SearchService, AuthGuard],
 	bootstrap: [AppComponent],
 })
 export class AppModule {}

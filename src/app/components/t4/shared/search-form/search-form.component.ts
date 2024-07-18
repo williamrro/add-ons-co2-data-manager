@@ -6,6 +6,7 @@ import { ISubscription } from 'rxjs/Subscription';
 import { AuthGuard } from '../../../../guards/auth.guard';
 import { AppService } from '../../../../app.service';
 import { UtilService } from '../../../../services/util.service';
+import { SearchService } from '../../../../services/search.service';
 
 @Component({
 	selector: 'app-search-form',
@@ -25,18 +26,17 @@ export class SearchFormComponent implements OnInit {
 	};
 	SINGLE_SELECT_SETTINGS = { ...this.MULTI_SELECT_SETTINGS, singleSelection: true };
 
+	INTENSITY_TAB: string = 'intensity';
 	CLIENT_CODE_FILTER_KEY: string = 'client_code';
+	INTENSITY_FILTER_KEY: string = 'intensity_measure';
+
 	REQ_PAYLOAD: any = { platform: 'T4' };
-	PREDEFINED_FILTERS: any = [
-		{
-			label: 'Client Code',
-			key: this.CLIENT_CODE_FILTER_KEY,
-			singleSelect: true,
-		},
-	];
 
 	hasFpsAccess: boolean = false;
 	accessInfoSub$: ISubscription;
+
+	isIntensityTab: boolean = false;
+	tabChangeSub$: ISubscription;
 
 	standardFiltersList: any[] = [];
 	customFiltersList: any[] = [];
@@ -48,12 +48,17 @@ export class SearchFormComponent implements OnInit {
 		private router: Router,
 		private authGuard: AuthGuard,
 		private appService: AppService,
+		private searchService: SearchService,
 		private utilService: UtilService
 	) {}
 
 	ngOnInit() {
 		this.accessInfoSub$ = this.authGuard.getAccessInfo.subscribe((info: any) => {
 			this.hasFpsAccess = info && info.fpsAccess === true;
+		});
+
+		this.tabChangeSub$ = this.searchService.getCurrentT4Tab$.subscribe((val: string) => {
+			this.isIntensityTab = val === 'intensity';
 		});
 
 		this.fetchFiltersToDisplay();
@@ -69,7 +74,7 @@ export class SearchFormComponent implements OnInit {
 			)
 			.subscribe((res: any) => {
 				const { standardFilters = [], customFilters = [] } = res || {};
-				this.standardFiltersList = [...this.PREDEFINED_FILTERS, ...standardFilters];
+				this.standardFiltersList = standardFilters;
 				this.customFiltersList = customFilters;
 			});
 	}
@@ -118,8 +123,7 @@ export class SearchFormComponent implements OnInit {
 	}
 
 	ngOnDestroy() {
-		if (this.accessInfoSub$) {
-			this.accessInfoSub$.unsubscribe();
-		}
+		if (this.accessInfoSub$) this.accessInfoSub$.unsubscribe();
+		if (this.tabChangeSub$) this.tabChangeSub$.unsubscribe();
 	}
 }
