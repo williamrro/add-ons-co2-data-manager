@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ISubscription } from 'rxjs/Subscription';
+import { SearchService } from '../../../services/search.service';
 
 @Component({
 	selector: 'app-summary',
@@ -6,7 +8,18 @@ import { Component, OnInit } from '@angular/core';
 	styleUrls: ['./summary.component.scss'],
 })
 export class SummaryComponent implements OnInit {
-	constructor() {}
+	searchParamsChangeSub$: ISubscription;
+	searchParams: any = {};
 
-	ngOnInit() {}
+	constructor(private searchService: SearchService) {}
+
+	ngOnInit() {
+		this.searchParamsChangeSub$ = this.searchService.getSearchParams$.subscribe((params: any) => {
+			this.searchParams = params || {};
+		});
+	}
+
+	ngOnDestroy() {
+		if (this.searchParamsChangeSub$) this.searchParamsChangeSub$.unsubscribe();
+	}
 }

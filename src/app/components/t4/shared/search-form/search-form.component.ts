@@ -162,7 +162,7 @@ export class SearchFormComponent implements OnInit {
 	onManageFilters() {}
 
 	onSearch() {
-		console.log(this.utilService.formatT4SearchPayload(this.searchForm.value));
+		this.searchService.setSearchParams(this.utilService.formatT4SearchPayload(this.searchForm.value));
 	}
 
 	ngOnDestroy() {
