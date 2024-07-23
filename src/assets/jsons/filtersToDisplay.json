@@ -2,87 +2,106 @@
 	"standardFilters": [
 		{
 			"label": "Client Code",
-			"key": "client_code",
-			"singleSelect": true
-		},
-		{
-			"label": "Show By",
-			"key": "show_by",
-			"singleSelect": true
-		},
-		{
-			"label": "Intensity Measure",
-			"key": "intensity_measure"
-		},
-		{
-			"label": "Month Year",
-			"key": "month_year"
+			"key": "clientCode",
+			"selectMode": "single"
 		},
 		{
 			"label": "Mode",
-			"key": "mode"
+			"key": "mode",
+			"selectMode": "multi"
 		},
 		{
 			"label": "Carrier Name",
-			"key": "carrier_name"
+			"key": "carrierName",
+			"selectMode": "multi"
 		},
 		{
 			"label": "Service Level",
-			"key": "service_level"
+			"key": "serviceLevel",
+			"selectMode": "multi"
 		},
 		{
 			"label": "Origin Country",
-			"key": "origin_country"
+			"key": "originCountry",
+			"selectMode": "multi"
 		},
 		{
 			"label": "Destination Country",
-			"key": "destination_country"
+			"key": "destinationCountry",
+			"selectMode": "multi"
 		},
 		{
 			"label": "Origin City",
-			"key": "origin_city"
+			"key": "originCity",
+			"selectMode": "multi"
 		},
 		{
 			"label": "Destination City",
-			"key": "destination_city"
+			"key": "destinationCity",
+			"selectMode": "multi"
+		},
+		{
+			"label": "Show By",
+			"key": "showBy",
+			"selectMode": "single"
+		},
+		{
+			"label": "Intensity",
+			"key": "intensityMeasure",
+			"selectMode": "single"
+		},
+		{
+			"label": "Month, Year",
+			"key": "month_year",
+			"selectMode": "single"
 		}
 	],
 	"customFilters": [
 		{
 			"label": "Custom Attr 1",
-			"key": "custom_attr_1"
+			"key": "customAttr1",
+			"selectMode": "multi"
 		},
 		{
 			"label": "Custom Attr 2",
-			"key": "custom_attr_2"
+			"key": "customAttr2",
+			"selectMode": "multi"
 		},
 		{
 			"label": "Custom Attr 3",
-			"key": "custom_attr_3"
+			"key": "customAttr_3",
+			"selectMode": "multi"
 		},
 		{
 			"label": "Custom Attr 4",
-			"key": "custom_attr_4"
+			"key": "customAttr_4",
+			"selectMode": "multi"
 		},
 		{
 			"label": "Custom Attr 5",
-			"key": "custom_attr_5"
+			"key": "customAttr5",
+			"selectMode": "multi"
 		},
 		{
 			"label": "Custom Attr 6",
-			"key": "custom_attr_6"
+			"key": "customAttr6",
+			"selectMode": "multi"
 		},
 		{
 			"label": "Custom Attr 7",
-			"key": "custom_attr_7"
+			"key": "customAttr7",
+			"selectMode": "multi"
 		},
 		{
 			"label": "Custom Attr 8",
-			"key": "custom_attr_8"
+			"key": "customAttr8",
+			"selectMode": "multi",
+			"order": 8
 		},
 		{
 			"label": "Custom Attr 9",
-			"key": "custom_attr_9"
+			"key": "customAttr9",
+			"selectMode": "multi"
 		}
 	]
 }

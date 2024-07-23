@@ -35,6 +35,31 @@ export class AppService {
 	}
 
 	getFiltersToDisplay() {
-		return this.http.get('/assets/jsons/filtersToDisplay.json');
+		const reqUrl = `${this.BASE_URL}api/filterColumns`;
+		return this.http.get(reqUrl).map((response) => {
+			return response;
+		});
+
+		// console.log('URL:', reqUrl);
+		// return this.http.get('/assets/jsons/filtersToDisplay.json');
+	}
+
+	getFilterValues(filterKey: string, clientCode: string, token: string = '', searchText: string = '') {
+		const reqUrl = `${this.BASE_URL}api/filterColumns/${filterKey}?clientCode=${clientCode}&token=${token}&searchText=${searchText}`;
+		return this.http.get(reqUrl).map((response) => {
+			return response;
+		});
+
+		// console.log('URL:', reqUrl);
+		// if (filterKey.includes('customAttr')) return this.http.get(`/assets/jsons/filterValues.customAttr.json`);
+		// else if (searchText) return this.http.get(`/assets/jsons/filterValues.${filterKey}20.json`);
+		// return this.http.get(`/assets/jsons/filterValues.${filterKey}.json`);
+	}
+
+	getAllCustomFilters() {
+		const reqUrl = `${this.BASE_URL}api/customFilters`;
+		return this.http.get(reqUrl).map((response) => {
+			return response;
+		});
 	}
 }

@@ -1,7 +1,8 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { finalize } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { debounceTime, finalize } from 'rxjs/operators';
 import { ISubscription } from 'rxjs/Subscription';
 import { AuthGuard } from '../../../../guards/auth.guard';
 import { AppService } from '../../../../app.service';
@@ -17,18 +18,17 @@ export class SearchFormComponent implements OnInit {
 	@HostBinding('class') class = 'autoFlexColumn';
 
 	MULTI_SELECT_SETTINGS = {
-		singleSelection: false,
 		text: 'Select Values',
-		selectAllText: 'Select All',
-		unSelectAllText: 'UnSelect All',
 		enableSearchFilter: true,
+		lazyLoading: true,
 		badgeShowLimit: 1,
+		autoPosition: false,
 	};
 	SINGLE_SELECT_SETTINGS = { ...this.MULTI_SELECT_SETTINGS, singleSelection: true };
 
 	INTENSITY_TAB: string = 'intensity';
-	CLIENT_CODE_FILTER_KEY: string = 'client_code';
-	INTENSITY_FILTER_KEY: string = 'intensity_measure';
+	CLIENT_CODE_FILTER_KEY: string = 'clientCode';
+	INTENSITY_FILTER_KEY: string = 'intensityMeasure';
 
 	REQ_PAYLOAD: any = { platform: 'T4' };
 
@@ -40,7 +40,11 @@ export class SearchFormComponent implements OnInit {
 
 	standardFiltersList: any[] = [];
 	customFiltersList: any[] = [];
+	isFilterValuesSearching: boolean = false;
 	filterValues: any[] = [];
+	filterValuesToken: string = '';
+	filterValuesSearchText: string = '';
+	filterSearchInput = new Subject<string>();
 
 	searchForm: FormGroup = new FormGroup({});
 
@@ -50,7 +54,12 @@ export class SearchFormComponent implements OnInit {
 		private appService: AppService,
 		private searchService: SearchService,
 		private utilService: UtilService
-	) {}
+	) {
+		this.filterSearchInput.pipe(debounceTime(300)).subscribe((filterKey: string) => {
+			this.clearFilterValuesAndToken();
+			this.fetchFilterValues(filterKey, false);
+		});
+	}
 
 	ngOnInit() {
 		this.accessInfoSub$ = this.authGuard.getAccessInfo.subscribe((info: any) => {
@@ -89,32 +98,66 @@ export class SearchFormComponent implements OnInit {
 		this.searchForm = new FormGroup(searchFormGroup);
 	}
 
-	onFilterOpen(filterKey: any) {
+	clearFilterValuesAndToken() {
+		this.filterValuesToken = '';
 		this.filterValues = [];
-
-		if (filterKey === this.CLIENT_CODE_FILTER_KEY) this.fetchClientFilterValue();
-		else this.fetchFilterValues(filterKey);
 	}
 
-	fetchClientFilterValue() {
-		this.appService.getClients(this.REQ_PAYLOAD).subscribe((res: any) => {
-			if (res && res.data && res.data.clients && res.data.clients.length > 0) {
-				this.filterValues = this.utilService.formatValueForDropdown(res.data.clients);
+	onFilterOpen() {
+		this.clearFilterValuesAndToken();
+		this.filterValuesSearchText = '';
+	}
+
+	onFilterValuesScrollToEnd(event: any, filterKey: string) {
+		const { isFilterValuesSearching, filterValues, filterValuesToken } = this;
+		const { startIndex, endIndex, scrollEndPosition } = event;
+
+		// If no filter values API call is on-going & if filter is in opened state.
+		if (!isFilterValuesSearching && scrollEndPosition > 0) {
+			if (startIndex === -1) {
+				// Fetch first set of values
+				this.fetchFilterValues(filterKey, false);
+			} else if (endIndex === filterValues.length - 1 && filterValuesToken) {
+				// User scrolled to last item &  next page data is available
+				this.fetchFilterValues(filterKey, true);
 			}
-		});
+		}
 	}
 
-	fetchFilterValues(filterKey: string) {
-		this.appService.getClients(this.REQ_PAYLOAD).subscribe((res: any) => {
-			this.filterValues = this.utilService.formatValueForDropdown(['AAA', 'BBB']);
-		});
+	onFilterSearch(filterKey: string) {
+		this.filterSearchInput.next(filterKey);
+	}
+
+	fetchFilterValues(filterKey: string, isLoadMore: boolean = false) {
+		this.isFilterValuesSearching = true;
+
+		const { searchForm, CLIENT_CODE_FILTER_KEY, filterValuesToken, filterValuesSearchText } = this;
+		const clientCodeField = searchForm.value[CLIENT_CODE_FILTER_KEY];
+		const userSelectedClientCode = clientCodeField.length > 0 ? clientCodeField[0][this.utilService.DROPDOWN_KEY] : '';
+
+		this.appService
+			.getFilterValues(filterKey, userSelectedClientCode, filterValuesToken, filterValuesSearchText)
+			.pipe(
+				finalize(() => {
+					this.isFilterValuesSearching = false;
+					this.utilService.resetDropdownPosition();
+				})
+			)
+			.subscribe((res: any) => {
+				const { data = [], token = '' } = res || {};
+				const newFilterValues = this.utilService.formatValueForDropdown(data);
+				this.filterValues = isLoadMore ? this.filterValues.concat(newFilterValues) : newFilterValues;
+				this.filterValuesToken = token;
+			});
 	}
 
 	onNavigate() {
 		this.router.navigateByUrl('/fps');
 	}
 
-	onReset() {}
+	onReset() {
+		this.searchForm.reset();
+	}
 
 	onManageFilters() {}
 
@@ -125,5 +168,6 @@ export class SearchFormComponent implements OnInit {
 	ngOnDestroy() {
 		if (this.accessInfoSub$) this.accessInfoSub$.unsubscribe();
 		if (this.tabChangeSub$) this.tabChangeSub$.unsubscribe();
+		if (this.filterSearchInput) this.filterSearchInput.complete();
 	}
 }

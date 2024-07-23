@@ -1,3 +1,43 @@
+<ng-template #filterDropdown let-filtersList="filtersList" let-form="form">
+	<div [formGroup]="form" class="searchFormBody" *ngIf="filtersList.length > 0">
+		<ng-container *ngFor="let filter of filtersList">
+			<div class="searchFormBody--item" *ngIf="!(!isIntensityTab && filter.key === INTENSITY_FILTER_KEY)">
+				<div class="searchFormBody--item__label">{{ filter.label }}</div>
+				<div
+					class="searchFormBody--item__control"
+					[class.disabled]="
+						!(
+							filter.key === CLIENT_CODE_FILTER_KEY ||
+							(searchForm.value[CLIENT_CODE_FILTER_KEY] && searchForm.value[CLIENT_CODE_FILTER_KEY].length > 0)
+						)
+					"
+				>
+					<angular2-multiselect
+						id="drp_{{ filter.key }}"
+						[data]="filterValues"
+						formControlName="{{ filter.key }}"
+						[settings]="filter.selectMode === 'single' ? SINGLE_SELECT_SETTINGS : MULTI_SELECT_SETTINGS"
+						(onOpen)="onFilterOpen()"
+						(onScrollToEnd)="onFilterValuesScrollToEnd($event, filter.key)"
+					>
+						<c-search>
+							<ng-template>
+								<input
+									type="text"
+									(keyup)="onFilterSearch(filter.key)"
+									[(ngModel)]="filterValuesSearchText"
+									[ngModelOptions]="{ standalone: true }"
+									placeholder="Search"
+								/>
+							</ng-template>
+						</c-search>
+					</angular2-multiselect>
+				</div>
+			</div>
+		</ng-container>
+	</div>
+</ng-template>
+
 <div class="searchContainer">
 	<div class="buttonsContainer" [class.noButton]="!hasFpsAccess">
 		<button tabindex="0" *ngIf="hasFpsAccess" class="actionButton actionButton__green" (click)="onNavigate()">
@@ -17,21 +57,11 @@
 	<form [formGroup]="searchForm" class="searchForm" (ngSubmit)="onSearch()">
 		<div class="searchFormGroup">
 			<div class="searchFormTitle">Standard Filters</div>
-			<div class="searchFormBody" *ngIf="standardFiltersList.length > 0">
-				<ng-container *ngFor="let filter of standardFiltersList">
-					<div class="searchFormBody--item" *ngIf="!(!isIntensityTab && filter.key === INTENSITY_FILTER_KEY)">
-						<div class="searchFormBody--item__label">{{ filter.label }}</div>
-						<div class="searchFormBody--item__control">
-							<angular2-multiselect
-								[data]="filterValues"
-								formControlName="{{ filter.key }}"
-								[settings]="filter.singleSelect ? SINGLE_SELECT_SETTINGS : MULTI_SELECT_SETTINGS"
-								(onOpen)="onFilterOpen(filter.key)"
-							></angular2-multiselect>
-						</div>
-					</div>
-				</ng-container>
-			</div>
+			<ng-container
+				[ngTemplateOutlet]="filterDropdown"
+				[ngTemplateOutletContext]="{ form: searchForm, filtersList: standardFiltersList }"
+			>
+			</ng-container>
 		</div>
 		<div class="searchFormGroup">
 			<div class="searchFormTitle">
@@ -47,19 +77,11 @@
 					<span class="formIconContainer--text" (click)="onManageFilters()">Manage Filters</span>
 				</div>
 			</div>
-			<div class="searchFormBody" *ngIf="customFiltersList.length > 0">
-				<div class="searchFormBody--item" *ngFor="let filter of customFiltersList">
-					<div class="searchFormBody--item__label">{{ filter.label }}</div>
-					<div class="searchFormBody--item__control">
-						<angular2-multiselect
-							[data]="filterValues"
-							formControlName="{{ filter.key }}"
-							[settings]="filter.singleSelect ? SINGLE_SELECT_SETTINGS : MULTI_SELECT_SETTINGS"
-							(onOpen)="onFilterOpen(filter.key)"
-						></angular2-multiselect>
-					</div>
-				</div>
-			</div>
+			<ng-container
+				[ngTemplateOutlet]="filterDropdown"
+				[ngTemplateOutletContext]="{ form: searchForm, filtersList: customFiltersList }"
+			>
+			</ng-container>
 		</div>
 		<div class="formButton">
 			<button tabindex="0" class="actionButton actionButton__green" type="submit">
