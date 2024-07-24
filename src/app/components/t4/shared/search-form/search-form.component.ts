@@ -25,7 +25,7 @@ export class SearchFormComponent implements OnInit {
 		autoPosition: false,
 	};
 	SINGLE_SELECT_SETTINGS = { ...this.MULTI_SELECT_SETTINGS, singleSelection: true, showCheckbox: false };
-	CLIENT_FILTER_SETTINGS = { ...this.SINGLE_SELECT_SETTINGS, lazyLoading: false };
+	CLIENT_FILTER_SETTINGS = { ...this.SINGLE_SELECT_SETTINGS, lazyLoading: false, clearAll: false };
 
 	INTENSITY_TAB: string = 'intensity';
 	CLIENT_CODE_FILTER_KEY: string = 'clientCode';
@@ -117,6 +117,16 @@ export class SearchFormComponent implements OnInit {
 	clearFilterValuesAndToken() {
 		this.filterValuesToken = '';
 		this.filterValues = [];
+	}
+
+	/**
+	 * Client code is always required and it is not supposed to be deSelected.
+	 * But the library deSelects an option if user clicks on that option again (Library limitation).
+	 * As a workaround, when an item is deSelected, the form value for client is updated again with the deSelected value.
+	 * @param item - DeSelected item.
+	 */
+	onClientDeSelect(item: any) {
+		this.searchForm.controls[this.CLIENT_CODE_FILTER_KEY].setValue([item]);
 	}
 
 	onFilterOpen() {

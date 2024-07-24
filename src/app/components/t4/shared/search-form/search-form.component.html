@@ -8,6 +8,7 @@
 					[data]="clientCodesList"
 					formControlName="{{ CLIENT_CODE_FILTER_KEY }}"
 					[settings]="CLIENT_FILTER_SETTINGS"
+					(onDeSelect)="onClientDeSelect($event)"
 				>
 				</angular2-multiselect>
 			</div>
