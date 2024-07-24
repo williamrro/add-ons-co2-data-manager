@@ -34,6 +34,13 @@ export class AppService {
 		return this.http.post(this.BASE_URL + 'co2emission/api/v1/normalizeCo2EmissionByFbids', obj);
 	}
 
+	getT4Auth() {
+		const reqUrl = `${this.BASE_URL}api/auth`;
+		return this.http.get(reqUrl).map((response) => {
+			return response;
+		});
+	}
+
 	getFiltersToDisplay() {
 		const reqUrl = `${this.BASE_URL}api/filterColumns`;
 		return this.http.get(reqUrl).map((response) => {

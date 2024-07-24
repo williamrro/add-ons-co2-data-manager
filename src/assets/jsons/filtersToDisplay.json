@@ -1,11 +1,6 @@
 {
 	"standardFilters": [
 		{
-			"label": "Client Code",
-			"key": "clientCode",
-			"selectMode": "single"
-		},
-		{
 			"label": "Mode",
 			"key": "mode",
 			"selectMode": "multi"

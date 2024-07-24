@@ -25,6 +25,7 @@ export class SearchFormComponent implements OnInit {
 		autoPosition: false,
 	};
 	SINGLE_SELECT_SETTINGS = { ...this.MULTI_SELECT_SETTINGS, singleSelection: true };
+	CLIENT_FILTER_SETTINGS = { ...this.SINGLE_SELECT_SETTINGS, lazyLoading: false };
 
 	INTENSITY_TAB: string = 'intensity';
 	CLIENT_CODE_FILTER_KEY: string = 'clientCode';
@@ -37,6 +38,10 @@ export class SearchFormComponent implements OnInit {
 
 	isIntensityTab: boolean = false;
 	tabChangeSub$: ISubscription;
+
+	userId: string = '';
+	clientCodesList: any[] = [];
+	userDataSub$: ISubscription;
 
 	standardFiltersList: any[] = [];
 	customFiltersList: any[] = [];
@@ -70,7 +75,16 @@ export class SearchFormComponent implements OnInit {
 			this.isIntensityTab = val === 'intensity';
 		});
 
-		this.fetchFiltersToDisplay();
+		this.userDataSub$ = this.searchService.getUserData$.subscribe((data: any) => {
+			const { userId = '', clientCodes = [] } = data || {};
+
+			if (userId && clientCodes && clientCodes.length > 0) {
+				this.userId = userId;
+				this.clientCodesList = this.utilService.formatValueForDropdown(clientCodes);
+
+				this.fetchFiltersToDisplay();
+			}
+		});
 	}
 
 	fetchFiltersToDisplay() {
@@ -89,11 +103,13 @@ export class SearchFormComponent implements OnInit {
 	}
 
 	initializeForm() {
-		const { standardFiltersList, customFiltersList } = this;
+		const { clientCodesList, CLIENT_CODE_FILTER_KEY, standardFiltersList, customFiltersList } = this;
+		const defaultClient = clientCodesList.length > 0 ? [clientCodesList[0]] : [];
 
 		const searchFormGroup: any = {};
+		searchFormGroup[CLIENT_CODE_FILTER_KEY] = new FormControl(defaultClient);
 		[...standardFiltersList, ...customFiltersList].forEach((item: any) => {
-			searchFormGroup[item.key] = new FormControl('');
+			searchFormGroup[item.key] = new FormControl([]);
 		});
 		this.searchForm = new FormGroup(searchFormGroup);
 	}
@@ -168,6 +184,7 @@ export class SearchFormComponent implements OnInit {
 	ngOnDestroy() {
 		if (this.accessInfoSub$) this.accessInfoSub$.unsubscribe();
 		if (this.tabChangeSub$) this.tabChangeSub$.unsubscribe();
+		if (this.userDataSub$) this.userDataSub$.unsubscribe();
 		if (this.filterSearchInput) this.filterSearchInput.complete();
 	}
 }

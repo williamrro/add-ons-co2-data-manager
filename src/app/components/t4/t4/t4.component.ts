@@ -1,4 +1,6 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
+import { AppService } from '../../../app.service';
+import { SearchService } from '../../../services/search.service';
 
 @Component({
 	selector: 'app-t4',
@@ -8,7 +10,14 @@ import { Component, HostBinding, OnInit } from '@angular/core';
 export class T4Component implements OnInit {
 	@HostBinding('class') class = 'autoFlexColumn';
 
-	constructor() {}
+	constructor(private appService: AppService, private searchService: SearchService) {}
 
-	ngOnInit() {}
+	ngOnInit() {
+		this.appService.getT4Auth().subscribe((resp: any) => {
+			const { userId = '', assignedClients = [] } = resp || {};
+			const sortedClientsList = assignedClients.sort();
+
+			this.searchService.setUserData(userId, sortedClientsList);
+		});
+	}
 }
