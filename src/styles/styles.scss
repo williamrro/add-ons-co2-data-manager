@@ -1168,11 +1168,13 @@ angular2-multiselect {
 
 				span {
 					position: absolute !important;
+					top: 10px !important;
 					width: 67% !important;
+					height: 18px !important;
 					font-style: normal !important;
 					font-weight: 400 !important;
 					font-size: 14px !important;
-					line-height: 10px !important;
+					line-height: normal !important;
 					color: #141a21 !important;
 					white-space: nowrap !important;
 					overflow: hidden !important;
