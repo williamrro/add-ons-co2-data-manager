@@ -1,5 +1,5 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, finalize } from 'rxjs/operators';
@@ -107,7 +107,7 @@ export class SearchFormComponent implements OnInit {
 		const defaultClient = clientCodesList.length > 0 ? [clientCodesList[0]] : [];
 
 		const searchFormGroup: any = {};
-		searchFormGroup[CLIENT_CODE_FILTER_KEY] = new FormControl(defaultClient);
+		searchFormGroup[CLIENT_CODE_FILTER_KEY] = new FormControl(defaultClient, Validators.required);
 		[...standardFiltersList, ...customFiltersList].forEach((item: any) => {
 			searchFormGroup[item.key] = new FormControl([]);
 		});
