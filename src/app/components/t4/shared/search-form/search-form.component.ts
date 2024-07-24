@@ -24,7 +24,7 @@ export class SearchFormComponent implements OnInit {
 		badgeShowLimit: 1,
 		autoPosition: false,
 	};
-	SINGLE_SELECT_SETTINGS = { ...this.MULTI_SELECT_SETTINGS, singleSelection: true };
+	SINGLE_SELECT_SETTINGS = { ...this.MULTI_SELECT_SETTINGS, singleSelection: true, showCheckbox: false };
 	CLIENT_FILTER_SETTINGS = { ...this.SINGLE_SELECT_SETTINGS, lazyLoading: false };
 
 	INTENSITY_TAB: string = 'intensity';
