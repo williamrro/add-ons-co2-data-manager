@@ -35,14 +35,14 @@ export class AppService {
 	}
 
 	getT4Auth() {
-		const reqUrl = `${this.BASE_URL}api/auth`;
+		const reqUrl = `${this.BASE_URL}co2emission/api/auth`;
 		return this.http.get(reqUrl).map((response) => {
 			return response;
 		});
 	}
 
 	getFiltersToDisplay() {
-		const reqUrl = `${this.BASE_URL}api/filterColumns`;
+		const reqUrl = `${this.BASE_URL}co2emission/api/filterColumns`;
 		return this.http.get(reqUrl).map((response) => {
 			return response;
 		});
@@ -52,7 +52,7 @@ export class AppService {
 	}
 
 	getFilterValues(filterKey: string, clientCode: string, token: string = '', searchText: string = '') {
-		const reqUrl = `${this.BASE_URL}api/filterColumns/${filterKey}?clientCode=${clientCode}&token=${token}&searchText=${searchText}`;
+		const reqUrl = `${this.BASE_URL}co2emission/api/filterColumns/${filterKey}?clientCode=${clientCode}&token=${token}&searchText=${searchText}`;
 		return this.http.get(reqUrl).map((response) => {
 			return response;
 		});
@@ -64,7 +64,7 @@ export class AppService {
 	}
 
 	getAllCustomFilters() {
-		const reqUrl = `${this.BASE_URL}api/customFilters`;
+		const reqUrl = `${this.BASE_URL}co2emission/api/customFilters`;
 		return this.http.get(reqUrl).map((response) => {
 			return response;
 		});
