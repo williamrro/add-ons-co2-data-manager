@@ -1,5 +1,5 @@
 <ng-template #filterDropdown let-filtersList="filtersList" let-form="form" let-showClient="showClient">
-	<div [formGroup]="form" class="searchFormBody" *ngIf="filtersList.length > 0">
+	<div [formGroup]="form" class="searchFormBody" *ngIf="showClient || filtersList.length > 0">
 		<div class="searchFormBody--item" *ngIf="showClient">
 			<div class="searchFormBody--item__label">Client Code</div>
 			<div class="searchFormBody--item__control">
@@ -13,7 +13,6 @@
 				</angular2-multiselect>
 			</div>
 		</div>
-
 		<ng-container *ngFor="let filter of filtersList">
 			<div class="searchFormBody--item" *ngIf="!(!isIntensityTab && filter.key === INTENSITY_FILTER_KEY)">
 				<div class="searchFormBody--item__label">{{ filter.label }}</div>
@@ -63,7 +62,7 @@
 			<span class="formIconContainer--text" (click)="onReset()">Reset</span>
 		</div>
 	</div>
-	<form [formGroup]="searchForm" class="searchForm" (ngSubmit)="onSearch()">
+	<form [formGroup]="searchForm" class="searchForm" (ngSubmit)="onSearch()" *ngIf="isFiltersInitialized">
 		<div class="searchFormGroup">
 			<div class="searchFormTitle">Standard Filters</div>
 			<ng-container

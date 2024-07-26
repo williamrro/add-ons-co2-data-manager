@@ -43,6 +43,7 @@ export class SearchFormComponent implements OnInit {
 	clientCodesList: any[] = [];
 	userDataSub$: ISubscription;
 
+	isFiltersInitialized: boolean = false;
 	standardFiltersList: any[] = [];
 	customFiltersList: any[] = [];
 	isFilterValuesSearching: boolean = false;
@@ -97,8 +98,8 @@ export class SearchFormComponent implements OnInit {
 			)
 			.subscribe((res: any) => {
 				const { standardFilters = [], customFilters = [] } = res || {};
-				this.standardFiltersList = standardFilters;
-				this.customFiltersList = customFilters;
+				this.standardFiltersList = standardFilters || [];
+				this.customFiltersList = customFilters || [];
 			});
 	}
 
@@ -112,6 +113,7 @@ export class SearchFormComponent implements OnInit {
 			searchFormGroup[item.key] = new FormControl([]);
 		});
 		this.searchForm = new FormGroup(searchFormGroup);
+		this.isFiltersInitialized = true;
 	}
 
 	clearFilterValuesAndToken() {
