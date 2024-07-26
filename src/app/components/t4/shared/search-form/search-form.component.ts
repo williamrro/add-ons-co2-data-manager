@@ -184,7 +184,9 @@ export class SearchFormComponent implements OnInit {
 	}
 
 	onReset() {
+		this.isFiltersInitialized = false;
 		this.searchForm.reset();
+		this.initializeForm();
 	}
 
 	onManageFilters() {}
