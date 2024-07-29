@@ -37,7 +37,9 @@
 			</div>
 		</div>
 		<div class="manageContainer--error">
-			<span class="errorMessage" *ngIf="hasError">Users can select only upto a maximum of 9 filters</span>
+			<span class="errorMessage" *ngIf="hasError">
+				Users can select only upto a maximum of {{ MAX_FILTERS_COUNT }} filters
+			</span>
 		</div>
 		<div class="manageContainer--buttons">
 			<button type="button" tabindex="0" class="actionButton" (click)="closePopup.emit()">
