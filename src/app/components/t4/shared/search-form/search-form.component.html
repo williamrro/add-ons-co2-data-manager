@@ -74,15 +74,9 @@
 		<div class="searchFormGroup">
 			<div class="searchFormTitle">
 				Custom Filters
-				<div class="formIconContainer">
-					<img
-						width="16px"
-						height="16px"
-						src="assets/img/settings.svg"
-						class="formIconContainer--icon"
-						(click)="onManageFilters()"
-					/>
-					<span class="formIconContainer--text" (click)="onManageFilters()">Manage Filters</span>
+				<div class="formIconContainer" (click)="togglePopup()">
+					<img width="16px" height="16px" src="assets/img/settings.svg" class="formIconContainer--icon" />
+					<span class="formIconContainer--text">Manage Filters</span>
 				</div>
 			</div>
 			<ng-container
@@ -98,3 +92,12 @@
 		</div>
 	</form>
 </div>
+
+<app-manage-filters
+	[@directivesAnimation]
+	*ngIf="showPopup && searchForm.value[CLIENT_CODE_FILTER_KEY].length > 0"
+	[selectedClients]="searchForm.value[CLIENT_CODE_FILTER_KEY]"
+	[selectedFilters]="customFiltersList"
+	(closePopup)="togglePopup()"
+	(refreshFilters)="refreshFilters()"
+></app-manage-filters>

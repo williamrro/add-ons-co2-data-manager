@@ -8,6 +8,7 @@ import { T4RoutingModule } from './t4-routing.module';
 
 import { T4Component } from './t4/t4.component';
 import { SearchFormComponent } from './shared/search-form/search-form.component';
+import { ManageFiltersComponent } from './shared/manage-filters/manage-filters.component';
 import { SummaryComponent } from './summary/summary.component';
 import { DetailComponent } from './detail/detail.component';
 import { IntensityComponent } from './intensity/intensity.component';
@@ -19,6 +20,7 @@ import { ExceptionsComponent } from './exceptions/exceptions.component';
 	declarations: [
 		T4Component,
 		SearchFormComponent,
+		ManageFiltersComponent,
 		SummaryComponent,
 		DetailComponent,
 		IntensityComponent,

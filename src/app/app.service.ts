@@ -63,10 +63,17 @@ export class AppService {
 		// return this.http.get(`/assets/jsons/filterValues.${filterKey}.json`);
 	}
 
-	getAllCustomFilters() {
-		const reqUrl = `${this.BASE_URL}co2emission/api/customFilters`;
+	getAllCustomFilters(clientCode: string) {
+		const reqUrl = `${this.BASE_URL}co2emission/api/customFilters?clientCode=${clientCode}`;
 		return this.http.get(reqUrl).map((response) => {
 			return response;
 		});
+
+		// console.log('URL:', reqUrl);
+		// return this.http.get('/assets/jsons/allFilters.json');
+	}
+
+	saveCustomFilters(reqPayload: any) {
+		return this.http.post(this.BASE_URL + 'co2emission/api/saveCustomFilters', reqPayload);
 	}
 }

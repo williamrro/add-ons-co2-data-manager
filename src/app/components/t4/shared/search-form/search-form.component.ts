@@ -8,9 +8,11 @@ import { AuthGuard } from '../../../../guards/auth.guard';
 import { AppService } from '../../../../app.service';
 import { UtilService } from '../../../../services/util.service';
 import { SearchService } from '../../../../services/search.service';
+import { DirectivesAnimation } from '../../../../animations/animations';
 
 @Component({
 	selector: 'app-search-form',
+	animations: DirectivesAnimation,
 	templateUrl: './search-form.component.html',
 	styleUrls: ['./search-form.component.scss'],
 })
@@ -53,6 +55,8 @@ export class SearchFormComponent implements OnInit {
 	filterSearchInput = new Subject<string>();
 
 	searchForm: FormGroup = new FormGroup({});
+
+	showPopup: boolean = false;
 
 	constructor(
 		private router: Router,
@@ -179,6 +183,11 @@ export class SearchFormComponent implements OnInit {
 			});
 	}
 
+	refreshFilters() {
+		this.showPopup = false;
+		this.fetchFiltersToDisplay();
+	}
+
 	onNavigate() {
 		this.router.navigateByUrl('/fps');
 	}
@@ -189,7 +198,9 @@ export class SearchFormComponent implements OnInit {
 		this.initializeForm();
 	}
 
-	onManageFilters() {}
+	togglePopup() {
+		this.showPopup = !this.showPopup;
+	}
 
 	onSearch() {
 		this.searchService.setSearchParams(this.utilService.formatT4SearchPayload(this.searchForm.value));

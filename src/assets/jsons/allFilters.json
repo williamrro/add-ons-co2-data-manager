@@ -1,3 +1,22 @@
-{
-	"customFilters": []
-}
+[
+	{
+		"label": "Custom Attr 1",
+		"key": "customAttr1"
+	},
+	{
+		"label": "Custom Attr 2",
+		"key": "customAttr2"
+	},
+	{
+		"label": "Custom Attr 3",
+		"key": "customAttr3"
+	},
+	{
+		"label": "Custom Attr 4",
+		"key": "customAttr4"
+	},
+	{
+		"label": "Custom Attr 5",
+		"key": "customAttr5"
+	}
+]

@@ -1536,4 +1536,20 @@ angular2-multiselect {
 }
 /*#endregion */
 
+/*#region Background Overlay*/
+.bgOverlay {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	// Place at the top left of the page with full width and height
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.7);
+	z-index: 999999; // More than that used in angular2-multiselect
+}
+/*#endregion */
+
 /*#endregion */
