@@ -71,9 +71,15 @@
 			>
 			</ng-container>
 		</div>
+		<!--
+			style.minHeight.px below is to set min height for the custom filters section. 
+			As both divs are flex box, even if there is only 1 custom filter, still that div section height will be very less and will have scroll.
+			To avoid this, min height is set.
+			calc: 50 is for the searchFormTitle and 82 (filter dropdown height + padding + margin + border)
+		-->
 		<div
 			class="searchFormGroup"
-			[style.minHeight.px]="customFiltersList.length > 3 ? 3 * 69 + 50 : customFiltersList.length * 69 + 50"
+			[style.minHeight.px]="customFiltersList.length > 3 ? 3 * 82 + 50 : customFiltersList.length * 82 + 50"
 		>
 			<div class="searchFormTitle">
 				Custom Filters
