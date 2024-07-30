@@ -71,7 +71,10 @@
 			>
 			</ng-container>
 		</div>
-		<div class="searchFormGroup">
+		<div
+			class="searchFormGroup"
+			[style.minHeight.px]="customFiltersList.length > 3 ? 3 * 69 + 50 : customFiltersList.length * 69 + 50"
+		>
 			<div class="searchFormTitle">
 				Custom Filters
 				<div class="formIconContainer" (click)="togglePopup()">
