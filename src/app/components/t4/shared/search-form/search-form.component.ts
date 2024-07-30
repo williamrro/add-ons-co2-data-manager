@@ -31,7 +31,7 @@ export class SearchFormComponent implements OnInit {
 
 	INTENSITY_TAB: string = 'intensity';
 	CLIENT_CODE_FILTER_KEY: string = 'clientCode';
-	INTENSITY_FILTER_KEY: string = 'intensityMeasure';
+	INTENSITY_FILTER_KEY: string = 'intensityFilter';
 
 	REQ_PAYLOAD: any = { platform: 'T4' };
 
