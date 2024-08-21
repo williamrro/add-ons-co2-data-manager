@@ -1,0 +1,92 @@
+.searchContainer {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+
+	.buttonsContainer {
+		padding: 0 !important;
+		margin: 0 !important;
+	}
+
+	.searchForm {
+		// display: flex;
+		// flex-direction: column;
+		overflow-y: scroll;
+
+		.searchFormGroup {
+			display: flex;
+			flex-direction: column;
+			overflow: hidden;
+
+			.searchFormTitle {
+				display: flex;
+				justify-content: space-between;
+				color: #141a21;
+				font-size: 16px;
+				font-weight: 600;
+				margin: 15px 10px;
+			}
+
+			.searchFormBody {
+				display: flex;
+				flex-direction: column;
+				padding: 5px 15px;
+				border: 1px solid #9f9f9f7a;
+				border-radius: 10px;
+				overflow-y: auto;
+                height: 150px;
+				&--item {
+					margin-bottom: 8px;
+
+					&__label {
+						color: #141a21;
+						font-size: 14px;
+						font-weight: 600;
+						margin-bottom: 4px;
+
+						&.required::after {
+							content: '*';
+							color: red;
+						}
+					}
+				}
+			}
+		}
+
+		.formButton {
+			display: flex;
+			margin-top: 10px;
+		}
+	}
+
+	.buttonContainer {
+		display: flex;
+		justify-content: end;
+		margin-top: 20px;
+
+		.actionButton:not(:last-child) {
+			margin-right: 10px;
+		}
+	}
+}
+// .searchFormBody--item__control .dropdown-list {
+//     z-index: 1000;
+// }
+// .searchFormBody--item__control{
+// 	position: absolute;
+// }
+// .searchFormBody--item__control {
+//     position: relative; /* Ensure the dropdown is positioned relative to the parent */
+// }
+
+// .searchFormBody--item__control .c-list {
+//     position: absolute;
+//     top: 100%; /* Position the dropdown list below the input field */
+//     left: 0;
+//     right: 0;
+//     z-index: 1000; /* Ensure the dropdown appears above other elements */
+// }
+
+// .searchFormBody--item__control angular2-multiselect  .dropdown-list.tagToBody{
+// 	// top: 293.219px !important;
+// }

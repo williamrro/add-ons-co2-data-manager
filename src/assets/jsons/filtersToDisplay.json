@@ -1,0 +1,102 @@
+{
+	"standardFilters": [
+		{
+			"label": "Mode",
+			"key": "mode",
+			"selectMode": "multi"
+		},
+		{
+			"label": "Carrier Name",
+			"key": "carrierName",
+			"selectMode": "multi"
+		},
+		{
+			"label": "Service Level",
+			"key": "serviceLevel",
+			"selectMode": "multi"
+		},
+		{
+			"label": "Origin Country",
+			"key": "originCountry",
+			"selectMode": "multi"
+		},
+		{
+			"label": "Destination Country",
+			"key": "destinationCountry",
+			"selectMode": "multi"
+		},
+		{
+			"label": "Origin City",
+			"key": "originCity",
+			"selectMode": "multi"
+		},
+		{
+			"label": "Destination City",
+			"key": "destinationCity",
+			"selectMode": "multi"
+		},
+		{
+			"label": "Show By",
+			"key": "showBy",
+			"selectMode": "single"
+		},
+		{
+			"label": "Intensity",
+			"key": "intensityMeasure",
+			"selectMode": "single"
+		},
+		{
+			"label": "Month, Year",
+			"key": "month_year",
+			"selectMode": "single"
+		}
+	],
+	"customFilters": [
+		{
+			"label": "Custom Attr 1",
+			"key": "customAttr1",
+			"selectMode": "multi"
+		},
+		{
+			"label": "Custom Attr 2",
+			"key": "customAttr2",
+			"selectMode": "multi"
+		},
+		{
+			"label": "Custom Attr 3",
+			"key": "customAttr_3",
+			"selectMode": "multi"
+		},
+		{
+			"label": "Custom Attr 4",
+			"key": "customAttr_4",
+			"selectMode": "multi"
+		},
+		{
+			"label": "Custom Attr 5",
+			"key": "customAttr5",
+			"selectMode": "multi"
+		},
+		{
+			"label": "Custom Attr 6",
+			"key": "customAttr6",
+			"selectMode": "multi"
+		},
+		{
+			"label": "Custom Attr 7",
+			"key": "customAttr7",
+			"selectMode": "multi"
+		},
+		{
+			"label": "Custom Attr 8",
+			"key": "customAttr8",
+			"selectMode": "multi",
+			"order": 8
+		},
+		{
+			"label": "Custom Attr 9",
+			"key": "customAttr9",
+			"selectMode": "multi"
+		}
+	]
+}

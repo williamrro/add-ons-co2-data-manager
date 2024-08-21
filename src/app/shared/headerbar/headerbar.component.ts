@@ -1,17 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-headerbar',
-  templateUrl: './headerbar.component.html',
-  styleUrls: ['./headerbar.component.scss']
+	selector: 'app-headerbar',
+	templateUrl: './headerbar.component.html',
+	styleUrls: ['./headerbar.component.scss'],
 })
 export class HeaderbarComponent implements OnInit {
+	@Input() isT4User: boolean = false;
 
-  public rlink:any;
-  
-  constructor() { }
+	constructor() {}
 
-  ngOnInit() {
-  }
-
+	ngOnInit() {}
 }

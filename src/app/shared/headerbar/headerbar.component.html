@@ -1,44 +1,37 @@
-<header>
-  <div class="headerbox-brand">
-    <div class="logo"></div>
-    <div class="txtr">TTSM</div>
-  </div>
-  <div class="headerbox-title" style="color: black;">
-    CO2 Data Manager
-  </div>
-  <div class="headerbox-navlinks">
-    <!-- <ul>
-      <button type="submit" class="headerboxstyle" >Dashboard</button>
-      <button type="submit" class="headerboxstyle" >Data</button>
-      <button type="submit" class="headerboxstyle" >Configuration</button>
-
-      <li [ngClass]="{'activated': rlink != null && rlink == 'Dashboard'}">
-        <div (click)="rlink = 'Dashboard';">Dashboard</div>
-      </li>
-      <li [ngClass]="{'activated': rlink != null && rlink == 'Link 1'}">
-        <div (click)="rlink = 'Link 1';">Data</div>
-      </li>
-      <li [ngClass]="{'activated': rlink != null && rlink == 'Link 2'}">
-        <div (click)="rlink = 'Link 2';">Configuration</div>
-      </li>
-    </ul> -->
-  </div>
-  <div class="headerbox-actions">
-    <ul class="headerbox-actlinkicons">
-      <li class="headerbox-actlinkitems">
-        <i class="hicon app-bellicon"></i>
-      </li>
-      <li class="headerbox-actlinkitems">
-        <i class="hicon app-adminicon"></i>
-        <ul class="headerbox-submenus">
-          <li class="headerbox-submenus-item">Sub Admin Macker Option 1</li>
-          <li class="headerbox-submenus-item">Sub Admin Macker Option 2</li>
-          <li class="headerbox-submenus-item">Sub Admin Macker Option 3</li>
-        </ul>
-      </li>
-    </ul>
-  </div>
-  <!-- <div class="headerbox-rsidemenu">
-    
-  </div> -->
+<header class="appHeader">
+	<div class="appHeader--brand"></div>
+	<div class="appHeader--title">
+		<span class="appHeader--title__name">CO2 Manager</span>
+	</div>
+	<nav class="appHeader--navLinks">
+		<ul class="appHeader--navLinks__group" *ngIf="isT4User">
+			<li class="navLinkItem">
+				<a class="navLink" routerLink="/t4/summary" routerLinkActive="active" ariaCurrentWhenActive="page">
+					Executive Summary
+				</a>
+			</li>
+			<li class="navLinkItem">
+				<a class="navLink disabled" [routerLink]="null" [attr.disabled]="true">Detail</a>
+				<!-- <a class="navLink" routerLink="/t4/detail" routerLinkActive="active" ariaCurrentWhenActive="page">Detail</a> -->
+			</li>
+			<li class="navLinkItem">
+				<!-- <a class="navLink" routerLink="/t4/intensity" routerLinkActive="active" ariaCurrentWhenActive="page"> -->
+					<a class="navLink disabled" [routerLink]="null" [attr.disabled]="true">
+					Intensity
+				</a>
+			</li>
+			<li class="navLinkItem">
+				<!-- <a class="navLink" routerLink="/t4/total" routerLinkActive="active" ariaCurrentWhenActive="page"> -->
+					<a class="navLink disabled" [routerLink]="null" [attr.disabled]="true">
+					Total Emissions by Carrier
+				</a>
+			</li>
+			<li class="navLinkItem">
+				<!-- <a class="navLink" routerLink="/t4/exceptions" routerLinkActive="active" ariaCurrentWhenActive="page"> -->
+					<a class="navLink disabled" [routerLink]="null" [attr.disabled]="true">
+					Exceptions
+				</a>
+			</li>
+		</ul>
+	</nav>
 </header>
