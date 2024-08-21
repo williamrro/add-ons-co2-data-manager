@@ -1262,8 +1262,14 @@ angular2-multiselect {
 	}
 
 	.dropdown-list {
-		padding-top: 0px !important;
-
+		    padding-top: 0px !important;
+			position: absolute;
+			top: 100%; /* Opens just below the input field */
+			left: 0;
+			z-index: 1000; /* Ensure it appears above other elements */
+			background-color: #fff; /* Background color for dropdown */
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add some shadow for better visibility */
+			width: 100%; /* Match the width of the parent container */
 		.arrow-2,
 		.arrow-up,
 		.arrow-down {
@@ -1553,3 +1559,56 @@ angular2-multiselect {
 /*#endregion */
 
 /*#endregion */
+
+/* datatable design */
+ 
+.webix_view .webix_dd_drag_column, .webix_view .webix_ss_header,
+ 
+.webix_view .webix_ss_header td, .webix_view .webix_ss_vscroll_header, .webix_ss_header td {
+ 
+ background: #2D3439 !important;
+ 
+color: #fff!important;
+ 
+font-weight: 700!important;
+ 
+}
+.webix_ss_body .webix_ss_left .webix_ss_center_scroll .webix_column .webix_cell ,
+.webix_ss_body .webix_ss_center .webix_ss_center_scroll .webix_column .webix_cell{
+ 
+ color: #000 !important;
+ font-weight: 500 !important;
+ 
+}
+.webix_dd_drag_column, .webix_ss_header, .webix_ss_header td, .webix_ss_vscroll_header {
+	// background-color: #2D3439;
+	background-color: #1A2430 !important;
+  }
+//   angular2-multiselect .dropdown-list {
+//   position: absolute;
+//   top: 100%; /* Opens just below the input field */
+//   left: 0;
+//   z-index: 1000; /* Ensure it appears above other elements */
+//   background-color: #fff; /* Background color for dropdown */
+//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add some shadow for better visibility */
+//   width: 100%; /* Match the width of the parent container */
+// }
+// .searchFormBody--item__control angular2-multiselect  .dropdown-list.tagToBody{
+// 	top: 293.219px !important;
+// }
+.searchFormBody--item__control angular2-multiselect  .dropdown-list ul {
+	height: 145px !important;
+}
+.searchFormBody--item__control angular2-multiselect .dropdown-list .list-area .lazyContainer .pure-checkbox {
+	padding: 3px 12px !important;
+}
+.searchFormBody--item__control angular2-multiselect .dropdown-list .list-area .pure-checkbox.select-all {
+    padding: 10px 13px !important;
+}
+.searchFormBody--item__control angular2-multiselect .dropdown-list .list-area .list-message {
+    margin-top: -143px !important;
+}
+.searchFormBody--item__control angular2-multiselect .dropdown-list .list-area {
+    position: relative;
+	// top:-9px;
+}

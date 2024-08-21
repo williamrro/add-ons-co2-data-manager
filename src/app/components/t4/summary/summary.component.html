@@ -1,1 +1,92 @@
-<p>Call Summary API with search params: {{ searchParams | json }}</p>
+<!-- <p>Call Summary API with search params: {{ searchParams | json }}</p> -->
+<!-- <div class="search-drpdwn">
+  <label>Search For Data</label>
+  <angular2-multiselect> </angular2-multiselect>
+</div> -->
+<div>
+  <ul>
+    <li
+      *ngFor="let item of tabs"
+      (click)="item === 'Graph' ? toggleTab(item) : ''"
+      [ngClass]="currentTab == item ? 'active' : ''"
+    >
+      {{ item }}
+    </li>
+  </ul>
+  <div class="table parent-container">
+    <div *ngIf="currentTab === 'Graph'">
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>PERIOD</th>
+              <th>UOM</th>
+              <th>ENE</th>
+              <th>OPS</th>
+              <th>TOT</th>
+              <th>TOT_EI</th>
+              <th>Compensation USD</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tbody>
+              <ng-container *ngIf="summaryTableData && summaryTableData.length > 0; else noData">
+                <tr *ngFor="let item of summaryTableData;let i=index">
+                  <td *ngIf="item.const_year; else emptyCell" class="custom-select">
+                    <select [(ngModel)]="selectedYear[item.const_year]" (change)="summaryYear($event.target.value,item)">
+                      <option *ngFor="let year of summaryYearData" [value]="year">{{ year }}</option>
+                    </select>
+                  </td>
+                  <ng-template #emptyCell>
+                    <td></td>
+                  </ng-template>
+                  <td>{{ item.PERIOD }}</td>
+                  <td>{{ item.UOM }}</td>
+                  <td>{{ item.ENE || '-' }}</td>
+                  <td>{{ item.OPS || '-' }}</td>
+                  <td>{{ item.TOT || '-' }}</td>
+                  <td>{{ item.TOT_EI || '-' }}</td>
+                  <td>{{ item.COMPENSATION_USD ? ('$' + item.COMPENSATION_USD) : '-' }}</td>
+                </tr>
+              </ng-container>
+              <ng-template #noData>
+                <tr>
+                  <td colspan="8" class="no-data-message">No data available</td>
+                </tr>
+              </ng-template>
+          </tbody>
+        </table>
+      </div>
+      <div class="graph-container">
+        <div class="chart-title-container">
+          <h2 class="chart-title">YOY COMPARISON</h2>
+        </div>
+        <!-- </table>  -->
+        
+        
+        <div id="yoy-chart"></div>
+        <div *ngIf="!summaryGraphData">
+          <p class="no-data-message">No Data available</p>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="currentTab === 'Table'">
+      <div class="selectableRows">
+        <app-data-table
+          [onChange]="data"  
+          [columns]="columns"
+          [rows]="rows"
+          [tableOptions]="tableOptions"
+          (serverEvents)="serverEvents($event)"
+          [buttons]="buttons"
+          (buttonClick)="buttonClickEvents($event)"
+          (selectedRowsChange)="selectedRows($event)"
+          (selectionEvents)="selectionEvents($event)"
+          (scrollEvents)="co2scrollEvents($event)"
+        >
+        </app-data-table>
+      </div>
+    </div>
+  </div>
+</div>

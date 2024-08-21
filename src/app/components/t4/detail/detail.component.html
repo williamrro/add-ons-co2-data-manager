@@ -1,1 +1,102 @@
-<p>Call Details API with search params: {{ searchParams | json }}</p>
+<!-- <p>Call Details API with search params: {{ searchParams | json }}</p> -->
+<div class="table parent-container">
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>PERIOD</th>
+          <th>UOM</th>
+          <th>ENE</th>
+          <th>OPS</th>
+          <th>TOT</th>
+          <th>TOT_EI</th>
+          <th>Compensation USD</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+      <tbody>
+        <ng-container
+          *ngIf="summaryTableData && summaryTableData.length > 0; else noData"
+        >
+          <tr *ngFor="let item of summaryTableData">
+            <td *ngIf="item.const_year; else emptyCell" class="custom-select">
+              <select [(ngModel)]="selectedYear[item.const_year]">
+                <option *ngFor="let year of summaryYearData" [value]="year">
+                  {{ year }}
+                </option>
+              </select>
+            </td>
+            <ng-template #emptyCell>
+              <td></td>
+            </ng-template>
+            <td>{{ item.PERIOD }}</td>
+            <td>{{ item.UOM }}</td>
+            <td>{{ item.ENE || "-" }}</td>
+            <td>{{ item.OPS || "-" }}</td>
+            <td>{{ item.TOT || "-" }}</td>
+            <td>{{ item.TOT_EI || "-" }}</td>
+            <td>
+              {{ item.COMPENSATION_USD ? "$" + item.COMPENSATION_USD : "-" }}
+            </td>
+          </tr>
+        </ng-container>
+        <ng-template #noData>
+          <tr>
+            <td colspan="8" class="no-data-message">No data available</td>
+          </tr>
+        </ng-template>
+      </tbody>
+    </table>
+  </div>
+  <div  class="graph-container">
+    <div class="chart-title-container">
+      <!-- <h2 class="chart-title"> -->
+      <ul>
+        <li
+          *ngFor="let item of tabs"
+          (click)="toggleTab(item)"
+          [ngClass]="currentTab == item ? 'active' : ''"
+        >
+          {{ item }}
+        </li>
+      </ul>
+      <!-- </h2> -->
+    </div>
+    <div *ngIf="currentTab == 'By Mode'">
+      <div id="mode-chart"></div>
+      <div *ngIf="!summaryGraphData">
+        <!-- <p class="no-data-message">No Data available</p> -->
+      </div>
+    </div>
+    <div *ngIf="currentTab == 'By Carrier'">
+      <table>
+        <thead>
+          <tr>
+            <th class="carrier-column">CARRI.</th>
+            <th class="carrier-name-column">CARRIER_NAME</th>
+            <th class="value-column">VALUE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let carrier of carriers; let idx = index">
+            <ng-container *ngFor="let name of carrier.names; let i = index">
+              <tr>
+                <td class="carrier-column" *ngIf="i === 0" [attr.rowspan]="carrier.names.length">
+                  {{carrier.code}}
+                </td>
+                <td class="carrier-name-column">{{name}}</td>
+                <td class="value-column">
+                  <div id="chart{{idx}}-{{i}}" class="bar-chart"></div>
+                  <div class="value-text">{{carrier.value[i]}}</div>
+                </td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </tbody>
+      </table> 
+    </div>
+    <div *ngIf="currentTab == 'By Lane'"></div>
+  </div>
+</div>
+

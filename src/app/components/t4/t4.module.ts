@@ -14,9 +14,13 @@ import { DetailComponent } from './detail/detail.component';
 import { IntensityComponent } from './intensity/intensity.component';
 import { TotalCo2Component } from './total-co2/total-co2.component';
 import { ExceptionsComponent } from './exceptions/exceptions.component';
+import { DataTableModule } from '@trax/datatable';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
-	imports: [CommonModule, FormsModule, ReactiveFormsModule, T4RoutingModule, AngularMultiSelectModule],
+	imports: [CommonModule, FormsModule, ReactiveFormsModule, T4RoutingModule, AngularMultiSelectModule,
+		DataTableModule,NgSelectModule
+	],
 	declarations: [
 		T4Component,
 		SearchFormComponent,

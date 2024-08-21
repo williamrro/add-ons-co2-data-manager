@@ -9,9 +9,9 @@
 	}
 
 	.searchForm {
-		display: flex;
-		flex-direction: column;
-		overflow: hidden;
+		// display: flex;
+		// flex-direction: column;
+		overflow-y: scroll;
 
 		.searchFormGroup {
 			display: flex;
@@ -34,7 +34,7 @@
 				border: 1px solid #9f9f9f7a;
 				border-radius: 10px;
 				overflow-y: auto;
-
+                height: 150px;
 				&--item {
 					margin-bottom: 8px;
 
@@ -69,3 +69,24 @@
 		}
 	}
 }
+// .searchFormBody--item__control .dropdown-list {
+//     z-index: 1000;
+// }
+// .searchFormBody--item__control{
+// 	position: absolute;
+// }
+// .searchFormBody--item__control {
+//     position: relative; /* Ensure the dropdown is positioned relative to the parent */
+// }
+
+// .searchFormBody--item__control .c-list {
+//     position: absolute;
+//     top: 100%; /* Position the dropdown list below the input field */
+//     left: 0;
+//     right: 0;
+//     z-index: 1000; /* Ensure the dropdown appears above other elements */
+// }
+
+// .searchFormBody--item__control angular2-multiselect  .dropdown-list.tagToBody{
+// 	// top: 293.219px !important;
+// }

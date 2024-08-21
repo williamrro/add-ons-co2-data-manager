@@ -70,6 +70,11 @@
 						color: #fff;
 					}
 				}
+				.navLink.disabled {
+					pointer-events: none;
+					color: gray; /* Or any other color to indicate it's disabled */
+					cursor: not-allowed;
+				}
 			}
 		}
 	}

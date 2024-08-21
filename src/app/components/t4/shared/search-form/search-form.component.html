@@ -1,4 +1,4 @@
-<ng-template #filterDropdown let-filtersList="filtersList" let-form="form" let-showClient="showClient">
+<ng-template #filterDropdown let-filtersList="filtersList" let-form="form" let-showClient="showClient" let-filterType="filterType">
 	<div [formGroup]="form" class="searchFormBody" *ngIf="showClient || filtersList.length > 0">
 		<div class="searchFormBody--item" *ngIf="showClient">
 			<div class="searchFormBody--item__label">Client Code</div>
@@ -9,6 +9,8 @@
 					formControlName="{{ CLIENT_CODE_FILTER_KEY }}"
 					[settings]="CLIENT_FILTER_SETTINGS"
 					(onDeSelect)="onClientDeSelect($event)"
+					(onScroll)="scrollEvents($event)"
+					(onSelect)="clientSelect($event)"
 				>
 				</angular2-multiselect>
 			</div>
@@ -18,15 +20,17 @@
 				<div class="searchFormBody--item__label">{{ filter.label }}</div>
 				<div
 					class="searchFormBody--item__control"
-					[class.disabled]="!searchForm.value[CLIENT_CODE_FILTER_KEY].length > 0"
-				>
+					  [class.disabled]="!(searchForm.get('searchStandardFormGroup').get(CLIENT_CODE_FILTER_KEY)?.value.length > 0)">
+				
 					<angular2-multiselect
+					    #dropdown
 						id="drp_{{ filter.key }}"
 						[data]="filterValues"
 						formControlName="{{ filter.key }}"
 						[settings]="filter.selectMode === 'single' ? SINGLE_SELECT_SETTINGS : MULTI_SELECT_SETTINGS"
-						(onOpen)="onFilterOpen()"
-						(onScrollToEnd)="onFilterValuesScrollToEnd($event, filter.key)"
+						(onOpen)="onFilterOpen($event, filter.key,filterType)"
+						(scroll)="scrollEvents($event)"
+						(onScrollToEnd)="onFilterValuesScrollToEnd($event, filter,filterType)"
 					>
 						<c-search>
 							<ng-template>
@@ -67,7 +71,7 @@
 			<div class="searchFormTitle">Standard Filters</div>
 			<ng-container
 				[ngTemplateOutlet]="filterDropdown"
-				[ngTemplateOutletContext]="{ form: searchForm, filtersList: standardFiltersList, showClient: true }"
+				[ngTemplateOutletContext]="{ form: searchForm.get('searchStandardFormGroup'), filtersList: standardFiltersList, showClient: true,filterType: 'standard' }"
 			>
 			</ng-container>
 		</div>
@@ -77,9 +81,9 @@
 			To avoid this, min height is set.
 			calc: 50 is for the searchFormTitle and 82 (filter dropdown height + padding + margin + border)
 		-->
+		<!-- [style.minHeight.px]="customFiltersList.length > 3 ? 3 * 82 + 50 : customFiltersList.length * 82 + 50" -->
 		<div
 			class="searchFormGroup"
-			[style.minHeight.px]="customFiltersList.length > 3 ? 3 * 82 + 50 : customFiltersList.length * 82 + 50"
 		>
 			<div class="searchFormTitle">
 				Custom Filters
@@ -90,7 +94,7 @@
 			</div>
 			<ng-container
 				[ngTemplateOutlet]="filterDropdown"
-				[ngTemplateOutletContext]="{ form: searchForm, filtersList: customFiltersList }"
+				[ngTemplateOutletContext]="{ form: searchForm.get('searchCustomFormGroup1'), filtersList: customFiltersList,filterType:'custom' }"
 			>
 			</ng-container>
 		</div>
@@ -101,11 +105,11 @@
 		</div>
 	</form>
 </div>
-
+<!-- {{(searchForm.get('searchStandardFormGroup').get(CLIENT_CODE_FILTER_KEY)?.value) | json}} -->
 <app-manage-filters
 	[@directivesAnimation]
-	*ngIf="showPopup && searchForm.value[CLIENT_CODE_FILTER_KEY].length > 0"
-	[selectedClients]="searchForm.value[CLIENT_CODE_FILTER_KEY]"
+	*ngIf="showPopup && (searchForm.get('searchStandardFormGroup').get(CLIENT_CODE_FILTER_KEY)?.value).length > 0"
+	[selectedClients]="(searchForm.get('searchStandardFormGroup').get(CLIENT_CODE_FILTER_KEY)?.value)"
 	[selectedFilters]="customFiltersList"
 	(closePopup)="togglePopup()"
 	(refreshFilters)="refreshFilters()"
