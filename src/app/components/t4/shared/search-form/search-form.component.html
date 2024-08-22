@@ -69,11 +69,13 @@
 	<form [formGroup]="searchForm" class="searchForm" (ngSubmit)="onSearch()" *ngIf="isFiltersInitialized">
 		<div class="searchFormGroup">
 			<div class="searchFormTitle">Standard Filters</div>
+			<div *ngIf="standardFiltersList && standardFiltersList.length > 0; else noFilters">
 			<ng-container
 				[ngTemplateOutlet]="filterDropdown"
 				[ngTemplateOutletContext]="{ form: searchForm.get('searchStandardFormGroup'), filtersList: standardFiltersList, showClient: true,filterType: 'standard' }"
 			>
 			</ng-container>
+		    </div>
 		</div>
 		<!--
 			style.minHeight.px below is to set min height for the custom filters section. 
@@ -92,12 +94,21 @@
 					<span class="formIconContainer--text">Manage Filters</span>
 				</div>
 			</div>
+			<div *ngIf="customFiltersList && customFiltersList.length > 0; else noFilters">
 			<ng-container
 				[ngTemplateOutlet]="filterDropdown"
 				[ngTemplateOutletContext]="{ form: searchForm.get('searchCustomFormGroup1'), filtersList: customFiltersList,filterType:'custom' }"
 			>
 			</ng-container>
+		    </div>
+			
 		</div>
+		 <!-- No filters found message -->
+		 <ng-template #noFilters>
+			<div class="noFiltersMessage">
+			  No filters found
+			</div>
+		  </ng-template>
 		<div class="formButton">
 			<button tabindex="0" class="actionButton actionButton__green" type="submit">
 				<span class="text">Search</span>
