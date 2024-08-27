@@ -47,30 +47,7 @@ export class SummaryComponent implements OnInit {
 
   summaryYearData: any[];
   summaryTableData: any = [];
-  summaryGraphData: any;
-  carriers: Carrier[] = [
-    {
-      code: "DSVEU",
-      names: ["DSV", "DSV AIR & SEA NEDERLAND BV"],
-      value: [1539, 16789],
-    },
-    { code: "FDE", names: ["FEDEX EXPRESS"], value: [3539] },
-    {
-      code: "KHNN",
-      names: ["KUEHNE & NAGEL (KHNN)", "KUEHNE+NAGEL IE"],
-      value: [2539, 0],
-    },
-    { code: "UPSSCS", names: ["UPS Supply Chain Solutions"], value: [1539] },
-    { code: "DGFLNL", names: ["DHL GLOBAL FORWARDING"], value: [6539] },
-    { code: "DSV", names: ["DSV"], value: [5539] },
-    { code: "UPSS", names: ["UPS SUPPLY CHAIN SOLUTIONS"], value: [3539] },
-    {
-      code: "UPS",
-      names: ["United Parcel Service", "UPS SMALL PARCELS"],
-      value: [13339, 0],
-    },
-    // Additional carriers...
-  ];
+  summaryGraphData: any = [];
   maxValue: number;
   constructor(
     private searchService: SearchService,
@@ -185,37 +162,8 @@ export class SummaryComponent implements OnInit {
     this.appService.getAllSummaryYears().subscribe((res: any) => {
       this.summaryYearData = res;
     });
-    const flattenedValues = this.carriers
-      .map((carrier) => carrier.value) // Create an array of value arrays
-      .reduce((acc, curr) => acc.concat(curr), []); // Flatten the array
-
-    // Find the maximum value
-    this.maxValue = Math.max(...flattenedValues);
-    // Sort the carriers array by the maximum value in each carrier's values array (descending order)
-    this.carriers.sort((a, b) => {
-      return Math.max(...b.value) - Math.max(...a.value);
-    });
-  }
-  ngAfterViewInit() {
-    this.carriers.forEach((carrier, index) => {
-      carrier.value.forEach((val, i) => {
-        this.generateChart1(`chart${index}-${i}`, val, this.maxValue);
-      });
-    });
   }
 
-  generateChart1(elementId: string, value: number, maxValue: number) {
-    const widthPercentage = (value / maxValue) * 100;
-    const chartElement = document.getElementById(elementId);
-    if (chartElement) {
-      // Directly set the width of the chart container based on the value
-      chartElement.style.width = `${widthPercentage}%`;
-      chartElement.style.height = "40px";
-      chartElement.style.backgroundColor = "#1f77b4";
-      chartElement.style.margin = "0 0 5px 0";
-    }
-
-  }
   summaryYear(data, i) {
     this.summaryApiData(data, i);
   }
@@ -236,71 +184,17 @@ export class SummaryComponent implements OnInit {
     });
   }
   summaryGraphFunction() {
-    const obj1 = {
-      // basePeriod: 2023,
-      // currentPeiod: 2024,
-      // standardFilters: {
-      //   clientCode: ["LUXT"],
-      //   mode_ref: ["AIR FREIGHT"],
-      //   // "destinationCountry" : ["US","CA"],
-      //   // "originCity" : ["New York"]
-      //   showBy: ["ENE"],
-      // },
-      // customFilters: {
-      //   coa: ["REQUIRED"],
-      // },
+    const obj = {
       standardFilters: this.searchParams.searchStandardFormGroup,
       customFilters: this.searchParams.searchCustomFormGroup1,
     };
-    this.appService.summaryGraph(obj1).subscribe((res: any) => {
+    this.appService.summaryGraph(obj).subscribe((res: any) => {
       this.summaryGraphData = res.data;
       this.generateChart(this.summaryGraphData);
       this.chartGenerated = true;
     });
   }
-  ngAfterViewChecked(): void {
-    if (this.currentTab === "Graph" && !this.chartGenerated) {
-      // this.generateChart();
-      // this.chartGenerated = true; // Set flag to true after chart is generated
-    } else if (this.currentTab === "Table" && !this.tableDataLoaded) {
-      this.initializeTableData();
-      this.tableDataLoaded = true; // Set flag to true after table data is loaded
-    }
-  }
   generateChart(data) {
-    // bindto: "#yoy-chart",
-    // c3.generate({
-    //   bindto: "#yoy-chart",
-    //   data: {
-    //     columns: [data],
-    //     type: "line",
-    //     labels: true,
-    //   },
-    //   axis: {
-    //     rotated: true, // This makes the bar chart horizontal
-    //     x: {
-    //       type: "category",
-    //       // categories: categories,
-    //       tick: {
-    //         multiline: false,
-    //       },
-    //     },
-    //     y: {
-    //       label: {
-    //         text: "Value",
-    //         position: "outer-middle",
-    //       },
-    //     },
-    //   },
-    //   bar: {
-    //     width: {
-    //       ratio: 0.5, // Adjust the width of the bars
-    //     },
-    //   },
-    //   legend: {
-    //     show: false, // Hide the legend if unnecessary
-    //   },
-    // });
     c3.generate({
       bindto: "#yoy-chart",
       data: {
