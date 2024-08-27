@@ -121,4 +121,22 @@ export class AppService {
       reqPayload
     );
   }
+  detailModeGraph(reqPayload: any) {
+    return this.http.post(
+      this.BASE_URL + "co2emission/api/detail/modeGraph",
+      reqPayload
+    );
+  }
+  detailCarrerGraph(reqPayload: any) {
+    return this.http.post(
+      this.BASE_URL + "co2emission/api/detail/carrierGraph",
+      reqPayload
+    );
+  }
+  detailLaneGraph(reqPayload: any) {
+    return this.http.post(
+      this.BASE_URL + "co2emission/api/detail/laneGraph",
+      reqPayload
+    );
+  }
 }

@@ -1,4 +1,3 @@
-<!-- <p>Call Details API with search params: {{ searchParams | json }}</p> -->
 <div class="table parent-container">
   <div class="table-container">
     <table>
@@ -49,9 +48,8 @@
       </tbody>
     </table>
   </div>
-  <div  class="graph-container">
+  <div class="graph-container">
     <div class="chart-title-container">
-      <!-- <h2 class="chart-title"> -->
       <ul>
         <li
           *ngFor="let item of tabs"
@@ -61,42 +59,50 @@
           {{ item }}
         </li>
       </ul>
-      <!-- </h2> -->
     </div>
-    <div *ngIf="currentTab == 'By Mode'">
-      <div id="mode-chart"></div>
-      <div *ngIf="!summaryGraphData">
-        <!-- <p class="no-data-message">No Data available</p> -->
-      </div>
+    <div [hidden]="currentTab != 'By Mode'">
+      <div *ngIf="summaryModeData.length > 0; else noDataModeChart" id="mode-chart"></div>
+      <ng-template #noDataModeChart>
+        <p class="no-data-message">No Data available</p>
+      </ng-template>
     </div>
-    <div *ngIf="currentTab == 'By Carrier'">
-      <table>
+    <ng-container *ngIf="currentTab == 'By Carrier' || currentTab == 'By Lane'">
+      <table *ngIf="(currentTab == 'By Carrier' && carriers.length > 0) || (currentTab == 'By Lane' && lanes.length > 0); else noDataCarrierLaneTable">
         <thead>
           <tr>
-            <th class="carrier-column">CARRI.</th>
-            <th class="carrier-name-column">CARRIER_NAME</th>
-            <th class="value-column">VALUE</th>
+            <th *ngIf="currentTab == 'By Carrier'">CARRIER</th>
+            <th *ngIf="currentTab == 'By Carrier'">CARRIER_NAME</th>
+            <th *ngIf="currentTab == 'By Lane'">Lane by Country</th>
+            <th *ngIf="currentTab == 'By Lane'">Lane by City</th>
+            <th style="width: 40%">VALUE</th>
           </tr>
         </thead>
         <tbody>
-          <ng-container *ngFor="let carrier of carriers; let idx = index">
-            <ng-container *ngFor="let name of carrier.names; let i = index">
-              <tr>
-                <td class="carrier-column" *ngIf="i === 0" [attr.rowspan]="carrier.names.length">
-                  {{carrier.code}}
-                </td>
-                <td class="carrier-name-column">{{name}}</td>
-                <td class="value-column">
-                  <div id="chart{{idx}}-{{i}}" class="bar-chart"></div>
-                  <div class="value-text">{{carrier.value[i]}}</div>
-                </td>
-              </tr>
-            </ng-container>
-          </ng-container>
+          <tr
+            *ngFor="let item of currentTab == 'By Carrier' ? carriers : lanes"
+          >
+            <td>{{ item.param1 }}</td>
+            <td>{{ item.param2 }}</td>
+            <td>
+              <div class="bar-container">
+                <div
+                  class="bar"
+                  [ngStyle]="{
+                    width: getBarWidth(
+                      currentTab == 'By Carrier' ? carriers : lanes,
+                      item.value
+                    )
+                  }"
+                ></div>
+                <span>{{ item.value | number }}</span>
+              </div>
+            </td>
+          </tr>
         </tbody>
-      </table> 
-    </div>
-    <div *ngIf="currentTab == 'By Lane'"></div>
+      </table>
+      <ng-template #noDataCarrierLaneTable>
+        <p class="no-data-message">No Data available</p>
+      </ng-template>
+    </ng-container>
   </div>
 </div>
-
