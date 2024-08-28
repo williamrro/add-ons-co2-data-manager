@@ -225,17 +225,24 @@ export class SummaryComponent implements OnInit {
           height: 70, // Adjust height to accommodate vertical labels
         },
         y: {
-          label: {
-            text: "",
-            position: "outer-middle",
+          min: 0, // Set minimum value of Y-axis to 0
+          padding: {
+            bottom: 0, // Remove padding below 0 to avoid negative values
           },
           tick: {
-            format: (d) => {
-              return d / 1000 + "K"; // Format the tick labels to display in 'K' units
-            },
-          },
-        },
+            format: function (d) {
+              return d / 1000 + "k"; // Format value in 'k' and start from 0k
+            }
+          }
+        }
       },
+      tooltip: {
+        format: {
+          value: function (value) {
+            return value; // Display the raw value in the tooltip
+          }
+        }
+      }
     });
   }
 
