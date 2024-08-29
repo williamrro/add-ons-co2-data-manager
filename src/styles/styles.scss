@@ -1,0 +1,1614 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import 'variables';
+/* You can add global styles to this file, and also import other style files */
+
+/*#region FPS Screens*/
+body {
+	color: #666666;
+}
+
+.wrap {
+	display: table;
+	width: 100%;
+	table-layout: fixed;
+	border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+	min-height: 3rem;
+}
+
+.wrap:nth-child(even) {
+	background: #fff;
+}
+
+.wrap.header {
+	background: #a3a3a3;
+	color: #fff;
+	font-weight: bold;
+}
+
+.wrap.header .description {
+	line-height: 16px;
+}
+
+div.cell.description:first-child {
+	width: 200px;
+	text-align: left;
+}
+
+div.cell.description:last-child {
+	width: 100px;
+}
+
+.pill {
+	background: #ebebec;
+	padding: 0px 10px;
+	font-size: 0.75em;
+	letter-spacing: 1px;
+	cursor: pointer;
+	margin: 5px 5px 5px 0px;
+	display: inline-block;
+}
+
+.remove {
+	background-color: red;
+	word-wrap: break-word;
+	width: 10%;
+	text-align: center;
+	border-right: 0.5px solid rgba(0, 0, 0, 0.2);
+	/* white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; */
+	/* text-overflow: ellipsis; */
+	font-size: 0.7em;
+	text-transform: uppercase;
+}
+
+/* NEW STYLES */
+
+.flex {
+	display: flex;
+}
+
+.flex.column {
+	display: flex;
+	flex-direction: column;
+}
+
+.flex.centered {
+	align-content: center;
+	align-items: center;
+	justify-content: center;
+}
+
+.app {
+	font-family: 'Source Sans Pro', sans-serif;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+main {
+	display: flex;
+	flex: 1;
+	overflow: hidden;
+}
+
+section {
+	flex: 1;
+	overflow: hidden;
+	padding: 20px;
+}
+
+aside {
+	background: #262626;
+	color: #fff;
+	flex: 50px 0 0;
+}
+
+aside > section {
+	padding: 0;
+}
+
+.content {
+	flex: 1;
+	overflow: hidden;
+}
+
+.filter select {
+	font-size: 15px;
+	-moz-appearance: none;
+	appearance: none;
+	-webkit-appearance: none;
+	/* width: 20%; */
+	background: url('/assets/img/chevron-down.svg') #fff no-repgiteat center right 10px;
+	border: 1px solid #ccc;
+	background-size: 20px;
+	border-radius: 0;
+	padding: 10px 40px 10px 10px;
+	margin-right: 20px;
+}
+
+.filter input {
+	font-size: 15px;
+	-moz-appearance: none;
+	appearance: none;
+	-webkit-appearance: none;
+	border: 1px solid #ccc;
+	background-size: 20px;
+	border-radius: 0;
+	padding: 10px 40px 10px 10px;
+	margin-right: 20px;
+}
+
+select {
+	font-size: 15px;
+	-moz-appearance: none;
+	appearance: none;
+	-webkit-appearance: none;
+	/* width: 20%; */
+	background: url('/assets/img/chevron-down.svg') #fff no-repeat center right 10px;
+	border: 1px solid #ddd;
+	background-size: 20px;
+	border-radius: 0;
+	padding: 5px;
+	/* margin: 0 20px; */
+}
+
+select:disabled,
+input:disabled {
+	background: #ccc;
+}
+
+.txtInput {
+	padding: 5px;
+	font-size: 1.1em;
+	outline: none;
+	border: 1px solid #ddd;
+}
+
+.actionBtns {
+	text-align: right;
+	padding: 20px 0;
+}
+
+.btn {
+	padding: 10px 40px;
+	color: #fff;
+	text-transform: uppercase;
+	font-size: 0.9em;
+	cursor: pointer;
+	border: 0;
+}
+
+.btn.small,
+.hbtn.small {
+	font-size: 0.75em;
+	padding: 5px 15px;
+	font-weight: 500;
+	cursor: pointer;
+}
+
+.btn.gray {
+	background: #9b9b9b;
+}
+
+.gray {
+	color: #9b9b9b;
+}
+
+.btn.amber {
+	background: rgba(255, 138, 0, 0.8);
+}
+
+.btn.red {
+	background: rgba(244, 74, 62, 0.8);
+}
+
+.btn.green {
+	background: rgba(103, 181, 171, 1);
+	border: 1px solid rgba(103, 181, 171, 1);
+}
+
+.hbtn {
+	background: none !important;
+}
+
+.hbtn.gray {
+	border: 1px solid #666;
+	color: #666;
+}
+
+.subTab {
+	width: 80%;
+	overflow-y: auto;
+}
+
+.toggle {
+	display: table;
+	-webkit-tap-highlight-color: transparent;
+	margin-bottom: 1rem;
+}
+
+.toggle input {
+	display: none;
+}
+
+.toggle input:focus + div {
+	text-decoration: underline;
+}
+
+.toggle > div {
+	cursor: pointer;
+	border-radius: 2rem;
+	width: 5rem;
+	height: 2rem;
+	background: white;
+	border: 2px solid #aaa;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	position: relative;
+	-webkit-transition: 200ms ease-out;
+	transition: 200ms ease-out;
+	font-size: 0;
+}
+
+.toggle > div:hover {
+	box-shadow: 0 0 6px #005ca4;
+}
+
+.toggle > div:before {
+	will-change: translate;
+	display: block;
+	position: absolute;
+	top: calc(50% - 0.5rem);
+	left: 0.5rem;
+	content: '';
+	width: 1rem;
+	height: 1rem;
+	background: #aaa;
+	border-radius: 50%;
+	-webkit-transition: 200ms;
+	transition: 200ms;
+}
+
+.toggle > div:after {
+	font-size: 1rem;
+	position: absolute;
+	right: -85%;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+	content: attr(data-off);
+	pointer-events: none;
+}
+
+.toggle input:checked + div {
+	background: #67b5ab;
+	border-color: #67b5ab;
+}
+
+.toggle input:checked + div:before {
+	color: #67b5ab;
+	-webkit-transform: translateX(280%);
+	transform: translateX(280%);
+	-webkit-transform: translateX(calc(2.5 * 100% + 4px));
+	transform: translateX(calc(2.5 * 100% + 4px));
+	background: white;
+}
+
+.toggle input:checked + div:after {
+	content: attr(data-on);
+}
+
+.toggle.small {
+	display: table;
+	-webkit-tap-highlight-color: transparent;
+	margin-bottom: 1rem;
+}
+
+.toggle.small input {
+	display: none;
+}
+
+.toggle.small input:focus + div {
+	text-decoration: underline;
+}
+
+.toggle.small > div {
+	cursor: pointer;
+	border-radius: 2rem;
+	width: 2rem;
+	height: 1rem;
+	background: white;
+	border: 2px solid #aaa;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	position: relative;
+	-webkit-transition: 200ms ease-out;
+	transition: 200ms ease-out;
+	font-size: 0;
+}
+
+.toggle.small > div:hover {
+	box-shadow: 0 0 6px #005ca4;
+}
+
+.toggle.small > div:before {
+	will-change: translate;
+	display: block;
+	position: absolute;
+	top: calc(50% - 0.25rem);
+	left: 0.25rem;
+	content: '';
+	width: 0.5rem;
+	height: 0.5rem;
+	background: #aaa;
+	border-radius: 50%;
+	-webkit-transition: 200ms;
+	transition: 200ms;
+}
+
+.toggle.small > div:after {
+	font-size: 1rem;
+	position: absolute;
+	right: -100%;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+	content: attr(data-off);
+	pointer-events: none;
+}
+
+.toggle.small input:checked + div {
+	background: #67b5ab;
+	border-color: #67b5ab;
+}
+
+.toggle.small input:checked + div:before {
+	color: #67b5ab;
+	-webkit-transform: translateX(280%);
+	transform: translateX(280%);
+	-webkit-transform: translateX(calc(2.5 * 100% + 4px));
+	transform: translateX(calc(1.5 * 100% + 4px));
+	background: white;
+}
+
+.toggle.small input:checked + div:after {
+	content: attr(data-on);
+}
+
+input:focus + div:after {
+	text-decoration: underline;
+}
+
+span.pending {
+	width: 8px;
+	height: 8px;
+	border-radius: 8px;
+	margin-left: 5px;
+	background: #ff8a00;
+	display: inline-block;
+}
+
+input.invalid {
+	border: 1px solid red !important;
+}
+
+input.valid {
+	border: 1px solid rgb(94, 206, 94);
+}
+
+/* CUSTOM DROPDOWN */
+
+.pure-checkbox[_ngcontent-c3] input[type='checkbox'][_ngcontent-c3]:checked + label[_ngcontent-c3]:before {
+	background: #67b5ab !important;
+	color: #ffffff !important;
+	border: 2px solid #67b5ab !important;
+}
+
+.pure-checkbox[_ngcontent-c3] input[type='checkbox'][_ngcontent-c3] + label[_ngcontent-c3]:before {
+	border: 2px solid #67b5ab !important;
+}
+
+.main-sidebar .group__item:hover,
+.main-sidebar .sub-menu__item:hover,
+.main-sidebar .sub-link:hover {
+	color: #67b5ab !important;
+}
+
+.main-sidebar .current-active,
+.main-sidebar .menu.current-active {
+	color: #67b5ab !important;
+}
+
+.main-sidebar .current-active .sub-link {
+	color: #67b5ab !important;
+}
+
+.main-sidebar .sub-menu .lighter-color:hover,
+.main-sidebar .lighter-color .menu__label,
+.main-sidebar .lighter-color .menu__label:hover {
+	color: #655f5f !important;
+}
+
+.main-sidebar .ttsm-i.ttsm-i-angle-right:hover,
+.main-sidebar .group__item .current-active .ttsm-i.ttsm-i-angle-right,
+.main-sidebar .group__item:hover .ttsm-i.ttsm-i-angle-right {
+	background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHdpZHRoPSIxNzkyIiBoZWlnaHQ9IjE3OTIiIHZpZXdCb3g9IjAgMCAxNzkyIDE3OTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTExNzEgOTYwcTAgMTMtMTAgMjNsLTQ2NiA0NjZxLTEwIDEwLTIzIDEwdC0yMy0xMGwtNTAtNTBxLTEwLTEwLTEwLTIzdDEwLTIzbDM5My0zOTMtMzkzLTM5M3EtMTAtMTAtMTAtMjN0MTAtMjNsNTAtNTBxMTAtMTAgMjMtMTB0MjMgMTBsNDY2IDQ2NnExMCAxMCAxMCAyM3oiIGZpbGw9IiM2N0I1QUIiLz48L3N2Zz4=') !important;
+}
+
+.main-sidebar .ttsm-i.ttsm-i-angle-down:hover,
+.main-sidebar .group__item .current-active .ttsm-i.ttsm-i-angle-down,
+.main-sidebar .group__item:hover .ttsm-i.ttsm-i-angle-down {
+	background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHdpZHRoPSIxNzkyIiBoZWlnaHQ9IjE3OTIiIHZpZXdCb3g9IjAgMCAxNzkyIDE3OTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEzOTUgNzM2cTAgMTMtMTAgMjNsLTQ2NiA0NjZxLTEwIDEwLTIzIDEwdC0yMy0xMGwtNDY2LTQ2NnEtMTAtMTAtMTAtMjN0MTAtMjNsNTAtNTBxMTAtMTAgMjMtMTB0MjMgMTBsMzkzIDM5MyAzOTMtMzkzcTEwLTEwIDIzLTEwdDIzIDEwbDUwIDUwcTEwIDEwIDEwIDIzeiIgZmlsbD0iIzY3QjVBQiIvPjwvc3ZnPg==') !important;
+}
+
+left-side-menu-select > aside > section > ul > li:nth-child(1) > div > div.menu__logo > img,
+left-side-menu-select > aside > section > ul > li:nth-child(1) > div > div.menu__logo > i {
+	color: #67b5ab !important;
+	// filter:s invert(69%) saturate(256%) hue-rotate(240deg) brightness(100%) contrast(81%)
+}
+
+.my-pagination {
+	background: white !important;
+}
+
+@media only screen and (min-width: 800px) {
+	#commentsFilter {
+		font-size: 6px;
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+	#commentsFilter {
+		font-size: 9.5px;
+	}
+}
+
+@media only screen and (max-width: 1500px) {
+	#commentsFilter {
+		font-size: 8px;
+	}
+}
+
+@media only screen and (min-width: 1600px) {
+	#commentsFilter {
+		font-size: 11px;
+	}
+}
+
+.highlightRow {
+	animation: fadeFromRed 5s;
+}
+
+.webix_message_area {
+	width: 400px;
+	height: 40px;
+	top: 130px !important;
+	left: 400px;
+	font-weight: bold;
+	text-align: center;
+}
+
+@keyframes fadeFromRed {
+	0% {
+		background-color: #ffaaaa;
+	}
+
+	100% {
+		background-color: transparent;
+	}
+}
+
+.pagination-block {
+	width: 100%;
+	text-align: center;
+	float: left;
+
+	.ng2-pagination {
+		padding-left: 0;
+	}
+}
+
+pagination-controls .ng2-pagination li.current {
+	background: #67b5ab;
+}
+
+pagination-controls .ng2-pagination li {
+	font-size: 18px;
+	cursor: pointer;
+	border: 1px solid #c3c3c3;
+}
+
+.veraction {
+	color: #67b5ab;
+}
+
+.modal-btn-group {
+	display: block;
+	margin-top: 10px;
+	text-align: center;
+
+	.btns {
+		height: 35px;
+		width: 80px;
+		background: #67b5ab;
+		outline: none;
+		border: none;
+		color: white;
+		font-size: 12px;
+
+		&:hover {
+			background: darken(#67b5ab, 5%);
+		}
+	}
+
+	.btn-cancel {
+		background: #c3c3c3;
+
+		&:hover {
+			background: darken(#c3c3c3, 7%);
+		}
+	}
+
+	.btn-del {
+		background: lighten(#d00000, 7%);
+
+		&:hover {
+			background: darken(#d00000, 4%);
+		}
+	}
+
+	// .btn-cancel {
+	//     margin-right: 15px;
+	// }
+}
+
+.params-modal {
+	margin-top: 10%;
+	left: -57px;
+}
+
+.params-modal-content {
+	width: 400px;
+	border: none;
+	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.16);
+
+	.close {
+		outline: none;
+	}
+}
+
+.info-modal-box {
+	max-width: calc(55vw);
+	margin-top: 58px;
+	width: auto;
+}
+
+.info-modal-content {
+	width: auto;
+	min-width: 400px;
+	border: none;
+	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.16);
+	cursor: default;
+}
+
+.info-modal-top {
+	padding: 8px 15px 0px 15px;
+	//border-bottom: 1px solid #e5e5e5;
+	display: flex;
+	justify-content: flex-end;
+
+	button {
+		outline: none;
+	}
+}
+
+.info-modal-header {
+	padding: 0 15px 8px 15px;
+	outline: none;
+	user-select: none;
+
+	h4 {
+		font-size: 18px;
+		color: #666666;
+		font-weight: bold;
+	}
+}
+
+.info-mbody {
+	max-height: calc(75vh);
+	overflow-y: auto;
+}
+
+.success-msg {
+	text-align: center;
+	font-size: 17px;
+	color: #67b5ab;
+
+	p {
+		margin-top: 16px;
+	}
+}
+
+.edit-param-modal-header {
+	// text-align: center;
+	// justify-content: center;
+	// font-size: 20px;
+	// i {
+	//     margin-right: 5px;
+	// }
+	flex: 1;
+}
+
+.main-sidebar .group__item:hover,
+.main-sidebar .sub-menu__item:hover,
+.main-sidebar .sub-link:hover {
+	color: #67b5ab !important;
+}
+
+.main-sidebar .current-active,
+.main-sidebar .menu.current-active {
+	color: #67b5ab !important;
+}
+
+.main-sidebar .ttsm-i.ttsm-i-angle-right:hover,
+.main-sidebar .group__item .current-active .ttsm-i.ttsm-i-angle-right,
+.main-sidebar .group__item:hover .ttsm-i.ttsm-i-angle-right {
+	background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHdpZHRoPSIxNzkyIiBoZWlnaHQ9IjE3OTIiIHZpZXdCb3g9IjAgMCAxNzkyIDE3OTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTExNzEgOTYwcTAgMTMtMTAgMjNsLTQ2NiA0NjZxLTEwIDEwLTIzIDEwdC0yMy0xMGwtNTAtNTBxLTEwLTEwLTEwLTIzdDEwLTIzbDM5My0zOTMtMzkzLTM5M3EtMTAtMTAtMTAtMjN0MTAtMjNsNTAtNTBxMTAtMTAgMjMtMTB0MjMgMTBsNDY2IDQ2NnExMCAxMCAxMCAyM3oiIGZpbGw9IiM2N0I1QUIiLz48L3N2Zz4=') !important;
+	color: #67b5ab !important;
+}
+
+.main-sidebar .ttsm-i.ttsm-i-angle-down:hover,
+.main-sidebar .group__item .current-active .ttsm-i.ttsm-i-angle-down,
+.main-sidebar .group__item:hover .ttsm-i.ttsm-i-angle-down {
+	background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHdpZHRoPSIxNzkyIiBoZWlnaHQ9IjE3OTIiIHZpZXdCb3g9IjAgMCAxNzkyIDE3OTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEzOTUgNzM2cTAgMTMtMTAgMjNsLTQ2NiA0NjZxLTEwIDEwLTIzIDEwdC0yMy0xMGwtNDY2LTQ2NnEtMTAtMTAtMTAtMjN0MTAtMjNsNTAtNTBxMTAtMTAgMjMtMTB0MjMgMTBsMzkzIDM5MyAzOTMtMzkzcTEwLTEwIDIzLTEwdDIzIDEwbDUwIDUwcTEwIDEwIDEwIDIzeiIgZmlsbD0iIzY3QjVBQiIvPjwvc3ZnPg==') !important;
+	color: #67b5ab !important;
+}
+
+.main-sidebar .sub-menu .lighter-color:hover,
+.main-sidebar .lighter-color .menu__label,
+.main-sidebar .lighter-color .menu__label:hover {
+	color: #655f5f !important;
+}
+
+left-side-menu-select > aside > section > ul > li:nth-child(1) > div > div.menu__logo > img,
+left-side-menu-select > aside > section > ul > li:nth-child(1) > div > div.menu__logo > i {
+	filter: invert(69%) saturate(256%) hue-rotate(240deg) brightness(100%) contrast(81%);
+	color: #67b5ab !important;
+}
+
+.ngx-accordion-header {
+	// background: #a3a3a3;
+	background: #ffffff;
+	padding: 10px;
+	font-size: 13px;
+	cursor: pointer;
+	box-shadow: 0 7px 7px -10px rgba(0, 0, 0, 0.2);
+}
+
+.ngx-accordion-container {
+	margin-bottom: 10px;
+}
+
+.wrap {
+	display: table;
+	width: 100%;
+	table-layout: fixed;
+	border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+	min-height: 3rem;
+}
+
+.wrap:nth-child(even) {
+	background: #fff;
+}
+
+.wrap.header {
+	background: #a3a3a3;
+	color: #fff;
+	font-weight: bold;
+}
+
+.wrap.header .description {
+	line-height: 16px;
+}
+
+div.cell.description:first-child {
+	width: 200px;
+	text-align: left;
+}
+
+div.cell.description:last-child {
+	width: 100px;
+}
+
+.cell {
+	display: table-cell;
+	vertical-align: middle;
+	padding: 10px;
+	line-height: 2em;
+	text-align: center;
+}
+
+.description {
+	width: 100px;
+}
+
+.roles {
+	width: auto;
+}
+
+.dt-hover {
+	background: #ddd !important;
+	cursor: pointer;
+}
+
+ngx-daterangepicker-material {
+	.md-drppicker .drops-down-auto .ltr .shown .double .show-ranges {
+		left: 644px !important;
+	}
+}
+
+.md-drppicker td.available:hover,
+.md-drppicker th.available:hover {
+	background-color: #e5f7f4b3 !important;
+}
+
+.md-drppicker .ranges ul li button.active {
+	background-color: #67b5ab !important;
+}
+
+.md-drppicker td.active,
+.md-drppicker td.active:hover {
+	background-color: #67b5ab !important;
+}
+
+.md-drppicker .clear svg {
+	margin-bottom: -5px;
+}
+
+.md-drppicker .btn {
+	background-color: #67b5ab !important;
+	width: 10%;
+	text-align: center;
+	float: right;
+}
+
+.md-drppicker .ranges ul li button {
+	// padding: 0px 0px !important;
+}
+
+.growl .growl-message {
+	word-break: break-word;
+}
+
+.ng-select {
+	width: 65%;
+	background-color: white !important;
+}
+
+.ng-select .ng-select-container {
+	border-radius: unset;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container {
+	height: 35px;
+	overflow: hidden;
+	flex-wrap: unset;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+	padding: 5px;
+	background: white;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items {
+	background-color: white;
+}
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected {
+	background-color: unset;
+	color: #00a98b;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
+	background-color: #fafafa;
+	cursor: default;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container {
+	height: 30px !important;
+}
+.ng-select.ng-select-single .ng-select-container {
+	background-color: #fafafa;
+	font-size: 14px;
+}
+.ng-dropdown-panel .scroll-host {
+	font-size: 14px;
+}
+.md-drppicker {
+	border-radius: 0px !important;
+	padding: 4px 4px 6px 4px !important;
+}
+
+.md-drppicker .btn {
+	border-radius: 0px !important;
+	line-height: unset !important;
+	padding: 6px 5px !important;
+	width: 10%;
+	font-size: small;
+	text-transform: capitalize !important;
+}
+
+.md-drppicker .ranges ul li button:focus {
+	outline: none;
+}
+
+app-data-table .modal-dialog {
+	width: unset !important;
+	max-width: unset !important;
+	margin: unset !important;
+
+	.modal-header {
+		display: unset;
+		border-bottom: unset;
+	}
+
+	.modal-body {
+		padding: unset;
+	}
+
+	.modal-content {
+		display: block;
+		border: unset;
+	}
+}
+
+.q-switch-radio:checked + .q-switch-label {
+	border: 1px solid #67b5ab !important;
+	color: #67b5ab !important;
+	background-color: #ffffff !important;
+}
+
+.q-switch-label {
+	background-color: #f2f2f2 !important;
+}
+
+.simple-notification-wrapper {
+	display: block !important;
+	width: 400px !important;
+}
+
+.simple-notification.info {
+	background: #7f8c8d !important;
+}
+
+.simple-notification.info .sn-progress-loader span {
+	background: #696f6f !important;
+}
+
+.simple-notification.has-icon .sn-title,
+.simple-notification.has-icon .sn-content {
+	word-break: break-word;
+	font-size: 13px;
+}
+
+.simple-notification .sn-title {
+	font-size: 16px;
+}
+
+.simple-notification.error {
+	background: #ffe0e0 !important;
+	color: #f44336 !important;
+}
+
+.simple-notification.error .sn-progress-loader span {
+	background: #ff9494 !important;
+}
+
+timepicker {
+	button .btn {
+		outline: 1px solid #ccc;
+		background: #fff;
+		width: 50px;
+		padding: 0.375rem 0.75rem;
+		line-height: 1.5;
+	}
+
+	.btn {
+		border: none;
+		&:hover,
+		&:focus {
+			border: none;
+		}
+	}
+
+	.bs-chevron-up,
+	.bs-chevron-down {
+		display: inline-block;
+		left: 10px;
+	}
+}
+
+.client-Dropdown .ng-select {
+	width: 100%;
+}
+.client-Dropdown angular2-multiselect .dropdown-list ul li:hover {
+	background-color: lightgrey;
+}
+.client-Dropdown angular2-multiselect .clear-all {
+	display: none;
+}
+.client-Dropdown-app angular2-multiselect .dropdown-list ul li:hover {
+	background-color: lightgrey;
+}
+.client-Dropdown-app angular2-multiselect .clear-all {
+	display: none;
+}
+
+.btn-group .selected-list .c-btn {
+	background: white;
+}
+
+/*#endregion */
+
+/*#region T4 Screens*/
+.autoFlexColumn {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	height: 100%;
+}
+
+/*#region Layout*/
+.criteriaSection {
+	padding-top: 25px;
+	width: 28%;
+	background-color: #e6ebed;
+	height: 500px;
+
+	.buttonsContainer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0 15px;
+		margin-bottom: 20px;
+
+		&.noButton {
+			justify-content: end;
+		}
+	}
+
+	.formIconContainer {
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+
+		&--text {
+			margin-left: 8px;
+			color: black;
+			font-size: 14px;
+			font-weight: 400;
+		}
+	}
+}
+/*#endregion */
+
+/*#region Button*/
+.iconButton {
+	border: none;
+	outline: none;
+	padding: 0;
+	margin: 0;
+	background: transparent;
+	cursor: pointer;
+}
+
+.actionButton {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 40px;
+	padding: 15px;
+	background: #ffffff;
+	outline: 1px solid #bfc7cb;
+	border: none;
+	border-radius: 5px;
+	text-align: center;
+	cursor: pointer;
+
+	&:hover {
+		outline: 1px solid #99a0a4;
+		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+	}
+
+	&:focus {
+		outline: 1px solid #99a0a4;
+		box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.15);
+	}
+
+	span {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		line-height: 10px;
+
+		&.icon {
+			margin-right: 15px;
+		}
+
+		&.text {
+			font-style: normal;
+			font-weight: 600;
+			font-size: 16px;
+			color: #141a21;
+		}
+	}
+
+	&__green {
+		outline: none;
+		background: #00a98b;
+
+		&:hover {
+			background: #008e75;
+			box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+		}
+
+		&:focus {
+			background: #008e75;
+			box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.15);
+		}
+
+		span.text {
+			color: #ffffff;
+		}
+	}
+
+	&__greenBorder {
+		outline: 1px solid #00a98b;
+
+		&:hover {
+			outline: 1px solid #00a98b;
+		}
+
+		&:focus {
+			outline: 1px solid #00a98b;
+		}
+	}
+
+	&:disabled {
+		background: #f0f3f4;
+		outline: none;
+		box-shadow: none;
+		cursor: not-allowed;
+
+		&:hover {
+			background: #f0f3f4;
+			outline: none;
+			box-shadow: none;
+		}
+
+		&:focus {
+			background: #f0f3f4;
+			outline: none;
+			box-shadow: none;
+		}
+
+		span.text {
+			color: #99a0a4;
+		}
+	}
+}
+/*#endregion */
+
+/*#region angular2-multiselect*/
+.disabled {
+	angular2-multiselect .selected-list .c-btn {
+		border: 1px solid #f0f3f4 !important;
+		background: #f0f3f4 !important;
+		cursor: not-allowed !important;
+		pointer-events: none !important;
+
+		&:hover {
+			border: 1px solid #f0f3f4 !important;
+		}
+
+		span,
+		.c-token .c-label {
+			color: #99a0a4 !important;
+		}
+
+		.c-angle-up,
+		.c-angle-down {
+			background-image: url(/assets/img/arrow-down-grey.svg) !important;
+		}
+	}
+}
+
+.invalid {
+	angular2-multiselect .selected-list .c-btn {
+		border: 1px solid #f00 !important;
+
+		&:hover {
+			border: 1px solid #f00 !important;
+		}
+	}
+}
+
+angular2-multiselect {
+	.selected-list {
+		.c-btn {
+			width: auto !important;
+			min-height: 24px !important;
+			padding: 7px 15px !important;
+			background: #ffffff !important;
+			border: 1px solid #bfc7cb !important;
+			border-radius: 5px !important;
+
+			&:hover {
+				border: 1px solid #647075 !important;
+			}
+
+			span {
+				height: 10px !important;
+				color: #141a21 !important;
+				font-weight: 400 !important;
+				font-size: 16px !important;
+				line-height: 10px !important;
+				font-style: italic !important;
+
+				&.c-remove {
+					line-height: 9px !important;
+					width: 15px !important;
+					height: 10px !important;
+					right: 35px !important;
+				}
+
+				span {
+					position: absolute !important;
+					top: 10px !important;
+					width: 67% !important;
+					height: 18px !important;
+					font-style: normal !important;
+					font-weight: 400 !important;
+					font-size: 14px !important;
+					line-height: normal !important;
+					color: #141a21 !important;
+					white-space: nowrap !important;
+					overflow: hidden !important;
+					text-overflow: ellipsis !important;
+				}
+			}
+
+			.c-list {
+				// 15px for dropdown expand/collapse arrow icon + 15px for close icon + 5px gap between them.
+				width: calc(100% - 35px) !important;
+
+				.c-token {
+					background: none !important;
+					margin: 2px 10px 2px 0 !important;
+					padding: 3px 10px !important;
+					max-width: 65% !important;
+					height: 14px !important;
+					background: #e8eced !important;
+					border-radius: 4px !important;
+
+					.c-label {
+						max-width: 95% !important;
+						height: 100% !important;
+						font-style: normal !important;
+						font-weight: 400 !important;
+						font-size: 14px !important;
+						line-height: 12px !important;
+						color: #141a21 !important;
+						margin-left: 13px !important;
+						white-space: nowrap !important;
+						overflow: hidden !important;
+						text-overflow: ellipsis !important;
+					}
+
+					.c-remove {
+						height: 100% !important;
+						background-image: url(/assets/img/close.svg) !important;
+						background-repeat: no-repeat !important;
+						padding: 0 !important;
+						height: 6px !important;
+						width: 6px !important;
+						left: 10px !important;
+						right: -25px !important;
+
+						svg {
+							display: none !important;
+						}
+					}
+				}
+			}
+
+			.countplaceholder {
+				width: auto !important;
+				padding: 0 8px 0 2px !important;
+				height: 20px !important;
+				right: 53px !important;
+				background: #505e65 !important;
+				border-radius: 3px !important;
+				font-weight: 600 !important;
+				font-size: 12px !important;
+				line-height: 19px !important;
+				color: #ffffff !important;
+				text-align: center !important;
+
+				// This is to hide the '+' symbol in the selected items count. If it can be removed from code, this css has to be removoed.
+				&::first-letter {
+					color: transparent !important;
+				}
+			}
+
+			.c-angle-up,
+			.c-angle-down {
+				background-image: url(/assets/img/arrow-down-black.svg) !important;
+				background-repeat: no-repeat !important;
+				width: 15px !important;
+				height: 10px !important;
+				right: 15px !important;
+				margin: 0 !important;
+
+				svg {
+					display: none !important;
+				}
+			}
+		}
+	}
+
+	.dropdown-list {
+		    padding-top: 0px !important;
+			position: absolute;
+			top: 100%; /* Opens just below the input field */
+			left: 0;
+			z-index: 1000; /* Ensure it appears above other elements */
+			background-color: #fff; /* Background color for dropdown */
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add some shadow for better visibility */
+			width: 100%; /* Match the width of the parent container */
+		.arrow-2,
+		.arrow-up,
+		.arrow-down {
+			display: none !important;
+		}
+
+		.list-area {
+			border: none !important;
+			border-radius: 5px !important;
+			box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.12) !important;
+
+			.pure-checkbox.select-all {
+				padding: 10px 22px !important;
+			}
+
+			.list-filter {
+				padding-left: 47px !important;
+
+				.c-search {
+					padding-left: 12px !important;
+				}
+
+				.c-input {
+					width: 83% !important;
+				}
+			}
+
+			.filter-select-all .nodata-label {
+				display: flex !important;
+				padding: 10px 22px 0 !important;
+
+				&[hidden] {
+					display: none !important;
+				}
+			}
+
+			.lazyContainer {
+				.pure-checkbox {
+					padding: 9px 12px !important;
+					margin-bottom: 8px !important;
+					border-radius: 5px !important;
+
+					&:hover:not(:has(input[type='checkbox']:disabled)),
+					&.selected-item {
+						background-color: #f0f3f4 !important;
+					}
+
+					input[type='checkbox'] + label {
+						padding-left: 33px !important;
+						display: block !important;
+					}
+				}
+			}
+
+			.list-message {
+				margin-top: -300px !important;
+			}
+		}
+	}
+}
+/*#endregion */
+
+/*#region Scrollbar*/
+::-webkit-scrollbar {
+	width: $scroll-bar-size;
+	height: $scroll-bar-size;
+}
+
+::-webkit-scrollbar-track {
+	background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	border-radius: 30px;
+	opacity: 0.5;
+	background: #728288;
+}
+/*#endregion */
+
+/*#region Checkbox (This also includes styling of checkbox in angular2-multiselect)*/
+.check-select,
+.check-unselect,
+.pure-checkbox input[type='checkbox'],
+.pure-checkbox input[type='checkbox'] + label:before,
+.pure-checkbox input[type='checkbox'] + label::after {
+	display: none !important;
+}
+
+.check-select,
+.check-unselect,
+.pure-checkbox input[type='checkbox'] {
+	& + label {
+		display: inline-block !important;
+		padding-left: 28px !important;
+		line-height: 22px !important;
+		background-size: 22px !important;
+		margin: 0 !important;
+		overflow: hidden !important;
+		text-overflow: ellipsis !important;
+		background-repeat: no-repeat !important;
+		background-position-y: center !important ;
+		background-image: url(/assets/img/check-box-unselected.svg) !important;
+
+		&:hover {
+			background-image: url(/assets/img/check-box-hover.svg) !important;
+		}
+	}
+}
+
+.check-select,
+.pure-checkbox input[type='checkbox']:checked {
+	& + label {
+		background-image: url(/assets/img/check-box-selected.svg) !important;
+
+		&:hover {
+			background-image: url(/assets/img/check-box-selected.svg) !important;
+		}
+	}
+}
+
+.check-select,
+.check-unselect,
+.pure-checkbox input[type='checkbox'] {
+	&:disabled {
+		& + label {
+			background-image: url(/assets/img/check-box-disabled.svg) !important;
+			cursor: not-allowed;
+
+			&:hover {
+				background-image: url(/assets/img/check-box-disabled.svg) !important;
+				cursor: not-allowed;
+			}
+		}
+	}
+}
+/*#endregion */
+
+/*#region Datatable*/
+.datatableContainer {
+	display: flex;
+	flex: 1;
+	min-width: 0;
+	min-height: 0;
+	position: relative;
+
+	app-data-table {
+		border: none !important;
+
+		.filter-popup-container {
+			overflow: auto !important;
+
+			li div {
+				display: flex !important;
+				align-items: center !important;
+			}
+		}
+
+		.webix_view {
+			color: #000 !important;
+			font-family: inherit !important;
+			font-size: 16px !important;
+			font-weight: 600 !important;
+
+			.webix_ss_header,
+			.webix_ss_vscroll_header {
+				background-color: #121313 !important;
+				color: #ffffff !important;
+			}
+
+			.webix_ss_header {
+				font-size: 18px !important;
+
+				.webix_hcell {
+					display: block !important;
+					white-space: nowrap !important;
+					position: relative !important;
+					border: none !important; // Clear existing borders
+
+					&:hover .webixHeaderTitle:has(+ .webixFilterIcons), // Pad header text when down arrow icon is shown on cell header hover
+					.webixHeaderTitle:has(+ .webixFilterIcons[style*='display: block;']), // Pad header text when down arrow icon has inline style display: block
+					.webixHeaderTitle:has(+ .webix_sort:not(.has_filter)) {
+						padding-right: 15px !important; // Pad header text when either filter or sort is applied
+					}
+
+					.webixHeaderTitle:has(+ .webix_sort:not(.has_filter) + .webix_sort:not(.has_filter)) {
+						padding-right: 35px !important; // Pad header text more, when both filter and sort is applied
+					}
+
+					.webix_sort {
+						height: 100% !important;
+						background-size: cover !important;
+						background-position: center !important;
+						position: absolute !important;
+						top: 0 !important;
+						right: 10px !important;
+
+						& + .webix_sort {
+							right: 30px !important;
+						}
+					}
+				}
+
+				// Border for header cells
+				.webix_hs_left {
+					position: relative !important;
+
+					.webix_hcolumn .webix_hcell {
+						border-right: 1px solid #fff !important;
+					}
+				}
+
+				.webix_hs_center {
+					position: relative !important;
+
+					.webix_hcolumn:not(:first-child) .webix_hcell {
+						border-left: 1px solid #fff !important;
+					}
+				}
+
+				.webix_hs_right {
+					position: relative !important;
+
+					.webix_hcolumn .webix_hcell {
+						border-left: 1px solid #fff !important;
+					}
+				}
+			}
+
+			.webix_ss_body {
+				border: 1px solid #bfc7cb !important;
+				border-top: none !important;
+
+				.webix_cell {
+					background: inherit !important;
+					border: none !important;
+
+					&:nth-child(2n) {
+						background-color: #f2f3f4 !important;
+					}
+
+					&.errorCell {
+						background-color: rgba(228, 21, 12, 0.12) !important;
+					}
+				}
+			}
+
+			// Checkboxes inside table
+			.webix_hcell,
+			.webix_cell {
+				.webix_table_checkbox_label {
+					padding-left: 15px !important;
+					line-height: 35px !important;
+					background-size: 15px !important;
+				}
+			}
+		}
+
+		.tableLink {
+			cursor: pointer;
+			color: #2061de;
+			text-decoration: underline;
+		}
+	}
+
+	// If table have selectableRows class, add hover design for table rows.
+	&.selectableRows app-data-table .webix_view .webix_ss_body .webix_cell.dt-hover {
+		background-color: #e2fff7 !important;
+		cursor: pointer !important;
+	}
+}
+/*#endregion */
+
+/*#region Background Overlay*/
+.bgOverlay {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	// Place at the top left of the page with full width and height
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.7);
+	z-index: 999999; // More than that used in angular2-multiselect
+}
+/*#endregion */
+
+/*#endregion */
+
+/* datatable design */
+ 
+.webix_view .webix_dd_drag_column, .webix_view .webix_ss_header,
+ 
+.webix_view .webix_ss_header td, .webix_view .webix_ss_vscroll_header, .webix_ss_header td {
+ 
+ background: #2D3439 !important;
+ 
+color: #fff!important;
+ 
+font-weight: 700!important;
+ 
+}
+.webix_ss_body .webix_ss_left .webix_ss_center_scroll .webix_column .webix_cell ,
+.webix_ss_body .webix_ss_center .webix_ss_center_scroll .webix_column .webix_cell{
+ 
+ color: #000 !important;
+ font-weight: 500 !important;
+ 
+}
+.webix_dd_drag_column, .webix_ss_header, .webix_ss_header td, .webix_ss_vscroll_header {
+	// background-color: #2D3439;
+	background-color: #1A2430 !important;
+  }
+//   angular2-multiselect .dropdown-list {
+//   position: absolute;
+//   top: 100%; /* Opens just below the input field */
+//   left: 0;
+//   z-index: 1000; /* Ensure it appears above other elements */
+//   background-color: #fff; /* Background color for dropdown */
+//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add some shadow for better visibility */
+//   width: 100%; /* Match the width of the parent container */
+// }
+// .searchFormBody--item__control angular2-multiselect  .dropdown-list.tagToBody{
+// 	top: 293.219px !important;
+// }
+.searchFormBody--item__control angular2-multiselect  .dropdown-list ul {
+	height: 145px !important;
+}
+.searchFormBody--item__control angular2-multiselect .dropdown-list .list-area .lazyContainer .pure-checkbox {
+	padding: 3px 12px !important;
+}
+.searchFormBody--item__control angular2-multiselect .dropdown-list .list-area .pure-checkbox.select-all {
+    padding: 10px 13px !important;
+}
+.searchFormBody--item__control angular2-multiselect .dropdown-list .list-area .list-message {
+    margin-top: -143px !important;
+}
+.searchFormBody--item__control angular2-multiselect .dropdown-list .list-area {
+    position: relative;
+	// top:-9px;
+}

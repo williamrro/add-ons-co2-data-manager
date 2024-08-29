@@ -1,0 +1,617 @@
+app-datatable {
+	display: flex;
+	flex: 1;
+	overflow: hidden;
+	flex-direction: column;
+}
+
+.mainWholeContainer {
+	background: #f9f9f9;
+	width: 100%;
+	float: left;
+	height: fit-content;
+	// margin-left: 50px;
+	// margin-top: 10px;
+}
+
+::ng-deep ag-grid-angular .ag-header-row {
+	background-color: black;
+	color: white;
+}
+
+.d-flex {
+	display: flex;
+	background-color: #f0f3f4;
+}
+.resetButton {
+	float: right;
+	font-size: 16px;
+	margin-right: 10px;
+	padding-top: 0px;
+	border: ridge;
+	padding-right: 15px;
+	padding-bottom: 0px;
+	padding-left: 10px;
+	height: 22px;
+	width: 60px;
+	color: black;
+	border-radius: 5px;
+	background-color: #e6ebed;
+	border-color: white;
+}
+.w-25 {
+	width: 25%;
+}
+
+.w-75 {
+	width: 75%;
+}
+
+.refresh-btn {
+	display: flex;
+	justify-content: end;
+	margin: 10px;
+}
+
+.flex-wrap {
+	flex-wrap: wrap;
+}
+
+.w-50 {
+	width: 50%;
+}
+
+.w-30 {
+	width: 30%;
+}
+
+.mr-10 {
+	margin-right: 10px;
+}
+
+.mr-20 {
+	margin-right: 20px;
+}
+
+.mb-20 {
+	margin-bottom: 20px;
+}
+
+.panelLabel {
+	font-family: 'Source Sans Pro';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 16px;
+	line-height: 25px;
+	background-color: #1a2430;
+	color: #fff;
+	border-radius: 5px 5px 0px 0px;
+	padding: 4px 10px;
+}
+
+//radio button css starts
+/* The container */
+.panelLabel .container {
+	display: block;
+	position: relative;
+	padding-left: 35px;
+	cursor: pointer;
+	font-size: 17px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	padding-bottom: 0;
+}
+
+/* Hide the browser's default checkbox */
+.panelLabel .container input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+}
+
+/* Create a custom checkbox */
+.panelLabel .checkmark {
+	position: absolute;
+	top: 5px;
+	left: 8px;
+	height: 16px;
+	width: 16px;
+	background-color: #eee;
+	border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.panelLabel .container:hover input ~ .checkmark {
+	background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.panelLabel .container input:checked ~ .checkmark {
+	background-color: #67b5ab;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.panelLabel .checkmark:after {
+	content: '';
+	position: absolute;
+	display: none;
+}
+
+/* Show the checkmark when checked */
+.panelLabel .container input:checked ~ .checkmark:after {
+	display: block;
+}
+
+/* Style the checkmark/indicator */
+.panelLabel .container .checkmark:after {
+	top: 5px;
+	left: 5px;
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: white;
+}
+
+//radio button css ends
+
+.refresh-btn button {
+	border: 1px solid grey;
+	padding: 8px 10px;
+	background-color: transparent;
+	border-radius: 4px;
+}
+
+table,
+th,
+td {
+	border: 1px solid #cbd2d6;
+	border-collapse: collapse;
+	background: transparent;
+	text-align: initial;
+	padding-left: 5px;
+	font-size: 14px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	height: 19px;
+}
+
+tr:nth-child(1) {
+	font-family: 'Source Sans Pro';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 16px;
+}
+
+tr:last-child {
+	background: #f4f5f5;
+	font-family: 'Source Sans Pro';
+	font-style: italic;
+	font-size: 14px;
+	color: #2b3439;
+}
+
+.green-bg {
+	background-color: #19ac19;
+	color: white;
+	padding: 2px 10px;
+	border-radius: 11px;
+	font-size: 13px;
+}
+
+.blue-bg {
+	background-color: #0475b5;
+	color: white;
+	padding: 2px 10px;
+	border-radius: 11px;
+	font-size: 13px;
+}
+
+.red-bg {
+	background-color: #e4150c;
+	color: white;
+	padding: 2px 10px;
+	border-radius: 11px;
+	font-size: 13px;
+}
+
+.orange-bg {
+	background-color: #ff9a1f;
+	color: white;
+	padding: 2px 10px;
+	border-radius: 11px;
+	font-size: 13px;
+}
+
+app-data-table {
+	position: relative;
+	display: flex;
+	flex: 1;
+	height: 80vh;
+	// overflow: scroll;
+	flex-direction: column;
+}
+
+::ng-deep angular2-multiselect .selected-list .c-btn {
+	// height: unset;
+	border: 1px solid #ccc;
+}
+
+.ng-select {
+	width: 100%;
+}
+
+.form-label {
+	font-size: 17px;
+	line-height: 10px;
+	margin-bottom: 15px;
+	color: #1a2430;
+	font-family: 'Source Sans Pro';
+	font-style: normal;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.formSubmitBtn {
+	width: 50%;
+	background: #67b5ab;
+	color: #fff;
+	border: none;
+	padding: 7px;
+}
+
+/* date css starts */
+.one-third {
+	/* margin: 5px 5px 5px 5px; */
+	flex: 1;
+}
+
+.one-third select {
+	font-size: 15px;
+	-moz-appearance: none;
+	appearance: none;
+	-webkit-appearance: none;
+	background: url('/assets/images/chevron-down.svg') center right 10px/20px no-repeat;
+	border: 1px solid #ddd;
+	border-radius: 0;
+	padding: 5px;
+	width: 100%;
+	display: block;
+	box-sizing: border-box;
+	font-size: 1em;
+}
+
+.wixDate {
+	pointer-events: none !important;
+}
+
+.enableElems {
+	pointer-events: auto !important;
+}
+
+.one-third input {
+	width: 100%;
+	display: block;
+	box-sizing: border-box;
+	padding: 3px;
+	font-size: 1em;
+}
+
+.one-third .tagInputs {
+	overflow: hidden;
+	height: 110px;
+	border: 1px solid #ccc;
+}
+
+.one-third .tagInputs.invoiceNum {
+	border-top: 0px;
+}
+
+.one-third .tagInputs.invoiceNum rl-tag-input-item {
+	display: inline-block !important;
+	width: 85%;
+	word-break: break-all;
+}
+
+.one-third .tagInputs.trackingNum {
+	border-top: 0px;
+	font-size: 10px !important;
+}
+
+.one-third .tagInputs.trackingNum rl-tag-input-item {
+	display: inline-block !important;
+	width: 85%;
+	word-break: break-all;
+}
+
+.one-third .tagInputs.trackingNum span {
+	background: none !important;
+}
+
+.one-third .tagInputs.keywordsTag rl-tag-input-item {
+	background: #e0e0e0 !important;
+	margin-top: 3px !important;
+	line-height: 26px !important;
+	height: 26px !important;
+	margin-left: 5px !important;
+	display: block !important;
+}
+
+.webix_el_colorpicker .webix_inp_static,
+.webix_el_datepicker .webix_inp_static,
+.webix_el_dbldatepicker .webix_inp_static,
+.webix_el_richselect .webix_inp_static {
+	border-radius: 0px !important;
+	width: 100% !important;
+}
+
+.webix_el_colorpicker span.webix_input_icon,
+.webix_el_combo span.webix_input_icon,
+.webix_el_datepicker span.webix_input_icon,
+.webix_el_dbldatepicker span.webix_input_icon,
+.webix_el_richselect span.webix_input_icon {
+	-webkit-border-top-right-radius: 0px !important;
+	-webkit-border-bottom-right-radius: 0px !important;
+	background-color: #999999 !important;
+}
+
+.webix_el_colorpicker .webix_el_box,
+.webix_el_combo .webix_el_box,
+.webix_el_datepicker .webix_el_box,
+.webix_el_richselect .webix_el_box,
+.webix_el_search .webix_el_box {
+	width: 100% !important;
+}
+
+.webix_el_colorpicker,
+.webix_el_combo,
+.webix_el_datepicker,
+.webix_el_richselect,
+.webix_el_search {
+	width: 100% !important;
+}
+
+.webix_cal_body .webix_cal_event.webix_cal_select,
+.webix_cal_body .webix_selected {
+	background-color: #67b5ab !important;
+	border-radius: 25px !important;
+}
+
+.webix_cal_body .webix_cal_select,
+.webix_cal_body .webix_cal_select.webix_cal_today,
+.webix_cal_body .webix_selected {
+	background-color: #67b5ab !important;
+	border-radius: 25px !important;
+}
+
+/* date css ends */
+::ng-deep ng-select > div > div.single > div.value,
+ng-select > div > div.single > div.placeholder {
+	font-size: 0.9rem;
+}
+
+::ng-deep ng-select select-dropdown .selected.highlighted {
+	background-color: #67b5ab;
+	color: #fff;
+}
+
+::ng-deep ng-select select-dropdown .highlighted {
+	background-color: #67b5ab;
+	color: #fff;
+}
+
+.webix_message.webix_debug {
+	display: none !important;
+}
+
+.asterreq {
+	color: red !important;
+	font-weight: 700;
+}
+
+.ng-select {
+	width: 100%;
+}
+
+.ng-select .ng-select-container {
+	border-radius: unset;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container {
+	height: 40px;
+	overflow: hidden;
+	flex-wrap: unset;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+	padding: 5px;
+	background: white;
+}
+.ng-select .ng-select-multiple .ng-select-container .ng-arrow-wrapper .ng-arrow {
+	width: 20px;
+	height: 20px;
+	color: red;
+	background-color: red;
+}
+.ng-dropdown-panel .ng-dropdown-panel-items {
+	background-color: white;
+}
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected {
+	background-color: unset;
+	color: black;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
+	background-color: #fafafa;
+	cursor: default;
+}
+.ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
+	background-color: #fafafa;
+}
+
+.ng-select.ng-select-single .ng-select-container {
+	background-color: #fafafa;
+}
+.one-third {
+	//margin: 3px 5px 5px 5px;
+	flex: 1;
+
+	select {
+		width: 100%;
+		display: block;
+		box-sizing: border-box;
+		//padding: 5px;
+		font-size: 1em;
+	}
+
+	input {
+		width: 100%;
+		display: block;
+		box-sizing: border-box;
+		padding: 3px;
+		font-size: 1em;
+	}
+
+	.tagInputs {
+		overflow: hidden;
+		height: 110px;
+		border: 1px solid #ccc;
+		//margin-top: 7px;
+	}
+
+	.tagInputs.invoiceNum {
+		border-top: 0px;
+
+		rl-tag-input-item {
+			display: inline-block !important;
+			width: 85%;
+			word-break: break-all;
+		}
+	}
+
+	.tagInputs.trackingNum {
+		border-top: 0px;
+
+		rl-tag-input-item {
+			display: inline-block !important;
+			width: 85%;
+			word-break: break-all;
+
+			span {
+				background: none !important;
+			}
+		}
+	}
+
+	.tagInputs.keywordsTag {
+		rl-tag-input-item {
+			background: #e0e0e0 !important;
+			margin-top: 3px !important;
+			line-height: 26px !important;
+			height: 26px !important;
+			margin-left: 5px !important;
+			display: block !important;
+			font-size: 10px !important;
+		}
+	}
+}
+::ng-deep .dataTable app-data-table .webix_ss_header td {
+	background: black !important;
+}
+::ng-deep rl-tag-input .ng2-tag-input-remove {
+	background: url('/assets/img/delete.jpg') !important;
+	background-repeat: no-repeat !important;
+	font-size: 0px !important;
+	color: white !important;
+	border-radius: 0 !important;
+	line-height: 22px !important;
+}
+::ng-deep rl-tag-input rl-tag-input-item {
+	background-color: white !important;
+}
+
+.error-message-display {
+	margin-top: 50px;
+	margin-left: 50px;
+	position: fixed;
+	padding: 12px 0px 12px 18px;
+	width: 100%;
+	//width: 500px;
+	background: #e4150c;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+	border-radius: 5px;
+	color: #f9f9f9;
+	font-family: Source Sans Pro;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 16px;
+	top: 0;
+	left: 0;
+	z-index: 3;
+}
+
+.error-message-display-success {
+	&.withIcon {
+		display: flex;
+		.successMessage,
+		.successMessageIcon {
+			display: flex;
+			align-items: center;
+			justify-content: ce;
+		}
+		.successMessage {
+			position: relative;
+			bottom: 2px;
+		}
+		img {
+			width: 15px;
+			height: 12px;
+			margin-right: 20px;
+		}
+	}
+}
+.error-message-display-success {
+	//margin-top: 20px;
+	margin-left: 60px;
+	position: absolute;
+	padding: 12px 0px 12px 18px;
+	width: 100%;
+	background: #0b990b;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+	border-radius: 5px;
+	color: #f9f9f9;
+	font-family: Source Sans Pro;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 16px;
+	top: 0;
+	left: 0;
+	z-index: 3;
+}
+
+.reProcessButton {
+	font-size: 0.75rem !important;
+	padding: 5px 15px;
+	font-weight: 500;
+	cursor: pointer !important;
+	margin: 0 2px;
+	width: 100px;
+	height: 25px;
+	position: fixed;
+	right: 378px;
+	display: flex !important;
+	justify-content: center;
+	align-items: center;
+	/* padding-top: 10px; */
+	margin-top: 20px;
+	padding: 10px 40px;
+	background: 0 0;
+	color: #67b5ab;
+	text-transform: uppercase;
+	font-size: 0.9em;
+	cursor: pointer;
+	display: inline-block;
+	border: 1px solid #67b5ab !important;
+	z-index: 1;
+}

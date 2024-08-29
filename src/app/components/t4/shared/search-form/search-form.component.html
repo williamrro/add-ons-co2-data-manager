@@ -1,0 +1,127 @@
+<ng-template #filterDropdown let-filtersList="filtersList" let-form="form" let-showClient="showClient" let-filterType="filterType">
+	<div [formGroup]="form" class="searchFormBody" *ngIf="showClient || filtersList.length > 0">
+		<div class="searchFormBody--item" *ngIf="showClient">
+			<div class="searchFormBody--item__label">Client Code</div>
+			<div class="searchFormBody--item__control">
+				<angular2-multiselect
+					id="drp_{{ CLIENT_CODE_FILTER_KEY }}"
+					[data]="clientCodesList"
+					formControlName="{{ CLIENT_CODE_FILTER_KEY }}"
+					[settings]="CLIENT_FILTER_SETTINGS"
+					(onDeSelect)="onClientDeSelect($event)"
+					(onScroll)="scrollEvents($event)"
+					(onSelect)="clientSelect($event)"
+				>
+				</angular2-multiselect>
+			</div>
+		</div>
+		<ng-container *ngFor="let filter of filtersList">
+			<div class="searchFormBody--item" *ngIf="!(!isIntensityTab && filter.key === INTENSITY_FILTER_KEY)">
+				<div class="searchFormBody--item__label">{{ filter.label }}</div>
+				<div
+					class="searchFormBody--item__control"
+					  [class.disabled]="!(searchForm.get('searchStandardFormGroup').get(CLIENT_CODE_FILTER_KEY)?.value.length > 0)">
+				
+					<angular2-multiselect
+					    #dropdown
+						id="drp_{{ filter.key }}"
+						[data]="filterValues"
+						formControlName="{{ filter.key }}"
+						[settings]="filter.selectMode === 'single' ? SINGLE_SELECT_SETTINGS : MULTI_SELECT_SETTINGS"
+						(onOpen)="onFilterOpen($event, filter.key,filterType)"
+						(scroll)="scrollEvents($event)"
+						(onScrollToEnd)="onFilterValuesScrollToEnd($event, filter,filterType)"
+					>
+						<c-search>
+							<ng-template>
+								<input
+									type="text"
+									(keyup)="onFilterSearch(filter.key)"
+									[(ngModel)]="filterValuesSearchText"
+									[ngModelOptions]="{ standalone: true }"
+									placeholder="Search"
+								/>
+							</ng-template>
+						</c-search>
+					</angular2-multiselect>
+				</div>
+			</div>
+		</ng-container>
+	</div>
+</ng-template>
+
+<div class="searchContainer">
+	<div class="buttonsContainer" [class.noButton]="!hasFpsAccess">
+		<button tabindex="0" *ngIf="hasFpsAccess" class="actionButton actionButton__green" (click)="onNavigate()">
+			<span class="text">Switch to FPS Application</span>
+		</button>
+		<div class="formIconContainer">
+			<img
+				width="11px"
+				height="11px"
+				src="assets/img/refresh.svg"
+				class="formIconContainer--icon"
+				(click)="onReset()"
+			/>
+			<span class="formIconContainer--text" (click)="onReset()">Reset</span>
+		</div>
+	</div>
+	<form [formGroup]="searchForm" class="searchForm" (ngSubmit)="onSearch()" *ngIf="isFiltersInitialized">
+		<div class="searchFormGroup">
+			<div class="searchFormTitle">Standard Filters</div>
+			<div *ngIf="standardFiltersList && standardFiltersList.length > 0; else noFilters">
+			<ng-container
+				[ngTemplateOutlet]="filterDropdown"
+				[ngTemplateOutletContext]="{ form: searchForm.get('searchStandardFormGroup'), filtersList: standardFiltersList, showClient: true,filterType: 'standard' }"
+			>
+			</ng-container>
+		    </div>
+		</div>
+		<!--
+			style.minHeight.px below is to set min height for the custom filters section. 
+			As both divs are flex box, even if there is only 1 custom filter, still that div section height will be very less and will have scroll.
+			To avoid this, min height is set.
+			calc: 50 is for the searchFormTitle and 82 (filter dropdown height + padding + margin + border)
+		-->
+		<!-- [style.minHeight.px]="customFiltersList.length > 3 ? 3 * 82 + 50 : customFiltersList.length * 82 + 50" -->
+		<div
+			class="searchFormGroup"
+		>
+			<div class="searchFormTitle">
+				Custom Filters
+				<div class="formIconContainer" (click)="togglePopup()">
+					<img width="16px" height="16px" src="assets/img/settings.svg" class="formIconContainer--icon" />
+					<span class="formIconContainer--text">Manage Filters</span>
+				</div>
+			</div>
+			<div *ngIf="customFiltersList && customFiltersList.length > 0; else noFilters">
+			<ng-container
+				[ngTemplateOutlet]="filterDropdown"
+				[ngTemplateOutletContext]="{ form: searchForm.get('searchCustomFormGroup1'), filtersList: customFiltersList,filterType:'custom' }"
+			>
+			</ng-container>
+		    </div>
+			
+		</div>
+		 <!-- No filters found message -->
+		 <ng-template #noFilters>
+			<div class="noFiltersMessage">
+			  No filters found
+			</div>
+		  </ng-template>
+		<div class="formButton">
+			<button tabindex="0" class="actionButton actionButton__green" type="submit">
+				<span class="text">Search</span>
+			</button>
+		</div>
+	</form>
+</div>
+<!-- {{(searchForm.get('searchStandardFormGroup').get(CLIENT_CODE_FILTER_KEY)?.value) | json}} -->
+<app-manage-filters
+	[@directivesAnimation]
+	*ngIf="showPopup && (searchForm.get('searchStandardFormGroup').get(CLIENT_CODE_FILTER_KEY)?.value).length > 0"
+	[selectedClients]="(searchForm.get('searchStandardFormGroup').get(CLIENT_CODE_FILTER_KEY)?.value)"
+	[selectedFilters]="customFiltersList"
+	(closePopup)="togglePopup()"
+	(refreshFilters)="refreshFilters()"
+></app-manage-filters>

@@ -1,0 +1,306 @@
+app-datatable {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  overflow-x: scroll;
+  flex-direction: column;
+}
+
+ul {
+  display: flex;
+  list-style: none;
+  justify-content: center;
+  cursor: pointer;
+}
+li {
+  padding: 6px 15px;
+  background-color: #f2f2f2;
+  border-radius: 5px 5px 0 0;
+  margin-right: 2px;
+}
+.active {
+  background-color: #00a98b;
+  color: #fff;
+}
+.search-drpdwn {
+  display: flex;
+  width: 100%;
+  justify-content: end;
+  margin-right: 20px;
+  float: right;
+  align-items: center;
+  margin: 20px;
+}
+.search-drpdwn angular2-multiselect {
+  width: 23%;
+  margin-left: 6px;
+}
+.table {
+  position: relative;
+  margin: 5px;
+  height: calc(100vh - 70px);
+  width: 100%;
+}
+.mts-webix-intable-search span {
+  padding: 4px !important;
+  background: red;
+  display: inline;
+  color: #fff;
+}
+
+select {
+  width: 100%;
+  padding: 5px;
+  box-sizing: border-box;
+  border: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 18px;
+  text-align: left;
+  border: 1px solid rgba(153, 160, 164, 0.45);
+}
+
+thead tr {
+  background-color: #000;
+  color: white;
+  text-align: center;
+}
+
+th,
+td {
+  padding: 12px 15px;
+}
+
+.delta-row {
+  background-color: #fff;
+  font-weight: bold;
+}
+
+tbody tr {
+  border-bottom: 1px solid #dddddd;
+  text-align: center;
+}
+.parent-container { 
+  overflow: auto;
+}
+
+.table-container {
+  // height: 300px; /* Adjust as needed */
+  overflow-y: scroll;
+}
+.graph-container {
+  height: auto;
+  width: 97.5%; /* Adjust as needed */
+  overflow-x: scroll;
+  border: 1px solid #ccc;
+}
+
+.c3-axis-x-label {
+  transform: translate(0px, 50px) rotate(90deg);
+}
+.graph-container {
+  border: 1px solid rgba(153, 160, 164, 0.45);
+  padding: 10px;
+  // margin-top: 30px;
+}
+
+.graph-container #yoy-chart {
+  width: 100%;
+  height: auto;
+  padding: 30px 0;
+}
+.chart-title-container {
+  justify-content: center;
+  display: flex;
+}
+
+.chart-title {
+  margin: 0;
+  font-size: 24px;
+  background: #dddddd;
+  text-align: center;
+  width: 50%;
+}
+.contentContainer {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	padding: 0 0 20px 20px;
+}
+.custom-select {
+  width: 120px;
+  padding: 8px;
+  background-color: #fff;
+}
+
+.no-data-message {
+  text-align: center;
+  font-weight: bold;
+  padding: 20px;  /* Add padding for spacing */
+}
+
+#carrier-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.carrier-column {
+  width: 48%; /* Adjust the width of the columns */
+  font-family: Arial, sans-serif;
+}
+
+#chart {
+  margin-top: 20px;
+}
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+  text-align: left;
+}
+
+th, td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+}
+
+th {
+  cursor: pointer;
+  background-color: #000;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 5px 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #000;
+  color: #fff;
+  font-weight: bold;
+}
+
+.carrier-column {
+  width: 15%;
+}
+
+.carrier-name-column {
+  width: 35%;
+}
+
+.value-column {
+  width: 50%; /* Increased width for the value column */
+  position: relative;
+}
+
+.bar-chart {
+  height: 30px; /* Decreased height for the bars */
+  background-color: #1f77b4;
+  margin: 0; /* Removed margin to reduce the gap between rows */
+}
+
+.value-text {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #000;
+  font-weight: bold;
+}  
+.bar-container {
+  width: 100%; /* Full width for the container */
+  background-color: #f0f0f0; /* Light background for context */
+  height: 20px; /* Fixed height for the bars */
+}
+
+.bar {
+  height: 100%; /* Fill the container's height */
+  background-color: #4CAF50; /* Customize the bar color */
+  width: 0; /* Initial width, will be set dynamically */
+}
+.bar-container {
+  width: 100%; /* Full width for the container */
+  background-color: #f0f0f0; /* Light background for context */
+  height: 20px; /* Fixed height for the bars */
+  position: relative; /* Allow absolute positioning of value */
+}
+
+.bar {
+  height: 100%; /* Fill the container's height */
+  background-color: #1f77b4;; /* Customize the bar color */
+  width: 0; /* Initial width, will be set dynamically */
+  position: relative; /* Position relative to parent container */
+}
+
+.bar-value {
+  position: absolute; /* Position within the bar */
+  // right: 5px; /* Distance from the right side of the bar */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Adjust to align vertically */
+  color: #fff; /* White text for contrast */
+}
+.bar {
+  height: 20px; /* Adjust the height of the bars as needed */
+  background-color: #fff; /* Set the bar color to blue */
+  transition: width 0.3s ease; /* Smooth width transition */
+}
+
+td {
+  padding: 5px;
+}
+
+.bar-chart {
+  display: inline-block;
+  width: 100px;
+}
+
+.bar-chart svg {
+  width: 100%;
+  height: 25px;
+  position: relative;
+  right: 0;
+}
+.c3-chart {
+  width: 100%;
+}
+.c3-chart {
+  display: inline-block;
+  vertical-align: middle;
+  width: 100%;
+}
+
+.table td {
+  vertical-align: middle;
+  position: relative;
+}
+
+.bar-container {
+  display: flex;
+  align-items: center;
+}
+
+.bar {
+  height: 20px;
+  background-color: #1f77b4;
+  margin-right: 8px;
+}
+
