@@ -105,19 +105,21 @@ export class ManageFiltersComponent implements OnInit {
   }
 
   onSave() {
-    this.clearError();
-    const selectedClientCode = this.selectedClients[0].id;
-    const reqPayload = this.selectedFilterToManage.map((itm: any) => {
-      return {
-        key: itm.key,
-        label: itm.label,
-      };
-    });
-    console.log(reqPayload);
-    this.appService
-      .saveCustomFilters(reqPayload, selectedClientCode)
-      .subscribe((resp: any) => {
-        this.refreshFilters.emit();
+    if (!this.hasError) {
+      this.clearError();
+      const selectedClientCode = this.selectedClients[0].id;
+      const reqPayload = this.selectedFilterToManage.map((itm: any) => {
+        return {
+          key: itm.key,
+          label: itm.label,
+        };
       });
+      console.log(reqPayload);
+      this.appService
+        .saveCustomFilters(reqPayload, selectedClientCode)
+        .subscribe((resp: any) => {
+          this.refreshFilters.emit();
+        });
+    }
   }
 }
