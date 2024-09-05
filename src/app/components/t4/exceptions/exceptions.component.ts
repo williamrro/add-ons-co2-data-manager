@@ -73,14 +73,11 @@ export class ExceptionsComponent implements OnInit {
     this.searchParamsChangeSub$ = this.searchService.getSearchParams$.subscribe(
       (params: any) => {
         this.searchParams = params || {};
-        console.log(this.searchParams);
-
         if (
           Object.keys(this.searchParams).length &&
           this.searchParams.searchStandardFormGroup.monthYear &&
           currentUrl === pathToMatch
         ) {
-          console.log(this.searchParams.searchStandardFormGroup.monthYear);
           this.exceptionsTable();
         }
       }
@@ -104,16 +101,15 @@ export class ExceptionsComponent implements OnInit {
     const convertDateArray = this.convertToDateStrings(
       this.searchParams.searchStandardFormGroup.monthYear
     );
-    console.log(convertDateArray);
     const obj = {
       receivedDates: convertDateArray,
+      clientCode:
+        this.searchParams.searchStandardFormGroup.clientCode.toString(),
     };
     this.appService.exceptionsTableSummary(obj).subscribe((res: any) => {
       if (res) {
-        console.log(res);
         this.exceptionsTableData = res.data;
         this.transformedData = this.transformData(this.exceptionsTableData);
-        console.log(this.transformedData);
       }
     });
   }
