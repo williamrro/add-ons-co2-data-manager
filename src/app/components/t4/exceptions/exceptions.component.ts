@@ -143,12 +143,9 @@ export class ExceptionsComponent implements OnInit {
     const result = {};
 
     // Define start and end date for the last 3 years up to current month
-    const endDate = new Date();
-    const startDate = new Date(2020, 0, 20);
-
     // Get list of months
-    const months = this.getMonths(startDate, endDate);
-
+    // const months = this.getMonths(startDate, endDate);
+    const months = this.getFormattedDates(data);
     // Process the data
     data.forEach((item) => {
       if (item.exceptionReason) {
@@ -159,7 +156,6 @@ export class ExceptionsComponent implements OnInit {
         result[item.exceptionReason]["Grand Total"] = item.grandTotal;
       }
     });
-
     // Add missing months for each exceptionReason
     Object.keys(result).forEach((key) => {
       months.forEach((month) => {
@@ -174,6 +170,37 @@ export class ExceptionsComponent implements OnInit {
     }, {});
     return formattedData;
   }
+  getFormattedDates(response: any[]): string[] {
+    // Create a mapping of short month names to their numerical equivalents
+    const monthMap = {
+      Jan: "01",
+      Feb: "02",
+      Mar: "03",
+      Apr: "04",
+      May: "05",
+      Jun: "06",
+      Jul: "07",
+      Aug: "08",
+      Sep: "09",
+      Oct: "10",
+      Nov: "11",
+      Dec: "12",
+    };
+
+    return response.map((item) => {
+      const [monthShort, yearShort] = item.receivedDateShorten.split("-");
+
+      // Convert the year to the full 4 digits
+      const year = yearShort.length === 2 ? `20${yearShort}` : yearShort;
+
+      // Convert the month short name to its numerical value
+      const month = monthMap[monthShort];
+
+      // Return the formatted date in MM-YYYY format
+      return `${month}-${year}`;
+    });
+  }
+
   reformatKeys(obj) {
     const reformatted = {};
 
@@ -203,12 +230,42 @@ export class ExceptionsComponent implements OnInit {
     return Object.keys(obj);
   }
 
-  getMonths1(): string[] {
+  getExceptionMonths(): string[] {
     const firstKey = this.getKeys(this.transformedData)[0];
-    return this.getKeys(this.transformedData[firstKey]).filter(
+
+    // Extract all available keys except "Grand Total"
+    const availableMonths = this.getKeys(this.transformedData[firstKey]).filter(
       (key) => key !== "Grand Total"
     );
+
+    // Sort the months dynamically based on the year and month
+    return availableMonths.sort((a, b) => {
+      const [monthA, yearA] = a.split("-");
+      const [monthB, yearB] = b.split("-");
+
+      const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+
+      const yearDiff = parseInt(yearA) - parseInt(yearB);
+      if (yearDiff !== 0) {
+        return yearDiff; // Sort by year first
+      }
+      return months.indexOf(monthA) - months.indexOf(monthB); // Sort by month if years are the same
+    });
   }
+
   ngAfterViewInit() {
     this.generateChart();
   }

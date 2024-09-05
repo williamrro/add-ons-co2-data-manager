@@ -9,14 +9,14 @@
           <tr>
             <th>Reason Description</th>
             <th>Grand Total</th>
-            <th *ngFor="let month of getMonths1()">{{ month }}</th>
+            <th *ngFor="let month of getExceptionMonths()">{{ month }}</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let reason of getKeys(transformedData)">
             <td>{{ reason }}</td>
             <td>{{ transformedData[reason]["Grand Total"] }}</td>
-            <td *ngFor="let month of getMonths1()">
+            <td *ngFor="let month of getExceptionMonths()">
               {{ transformedData[reason][month] || "-" }}
             </td>
           </tr>
