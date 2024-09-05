@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, OnDestroy } from "@angular/core";
 import { ISubscription } from "rxjs/Subscription";
 import { SearchService } from "../../../services/search.service";
 import { AppService } from "../../../app.service";
+import { Router } from "@angular/router";
 declare var c3: any;
 
 @Component({
@@ -36,16 +37,23 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private searchService: SearchService,
-    private appService: AppService
+    private appService: AppService,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.selectedYear[this.currentYear] = this.currentYear;
     this.selectedYear[this.currentYear - 1] = this.currentYear - 1;
+    const currentUrl = this.router.url;
+    // Define the path to match
+    const pathToMatch = "/t4/detail";
     this.searchParamsChangeSub$ = this.searchService.getSearchParams$.subscribe(
       (params: any) => {
         this.searchParams = params || {};
-        if (Object.keys(this.searchParams).length) {
+        if (
+          Object.keys(this.searchParams).length &&
+          currentUrl === pathToMatch
+        ) {
           this.appService.getAllSummaryYears().subscribe((res: any) => {
             this.summaryYearData = res;
           });
@@ -129,6 +137,19 @@ export class DetailComponent implements OnInit, OnDestroy {
       legend: {
         position: "right",
       },
+      size: {
+        width: 400,  // Adjust the width to your needs
+        height: 400, // Adjust the height to your needs
+      },
+      padding: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+      },
+      margin:{
+        top:0
+      }
     });
   }
 
