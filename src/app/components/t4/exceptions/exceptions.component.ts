@@ -279,7 +279,7 @@ export class ExceptionsComponent implements OnInit {
           ["AIR", 20],
           ["SURFACE", 30],
         ],
-        type: "scatter", // Bubble might not be directly available; use scatter
+        type: "pie", // Bubble might not be directly available; use scatter
         labels: true,
       },
       point: {

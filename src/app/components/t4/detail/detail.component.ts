@@ -117,29 +117,26 @@ export class DetailComponent implements OnInit, OnDestroy {
       },
       pie: {
         label: {
-          show: false, // Hide labels by default
-          format: (value, ratio, id) => `${id} \n${(ratio * 100).toFixed(1)}%`, // Format for hover
-        },
-        onmouseover: (id, index, element) => {
-          const data = this.modeChart.data();
-          const label = data[0].values[index].value;
-          const percentage =
-            (data[0].values[index].ratio * 100).toFixed(1) + "%";
-          element.querySelector("text").textContent = `${id} \n${percentage}`;
-        },
-        onmouseout: (id, index, element) => {
-          element.querySelector("text").textContent = ""; // Clear the label when not hovering
+          show: false, // Hide labels by default inside the pie segments
         },
       },
+      tooltip: {
+        format: {
+          value: function (value, ratio, id) {
+            // Show the actual value, without any percentage
+            return value;
+          }
+        }
+      },
       color: {
-        pattern: ["#1f77b4", "#2ca02c", "#ff7f0e", "#d62728"], // Colors for AIR, SURFACE, OCEAN, RAIL
+        pattern: ["#1f77b4", "#2ca02c", "#ff7f0e", "#d62728"], // Custom colors
       },
       legend: {
         position: "right",
       },
       size: {
-        width: 400,  // Adjust the width to your needs
-        height: 400, // Adjust the height to your needs
+        width: 400,  // Customize width
+        height: 400, // Customize height
       },
       padding: {
         top: 0,
@@ -147,10 +144,12 @@ export class DetailComponent implements OnInit, OnDestroy {
         bottom: 0,
         left: 0,
       },
-      margin:{
-        top:0
-      }
+      margin: {
+        top: 0,
+      },
     });
+    
+    
   }
 
   toggleTab(tab: string) {
