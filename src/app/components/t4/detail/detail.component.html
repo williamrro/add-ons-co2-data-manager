@@ -1,108 +1,156 @@
-<div class="table parent-container">
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th>Year</th>
-          <th>PERIOD</th>
-          <th>UOM</th>
-          <th>ENE</th>
-          <th>OPS</th>
-          <th>TOT</th>
-          <th>TOT_EI</th>
-          <th>Compensation USD</th>
+<div class="table-container" style="padding-left: 5px; margin-top: 10px">
+  <table>
+    <thead>
+      <tr>
+        <th>Year</th>
+        <th>PERIOD</th>
+        <th>UOM</th>
+        <th>ENE</th>
+        <th>OPS</th>
+        <th>TOT</th>
+        <th>TOT_EI</th>
+        <th>Compensation USD</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container
+        *ngIf="summaryTableData && summaryTableData.length > 0; else noData"
+      >
+        <tr *ngFor="let item of summaryTableData">
+          <td *ngIf="item.const_year; else emptyCell" class="custom-select">
+            <select [(ngModel)]="selectedYear[item.const_year]">
+              <option *ngFor="let year of summaryYearData" [value]="year">
+                {{ year }}
+              </option>
+            </select>
+          </td>
+          <ng-template #emptyCell>
+            <td></td>
+          </ng-template>
+          <td>{{ item.PERIOD }}</td>
+          <td>{{ item.UOM }}</td>
+          <td>{{ item.ENE || "-" }}</td>
+          <td>{{ item.OPS || "-" }}</td>
+          <td>{{ item.TOT || "-" }}</td>
+          <td>{{ item.TOT_EI || "-" }}</td>
+          <td>
+            {{ item.COMPENSATION_USD ? "$" + item.COMPENSATION_USD : "-" }}
+          </td>
         </tr>
-      </thead>
-      <tbody></tbody>
-      <tbody>
-        <ng-container
-          *ngIf="summaryTableData && summaryTableData.length > 0; else noData"
-        >
-          <tr *ngFor="let item of summaryTableData">
-            <td *ngIf="item.const_year; else emptyCell" class="custom-select">
-              <select [(ngModel)]="selectedYear[item.const_year]">
-                <option *ngFor="let year of summaryYearData" [value]="year">
-                  {{ year }}
-                </option>
-              </select>
-            </td>
-            <ng-template #emptyCell>
-              <td></td>
-            </ng-template>
-            <td>{{ item.PERIOD }}</td>
-            <td>{{ item.UOM }}</td>
-            <td>{{ item.ENE || "-" }}</td>
-            <td>{{ item.OPS || "-" }}</td>
-            <td>{{ item.TOT || "-" }}</td>
-            <td>{{ item.TOT_EI || "-" }}</td>
-            <td>
-              {{ item.COMPENSATION_USD ? "$" + item.COMPENSATION_USD : "-" }}
-            </td>
-          </tr>
-        </ng-container>
-        <ng-template #noData>
-          <tr>
-            <td colspan="8" class="no-data-message">No data available</td>
-          </tr>
-        </ng-template>
-      </tbody>
-    </table>
+      </ng-container>
+      <ng-template #noData>
+        <tr>
+          <td colspan="8" class="no-data-message">No data available</td>
+        </tr>
+      </ng-template>
+    </tbody>
+  </table>
+</div>
+<div class="graph-container" style="margin-left: 5px; margin-top: 10px">
+  <div class="title-container">
+    <h2>By Mode</h2>
   </div>
-  <div class="graph-container">
-    <div class="chart-title-container">
-      <ul>
-        <li
-          *ngFor="let item of tabs"
-          (click)="toggleTab(item)"
-          [ngClass]="currentTab == item ? 'active' : ''"
-        >
-          {{ item }}
-        </li>
-      </ul>
+  <!-- <div> -->
+  <div
+    *ngIf="summaryModeData.length > 0; else noDataModeChart"
+    id="mode-chart" style="position: relative;
+    height: 300px;
+    margin-left: 320px;
+    top: -53px;
+    max-height: 400px;"
+  ></div>
+  <ng-template #noDataModeChart>
+    <p class="no-data-message">No Data available</p>
+  </ng-template>
+  <div
+    style="
+      display: flex;
+      justify-content: space-around;
+      align-items: baseline;
+      margin: 7px;
+    "
+  >
+    <div *ngIf="carriers.length > 0; else noDataCarrierLaneTable">
+      <h2 style="border-bottom: 4px solid #fff">By Carrier</h2>
+      <div class="tbl-header">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <thead>
+            <tr>
+              <th style="width: 30%">CARRIER</th>
+              <th style="width: 30%">CARRIER_NAME</th>
+              <th style="width: 40%">VALUE</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="tbl-content">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <tbody>
+            <tr *ngFor="let item of carriers">
+              <td style="width: 30%">{{ item.param1 }}</td>
+              <td style="width: 30%">{{ item.param2 }}</td>
+              <td style="width: 40%">
+                <div class="bar-container">
+                  <div
+                    class="bar"
+                    [ngStyle]="{ width: getBarWidth(carriers, item.value) }"
+                  ></div>
+                  <span>{{ item.value | number }}</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div [hidden]="currentTab != 'By Mode'">
-      <div *ngIf="summaryModeData.length > 0; else noDataModeChart" id="mode-chart"></div>
-      <ng-template #noDataModeChart>
-        <p class="no-data-message">No Data available</p>
-      </ng-template>
+
+    <div
+      style="margin-left: 12px"
+      *ngIf="lanes.length > 0; else noDataLaneTable"
+    >
+      <h2>By Lane</h2>
+      <div class="tbl-header">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <thead>
+            <tr>
+              <th style="width: 30%">Lane by Country</th>
+              <th style="width: 30%">Lane by City</th>
+              <th style="width: 40%">VALUE</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="tbl-content">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <tbody>
+            <tr *ngFor="let item of lanes">
+              <td style="width: 30%">{{ item.param1 }}</td>
+              <td style="width: 30%">{{ item.param2 }}</td>
+              <td style="width: 40%">
+                <div class="bar-container">
+                  <div
+                    class="bar"
+                    [ngStyle]="{ width: getBarWidth(lanes, item.value) }"
+                  ></div>
+                  <span>{{ item.value | number }}</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <ng-container *ngIf="currentTab == 'By Carrier' || currentTab == 'By Lane'">
-      <table *ngIf="(currentTab == 'By Carrier' && carriers.length > 0) || (currentTab == 'By Lane' && lanes.length > 0); else noDataCarrierLaneTable">
-        <thead>
-          <tr>
-            <th *ngIf="currentTab == 'By Carrier'">CARRIER</th>
-            <th *ngIf="currentTab == 'By Carrier'">CARRIER_NAME</th>
-            <th *ngIf="currentTab == 'By Lane'">Lane by Country</th>
-            <th *ngIf="currentTab == 'By Lane'">Lane by City</th>
-            <th style="width: 40%">VALUE</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            *ngFor="let item of currentTab == 'By Carrier' ? carriers : lanes"
-          >
-            <td>{{ item.param1 }}</td>
-            <td>{{ item.param2 }}</td>
-            <td>
-              <div class="bar-container">
-                <div
-                  class="bar"
-                  [ngStyle]="{
-                    width: getBarWidth(
-                      currentTab == 'By Carrier' ? carriers : lanes,
-                      item.value
-                    )
-                  }"
-                ></div>
-                <span>{{ item.value | number }}</span>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <ng-template #noDataCarrierLaneTable>
+    <ng-template #noDataCarrierLaneTable>
+      <div style="width: 49%">
+        <h2>By Carrier</h2>
         <p class="no-data-message">No Data available</p>
-      </ng-template>
-    </ng-container>
+      </div>
+    </ng-template>
+    <ng-template #noDataLaneTable>
+      <div style="width: 49%">
+        <h2>By Lane</h2>
+        <p class="no-data-message">No Data available</p>
+      </div>
+    </ng-template>
   </div>
 </div>

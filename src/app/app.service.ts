@@ -139,4 +139,10 @@ export class AppService {
       reqPayload
     );
   }
+  exceptionsTableSummary(reqPayload: any) {
+    return this.http.post(
+      this.BASE_URL + "co2emission/api/exceptions/tableSummary",
+      reqPayload
+    );
+  }
 }

@@ -1,1 +1,41 @@
-<p>Call Exceptions API with search params: {{ searchParams | json }}</p>
+<div class="table-container" style="margin-left: 5px">
+  <h2 style="border-bottom: 4px solid #fff">Exceptions</h2>
+  <div class="scrollable-table" style="height: 250px; overflow-y: scroll">
+    <ng-container>
+      <table
+        *ngIf="exceptionsTableData.length > 0; else noDataCarrierLaneTable"
+      >
+        <thead>
+          <tr>
+            <th>Reason Description</th>
+            <th>Grand Total</th>
+            <th *ngFor="let month of getExceptionMonths()">{{ month }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reason of getKeys(transformedData)">
+            <td>{{ reason }}</td>
+            <td>{{ transformedData[reason]["Grand Total"] }}</td>
+            <td *ngFor="let month of getExceptionMonths()">
+              {{ transformedData[reason][month] || "-" }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #noDataCarrierLaneTable>
+        <p class="no-data-message">No Data available</p>
+      </ng-template>
+    </ng-container>
+  </div>
+</div>
+<div class="graph-container">
+  <div class="title-container">
+    <h2>Exceptions By Mode</h2>
+  </div>
+  <!-- <div> -->
+  <div id="chart"></div>
+  <ng-template #noDataModeChart>
+    <p class="no-data-message">No Data available</p>
+  </ng-template>
+</div>
+ 

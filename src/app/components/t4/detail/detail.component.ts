@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, OnDestroy } from "@angular/core";
 import { ISubscription } from "rxjs/Subscription";
 import { SearchService } from "../../../services/search.service";
 import { AppService } from "../../../app.service";
+import { Router } from "@angular/router";
 declare var c3: any;
 
 @Component({
@@ -36,16 +37,23 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private searchService: SearchService,
-    private appService: AppService
+    private appService: AppService,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.selectedYear[this.currentYear] = this.currentYear;
     this.selectedYear[this.currentYear - 1] = this.currentYear - 1;
+    const currentUrl = this.router.url;
+    // Define the path to match
+    const pathToMatch = "/t4/detail";
     this.searchParamsChangeSub$ = this.searchService.getSearchParams$.subscribe(
       (params: any) => {
         this.searchParams = params || {};
-        if (Object.keys(this.searchParams).length) {
+        if (
+          Object.keys(this.searchParams).length &&
+          currentUrl === pathToMatch
+        ) {
           this.appService.getAllSummaryYears().subscribe((res: any) => {
             this.summaryYearData = res;
           });
@@ -109,27 +117,39 @@ export class DetailComponent implements OnInit, OnDestroy {
       },
       pie: {
         label: {
-          show: false, // Hide labels by default
-          format: (value, ratio, id) => `${id} \n${(ratio * 100).toFixed(1)}%`, // Format for hover
-        },
-        onmouseover: (id, index, element) => {
-          const data = this.modeChart.data();
-          const label = data[0].values[index].value;
-          const percentage =
-            (data[0].values[index].ratio * 100).toFixed(1) + "%";
-          element.querySelector("text").textContent = `${id} \n${percentage}`;
-        },
-        onmouseout: (id, index, element) => {
-          element.querySelector("text").textContent = ""; // Clear the label when not hovering
+          show: false, // Hide labels by default inside the pie segments
         },
       },
+      tooltip: {
+        format: {
+          value: function (value, ratio, id) {
+            // Show the actual value, without any percentage
+            return value;
+          }
+        }
+      },
       color: {
-        pattern: ["#1f77b4", "#2ca02c", "#ff7f0e", "#d62728"], // Colors for AIR, SURFACE, OCEAN, RAIL
+        pattern: ["#1f77b4", "#2ca02c", "#ff7f0e", "#d62728"], // Custom colors
       },
       legend: {
         position: "right",
       },
+      size: {
+        width: 400,  // Customize width
+        height: 400, // Customize height
+      },
+      padding: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+      },
+      margin: {
+        top: 0,
+      },
     });
+    
+    
   }
 
   toggleTab(tab: string) {
