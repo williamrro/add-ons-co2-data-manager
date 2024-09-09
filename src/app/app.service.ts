@@ -145,4 +145,10 @@ export class AppService {
       reqPayload
     );
   }
+  exceptionsModeGraph(reqPayload: any) {
+    return this.http.post(
+      this.BASE_URL + "co2emission/api/exceptions/modeGraph",
+      reqPayload
+    );
+  }
 }
