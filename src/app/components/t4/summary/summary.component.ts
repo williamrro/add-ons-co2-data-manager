@@ -183,15 +183,20 @@ export class SummaryComponent implements OnInit {
       }
     });
   }
+  ngAfterViewInit() {
+    this.summaryGraphFunction(); // Initialize chart after view is loaded
+  }
   summaryGraphFunction() {
     const obj = {
       standardFilters: this.searchParams.searchStandardFormGroup,
       customFilters: this.searchParams.searchCustomFormGroup1,
     };
     this.appService.summaryGraph(obj).subscribe((res: any) => {
-      this.summaryGraphData = res.data;
-      this.generateChart(this.summaryGraphData);
-      this.chartGenerated = true;
+      if (res) {
+        this.summaryGraphData = res.data;
+        this.generateChart(this.summaryGraphData);
+        this.chartGenerated = true;
+      }
     });
   }
   generateChart(data) {
@@ -232,17 +237,17 @@ export class SummaryComponent implements OnInit {
           tick: {
             format: function (d) {
               return d / 1000 + "k"; // Format value in 'k' and start from 0k
-            }
-          }
-        }
+            },
+          },
+        },
       },
       tooltip: {
         format: {
           value: function (value) {
             return value; // Display the raw value in the tooltip
-          }
-        }
-      }
+          },
+        },
+      },
     });
   }
 
