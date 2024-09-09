@@ -2,9 +2,7 @@
   <!-- <h2 style="border-bottom: 4px solid #fff">Exceptions</h2> -->
   <div class="scrollable-table" style="height: 250px; overflow-y: scroll">
     <ng-container>
-      <table
-        *ngIf="exceptionsTableData.length > 0; else noDataCarrierLaneTable"
-      >
+      <table *ngIf="hasData(); else noDataCarrierLaneTable">
         <thead>
           <tr>
             <th>Reason Description</th>
@@ -33,8 +31,8 @@
     <h2>Exceptions By Mode</h2>
   </div>
   <!-- <div> -->
-  <div id="chart"></div>
-  <ng-template #noDataModeChart>
+  <div *ngIf="exceptionsModeData.length > 0; else noDataChart" id="chart"></div>
+  <ng-template #noDataChart>
     <p class="no-data-message">No Data available</p>
   </ng-template>
 </div>
