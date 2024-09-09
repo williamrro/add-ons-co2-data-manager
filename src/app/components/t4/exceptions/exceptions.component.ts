@@ -222,45 +222,36 @@ export class ExceptionsComponent implements OnInit {
     return reformatted;
   }
 
-  getKeys(obj: any): string[] {
+  getKeys(obj) {
+    if (!obj) {
+      return [];
+    }
     return Object.keys(obj);
   }
 
   getExceptionMonths(): string[] {
-    const firstKey = this.getKeys(this.transformedData)[0];
-
-    // Extract all available keys except "Grand Total"
-    const availableMonths = this.getKeys(this.transformedData[firstKey]).filter(
-      (key) => key !== "Grand Total"
-    );
-
-    // Sort the months dynamically based on the year and month
-    return availableMonths.sort((a, b) => {
+    const transformedData = this.transformedData || {};
+    const firstKey = this.getKeys(transformedData)[0];
+    
+    if (!firstKey) {
+      return []; // or handle the case where there are no keys
+    }
+    
+    const exceptionData = transformedData[firstKey] || {};
+    return this.getKeys(exceptionData).filter((key) => key !== "Grand Total").sort((a, b) => {
       const [monthA, yearA] = a.split("-");
       const [monthB, yearB] = b.split("-");
-
-      const months = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ];
-
+  
+      const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  
       const yearDiff = parseInt(yearA) - parseInt(yearB);
       if (yearDiff !== 0) {
-        return yearDiff; // Sort by year first
+        return yearDiff;
       }
-      return months.indexOf(monthA) - months.indexOf(monthB); // Sort by month if years are the same
+      return months.indexOf(monthA) - months.indexOf(monthB);
     });
   }
+  
 
   ngAfterViewInit() {
     this.generateChart();
@@ -276,24 +267,36 @@ export class ExceptionsComponent implements OnInit {
           ["SURFACE", 30],
         ],
         type: "pie", // Bubble might not be directly available; use scatter
-        labels: true,
       },
-      point: {
-        r: (d) => {
-          console.log("Data point:", d); // Check if points are correctly calculated
-          return d.value * 2; // Adjust as necessary
+      pie: {
+        label: {
+          show: false, // Hide labels by default inside the pie segments
         },
       },
-      axis: {
-        x: {
-          tick: {
-            format: () => "", // Keep X-axis clean
+      tooltip: {
+        format: {
+          value: function (value, ratio, id) {
+            // Show the actual value, without any percentage
+            return value;
           },
         },
-        y: {
-          show: false, // Hide Y-axis
-        },
       },
+      // point: {
+      //   r: (d) => {
+      //     console.log("Data point:", d); // Check if points are correctly calculated
+      //     return d.value * 2; // Adjust as necessary
+      //   },
+      // },
+      // axis: {
+      //   x: {
+      //     tick: {
+      //       format: () => "", // Keep X-axis clean
+      //     },
+      //   },
+      //   y: {
+      //     show: false, // Hide Y-axis
+      //   },
+      // },
       legend: {
         show: true,
         position: "bottom",
