@@ -98,7 +98,7 @@ export class AppService {
   }
 
   getAllSummaryYears() {
-    const reqUrl = `${this.BASE_URL}co2emission/api/summary/years/4`;
+    const reqUrl = `${this.BASE_URL}co2emission/api/summary/years/3`;
     return this.http.get(reqUrl).map((response) => {
       return response;
     });
@@ -148,6 +148,18 @@ export class AppService {
   exceptionsModeGraph(reqPayload: any) {
     return this.http.post(
       this.BASE_URL + "co2emission/api/exceptions/modeGraph",
+      reqPayload
+    );
+  }
+  exceptionsCarrerGraph(reqPayload: any) {
+    return this.http.post(
+      this.BASE_URL + "co2emission/api/exceptions/carrierGraph",
+      reqPayload
+    );
+  }
+  exceptionsLaneGraph(reqPayload: any) {
+    return this.http.post(
+      this.BASE_URL + "co2emission/api/exceptions/laneGraph",
       reqPayload
     );
   }
