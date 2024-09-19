@@ -5,6 +5,7 @@
 /*#region FPS Screens*/
 body {
 	color: #666666;
+	font-family: "Source Sans Pro";
 }
 
 .wrap {
@@ -1042,6 +1043,7 @@ timepicker {
 			font-weight: 600;
 			font-size: 16px;
 			color: #141a21;
+			font-family: "Source Sans Pro";
 		}
 	}
 
@@ -1151,11 +1153,9 @@ angular2-multiselect {
 
 			span {
 				height: 10px !important;
-				color: #141a21 !important;
 				font-weight: 400 !important;
-				font-size: 16px !important;
+				font-size: 15px !important;
 				line-height: 10px !important;
-				font-style: italic !important;
 
 				&.c-remove {
 					line-height: 9px !important;
@@ -1170,7 +1170,7 @@ angular2-multiselect {
 					width: 67% !important;
 					height: 18px !important;
 					font-style: normal !important;
-					font-weight: 400 !important;
+					font-weight: 600 !important;
 					font-size: 14px !important;
 					line-height: normal !important;
 					color: #141a21 !important;
