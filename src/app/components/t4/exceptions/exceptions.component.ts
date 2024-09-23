@@ -15,128 +15,7 @@ export class ExceptionsComponent implements OnInit {
   exceptionsTableData: any = [];
   carriers = [];
   transformedData: any;
-  lanes = [
-    {
-      id: "28",
-      value: "2966.82",
-      param1: "IND To NLD",
-      param2: "SALCETTE,IND To VEENENDAAL,NLD",
-    },
-    {
-      id: "109",
-      value: "1944.15",
-      param1: "MEX To NLD",
-      param2: "ZAPOPAN,MEX To VEENENDAAL,NLD",
-    },
-    {
-      id: "53",
-      value: "1834.84",
-      param1: "USA To NLD",
-      param2: "MISSION,USA To VEENENDAAL,NLD",
-    },
-    {
-      id: "24",
-      value: "881.81",
-      param1: "CHN To ITA",
-      param2: "SUZHOU,CHN To FAENZA,ITA",
-    },
-    {
-      id: "27",
-      value: "790.16",
-      param1: "CHN To GBR",
-      param2: "CIXI CITY,CHN To TAMWORTH,GBR",
-    },
-    {
-      id: "68",
-      value: "631.42",
-      param1: "CZE To ZAF",
-      param2: "BRNO,CZE To MIDRAND,ZAF",
-    },
-    {
-      id: "87",
-      value: "484.34",
-      param1: "IND To TUR",
-      param2: "SALCETTE,IND To ISTANBUL,TUR",
-    },
-    {
-      id: "70",
-      value: "360.61",
-      param1: "USA To CZE",
-      param2: "HIGH POINT,USA To BRNO,CZE",
-    },
-    {
-      id: "84",
-      value: "338.14",
-      param1: "USA To CZE",
-      param2: "RICHMOND,USA To BRNO,CZE",
-    },
-    {
-      id: "90",
-      value: "286.91",
-      param1: "USA To NLD",
-      param2: "HICKORY,USA To VEENENDAAL,NLD",
-    },
-    {
-      id: "31",
-      value: "275.48",
-      param1: "USA To USA",
-      param2: "WEST NYACK,USA To LEWISVILLE,USA",
-    },
-    {
-      id: "23",
-      value: "270.83",
-      param1: "CHN To DEU",
-      param2: "SUZHOU,CHN To BUCHDORF,DEU",
-    },
-    {
-      id: "34",
-      value: "234.72",
-      param1: "USA To CZE",
-      param2: "MISSION,USA To BRNO,CZE",
-    },
-    {
-      id: "30",
-      value: "211.3",
-      param1: "CHN To ITA",
-      param2: "SUZHOU,CHN To AGRATE BRIANZA,ITA",
-    },
-    {
-      id: "94",
-      value: "175.58",
-      param1: "USA To GBR",
-      param2: "HICKORY,USA To RHYL,GBR",
-    },
-    {
-      id: "75",
-      value: "144.16",
-      param1: "IND To IND",
-      param2: "HYDERABAD,IND To LOS ANGELES,IND",
-    },
-    {
-      id: "21",
-      value: "113.57",
-      param1: "USA To CZE",
-      param2: "HICKORY,USA To BRNO,CZE",
-    },
-    {
-      id: "33",
-      value: "96.29",
-      param1: "IRL To USA",
-      param2: "DUBLIN,IRL To CLAREMONT,USA",
-    },
-    {
-      id: "100",
-      value: "85.98",
-      param1: "USA To USA",
-      param2: "SEVEN VALLEYS,USA To SAN ANTONIO,USA",
-    },
-    {
-      id: "1",
-      value: "74.65",
-      param1: "USA To NLD",
-      param2: "CARY,USA To VEENENDAAL,NLD",
-    },
-  ];
+  lanes = [];
   monthNames = {
     "01": "Jan",
     "02": "Feb",
@@ -156,7 +35,7 @@ export class ExceptionsComponent implements OnInit {
     private searchService: SearchService,
     private appService: AppService,
     private router: Router
-  ) {} 
+  ) {}
 
   ngOnInit() {
     const currentUrl = this.router.url;
@@ -177,6 +56,7 @@ export class ExceptionsComponent implements OnInit {
           this.exceptionsTable();
           this.exceptionModeGraph(obj);
           this.exceptionCarrerGraph(obj);
+          this.exceptionLaneGraph(obj);
         }
       }
     );
