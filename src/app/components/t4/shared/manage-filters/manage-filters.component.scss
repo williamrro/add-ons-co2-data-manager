@@ -58,7 +58,6 @@
 				padding: 4px;
 				min-height: 23px;
 				font-size: 12px;
-				font-style: italic;
 				font-weight: 300;
 				margin-bottom: 20px;
 
@@ -136,12 +135,10 @@
 	}
 
 	&--error {
-		// margin-bottom: 25px;
-
+		padding-top: 10px;
 		.errorMessage {
-			font-size: 12px;
-			font-style: italic;
-			font-weight: 300;
+			font-size: 16px;
+			font-weight: 600;
 			line-height: 15px;
 			color: #f00;
 
@@ -160,4 +157,8 @@
 			margin-right: 20px;
 		}
 	}
+}
+.manageContainerFlex{
+	display: flex;
+	justify-content: space-between;
 }

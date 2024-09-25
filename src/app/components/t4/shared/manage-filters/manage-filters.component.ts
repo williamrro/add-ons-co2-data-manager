@@ -84,9 +84,12 @@ export class ManageFiltersComponent implements OnInit {
       if (
         this.selectedFilterToManage &&
         this.selectedFilterToManage.length >= 9
-      )
+      ) {
         this.hasError = true;
-      else {
+        setTimeout(() => {
+          this.hasError = false;
+        }, 4000);
+      } else {
         this.clearError();
         this.selectedFilterToManage =
           this.selectedFilterToManage.concat(filter);
