@@ -120,7 +120,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     );
   }
   clientSelect(clientData) {
-    this.clientChanged = 'clientChange';
+    this.clientChanged = "clientChange";
     this.selectedClientCode = clientData["id"];
     this.fetchFiltersToDisplay(clientData["id"], "clientChange");
   }
@@ -136,12 +136,14 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
       }
     }
   }
-  fetchFiltersToDisplay(clientCode?, clientChange?) {
+  fetchFiltersToDisplay(clientCode?, clientChange?, resetData?) {
     this.appService
       .getFiltersToDisplay(clientCode)
       .pipe(
         finalize(() => {
-          this.initializeForm(clientChange, clientCode);
+          if (resetData !== "reset") {
+            this.initializeForm(clientChange, clientCode);
+          }
         })
       )
       .subscribe((res: any) => {
@@ -310,7 +312,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
 
   refreshFilters() {
     this.showPopup = false;
-    this.fetchFiltersToDisplay(this.selectedClientCode,this.clientChanged);
+    this.fetchFiltersToDisplay(this.selectedClientCode, this.clientChanged);
   }
 
   onNavigate() {
@@ -321,6 +323,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     this.isFiltersInitialized = false;
     this.searchForm.reset();
     this.initializeForm();
+    this.fetchFiltersToDisplay(this.clientCodesList[0]["id"], "", "reset");
   }
 
   togglePopup() {
