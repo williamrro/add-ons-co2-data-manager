@@ -86,9 +86,6 @@ export class ManageFiltersComponent implements OnInit {
         this.selectedFilterToManage.length >= 9
       ) {
         this.hasError = true;
-        setTimeout(() => {
-          this.hasError = false;
-        }, 4000);
       } else {
         this.clearError();
         this.selectedFilterToManage =
@@ -108,7 +105,6 @@ export class ManageFiltersComponent implements OnInit {
   }
 
   onSave() {
-    if (!this.hasError) {
       this.clearError();
       const selectedClientCode = this.selectedClients[0].id;
       const reqPayload = this.selectedFilterToManage.map((itm: any) => {
@@ -123,6 +119,5 @@ export class ManageFiltersComponent implements OnInit {
         .subscribe((resp: any) => {
           this.refreshFilters.emit();
         });
-    }
   }
 }
