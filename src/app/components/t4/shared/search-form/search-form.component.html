@@ -11,6 +11,7 @@
 					(onDeSelect)="onClientDeSelect($event)"
 					(onScroll)="scrollEvents($event)"
 					(onSelect)="clientSelect($event)"
+					(onDeSelectAll)="onClientDeSelectAll($event)"
 				>
 				</angular2-multiselect>
 			</div>
@@ -24,12 +25,14 @@
 				
 					<angular2-multiselect
 					    #dropdown
-						id="drp_{{ filter.key }}"
+						id="drp_{{ filter.key }}" 
 						[data]="filterValues"
 						formControlName="{{ filter.key }}"
 						[settings]="filter.selectMode === 'single' ? SINGLE_SELECT_SETTINGS : MULTI_SELECT_SETTINGS"
 						(onOpen)="onFilterOpen($event, filter.key,filterType)"
 						(scroll)="scrollEvents($event)"
+						(onSelect)="onFiltersSelect($event,filter)"
+						(onDeSelect)="onFiltersSelect($event)"
 						(onScrollToEnd)="onFilterValuesScrollToEnd($event, filter,filterType)"
 					>
 						<c-search>
@@ -52,24 +55,37 @@
 
 <div class="searchContainer">
 	<div class="buttonsContainer" [class.noButton]="!hasFpsAccess">
-		<button tabindex="0" *ngIf="hasFpsAccess" class="actionButton actionButton__green" (click)="onNavigate()">
+		<!-- <button tabindex="0" *ngIf="hasFpsAccess" class="actionButton actionButton__green" (click)="onNavigate()">
 			<span class="text">Switch to FPS Application</span>
-		</button>
+		</button> -->
+		<div class="filtersTitle">
+			Filters <span class="filtersCount">{{countFilters()}}</span>
+		  </div>
 		<div class="formIconContainer">
-			<img
+			<!-- <img
 				width="11px"
 				height="11px"
 				src="assets/img/refresh.svg"
 				class="formIconContainer--icon"
 				(click)="onReset()"
-			/>
-			<span class="formIconContainer--text" (click)="onReset()">Reset</span>
+			/> -->
+			<!-- <span class="formIconContainer--text" (click)="onReset()">Clear</span>
+			<div class="formButton">
+				<button tabindex="0" class="actionButton actionButton__green" type="submit">
+					<span class="text">Apply</span>
+				</button>
+			</div> -->
+			<div class="filtersActions">
+				<span class="clearButton" (click)="onReset()">Clear</span>
+				<button class="applyButton" type="submit" (click)="onSearch()" [disabled]="isApplyDisabled">Apply</button>
+			  </div>
 		</div>
 	</div>
-	<form [formGroup]="searchForm" class="searchForm" (ngSubmit)="onSearch()" *ngIf="isFiltersInitialized">
+	<form [formGroup]="searchForm" class="searchForm" (ngSubmit)="onSearch()" *ngIf="isFiltersInitialized" style="margin-top: 5px;">
+		<hr style="border: 0;height: 1px;background-color: #D9D9D9;margin: 12px 0px;">
 		<div class="searchFormGroup">
-			<div class="searchFormTitle">Standard Filters</div>
-			<div *ngIf="standardFiltersList && standardFiltersList.length > 0; else noFilters">
+			<!-- <div class="searchFormTitle">Standard Filters</div> -->
+			<div *ngIf="standardFiltersList && standardFiltersList.length > 0; else noStandardFilters">
 			<ng-container
 				[ngTemplateOutlet]="filterDropdown"
 				[ngTemplateOutletContext]="{ form: searchForm.get('searchStandardFormGroup'), filtersList: standardFiltersList, showClient: true,filterType: 'standard' }"
@@ -84,14 +100,25 @@
 			calc: 50 is for the searchFormTitle and 82 (filter dropdown height + padding + margin + border)
 		-->
 		<!-- [style.minHeight.px]="customFiltersList.length > 3 ? 3 * 82 + 50 : customFiltersList.length * 82 + 50" -->
+		<hr style="border: 0;height: 1px;background-color: #D9D9D9;margin: 5px 0px;">
 		<div
 			class="searchFormGroup"
 		>
 			<div class="searchFormTitle">
 				Custom Filters
-				<div class="formIconContainer" (click)="togglePopup()">
-					<img width="16px" height="16px" src="assets/img/settings.svg" class="formIconContainer--icon" />
-					<span class="formIconContainer--text">Manage Filters</span>
+				 <span class="infoIcon">
+					<i class="circle"></i> <!-- Font Awesome icon or replace with an appropriate icon -->
+				  </span>
+				<div class="formIconContainer" (click)="togglePopup()" *ngIf="customFiltersList && customFiltersList.length > 0;">
+					<!-- <img width="16px" height="16px" src="assets/img/settings.svg" class="formIconContainer--icon" /> -->
+					<span class="formIconContainer--text" style="color: #4DA697;
+					text-align: center;
+					font-family: Open Sans;
+					font-size: 12px;
+					font-style: italic;
+					font-weight: 600;
+					line-height: normal;
+					letter-spacing: -0.36px;text-decoration: underline;cursor: pointer;">Browse Filters</span>
 				</div>
 			</div>
 			<div *ngIf="customFiltersList && customFiltersList.length > 0; else noFilters">
@@ -104,16 +131,29 @@
 			
 		</div>
 		 <!-- No filters found message -->
-		 <ng-template #noFilters>
+		 <ng-template #noStandardFilters>
 			<div class="noFiltersMessage">
 			  No filters found
 			</div>
 		  </ng-template>
-		<div class="formButton">
+		 <ng-template #noFilters>
+			<div class="noFiltersMessage" (click)="togglePopup()" style="color: #4DA697;
+			text-align: center;
+			font-family: Open Sans;
+			font-size: 12px;
+			font-style: italic;
+			font-weight: 600;
+			line-height: normal;
+			letter-spacing: -0.36px;
+			text-decoration: underline;cursor: pointer;">
+				Browse and select custom filters
+			</div>
+		  </ng-template>
+		<!-- <div class="formButton">
 			<button tabindex="0" class="actionButton actionButton__green" type="submit">
 				<span class="text">Search</span>
 			</button>
-		</div>
+		</div> -->
 	</form>
 </div>
 <!-- {{(searchForm.get('searchStandardFormGroup').get(CLIENT_CODE_FILTER_KEY)?.value) | json}} -->

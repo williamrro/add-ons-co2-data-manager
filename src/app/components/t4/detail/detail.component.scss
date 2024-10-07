@@ -31,12 +31,19 @@ table {
   table-layout: fixed;
   th,
   td {
-    padding: 10px 15px;
+    padding: 8px 15px;
     text-align: left;
-    font-weight: 400;
-    font-size: 15px;
-    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    color: #000;
     text-transform: uppercase;
+    background: #fff;
+    border-left: none;
+    border-top: none;
+    border-right: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
   thead {
     background-color: #000;
@@ -48,17 +55,15 @@ table {
   td {
     vertical-align: middle;
     font-weight: 400;
-    font-size: 15px;
+    font-size: 14px;
     color: #000;
   }
 }
 
 h2 {
-  font-size: 1.5em;
+  font-size: 18px;
   margin: 0;
   font-weight: 400;
-  background-color: #ddd;
-  text-align: center;
   border-bottom: 5px solid #fff;
   color: #000;
 }
@@ -113,6 +118,20 @@ td {
 
 .bar {
   height: 20px;
-  background-color: #1f77b4;
+  background-color: #6BB4B4;;
   margin-right: 8px;
+}
+#mode-chart {
+  width: 100%;
+  height: auto; /* Auto adjust based on the chart content */
+  margin: 0 auto;
+}
+h2 span{
+  margin-left: 14px;
+  font-size: 12px;
+  text-decoration-line: underline;
+  color: #4DA697;
+  font-style: normal;
+  font-weight: 600;
+  font-family: "Open Sans";
 }

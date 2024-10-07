@@ -16,10 +16,13 @@
 		padding: 15px 20px;
 
 		&__name {
-			color: #00a98b;
-			font-size: 20px;
-			font-weight: 600;
-			line-height: 15px;
+			color: #000;
+			font-family: "Open Sans";
+			font-size: 19px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: normal;
+			letter-spacing: -0.76px;
 		}
 	}
 
@@ -78,4 +81,16 @@
 			}
 		}
 	}
+}
+.text{
+	margin-left: 15px;
+    color: #4DA697;
+    font-family: "Open Sans";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.36px;
+    text-decoration-line: underline;
+    cursor: pointer;
 }

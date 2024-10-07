@@ -1,5 +1,7 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   HostBinding,
@@ -23,26 +25,34 @@ import { DirectivesAnimation } from "../../../../animations/animations";
   animations: DirectivesAnimation,
   templateUrl: "./search-form.component.html",
   styleUrls: ["./search-form.component.scss"],
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchFormComponent implements OnInit, AfterViewInit {
   @HostBinding("class") class = "autoFlexColumn";
   @ViewChild("dropdown") dropdown: ElementRef;
   MULTI_SELECT_SETTINGS = {
-    text: "Select Values",
+    text: "Select",
     enableSearchFilter: true,
     lazyLoading: true,
     badgeShowLimit: 1,
     autoPosition: false,
+    classes: "myclass custom-class-example",
   };
   SINGLE_SELECT_SETTINGS = {
-    ...this.MULTI_SELECT_SETTINGS,
+    lazyLoading: true,
+    badgeShowLimit: 1,
+    autoPosition: false,
     singleSelection: true,
+    enableSearchFilter: true,
+    enableCheckAll: false,
+    enableFilterSelectAll: false,
     showCheckbox: false,
+    classes: "myclass custom-class-example",
   };
   CLIENT_FILTER_SETTINGS = {
     ...this.SINGLE_SELECT_SETTINGS,
     lazyLoading: false,
-    clearAll: false,
+    // clearAll: false,
   };
 
   INTENSITY_TAB: string = "intensity";
@@ -73,8 +83,9 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
   searchForm: FormGroup = new FormGroup({});
 
   showPopup: boolean = false;
-  clientChanged: string;
+  isClientUpdated: string;
   selectedClientCode: any;
+  isApplyDisabled: boolean = false;
 
   constructor(
     private router: Router,
@@ -82,7 +93,8 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     private appService: AppService,
     private searchService: SearchService,
     private utilService: UtilService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef
   ) {
     this.filterSearchInput
       .pipe(debounceTime(300))
@@ -118,11 +130,13 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         }
       }
     );
+    this.cdr.detectChanges();
   }
   clientSelect(clientData) {
-    this.clientChanged = "clientChange";
+    this.isClientUpdated = "clientUpdated";
     this.selectedClientCode = clientData["id"];
-    this.fetchFiltersToDisplay(clientData["id"], "clientChange");
+    this.isApplyDisabled = false;
+    this.fetchFiltersToDisplay(clientData["id"], "clientUpdated");
   }
   ngAfterViewInit(): void {
     if (this.dropdown && this.dropdown.nativeElement) {
@@ -133,8 +147,11 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
           "scroll",
           this.scrollEvents.bind(this)
         );
+        this.cdr.detectChanges();
       }
     }
+
+    this.cdr.detectChanges();
   }
   fetchFiltersToDisplay(clientCode?, clientChange?, resetData?) {
     this.appService
@@ -180,7 +197,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
       searchCustomFormGroup1: new FormGroup(searchCustomFormGroup1),
     });
     this.isFiltersInitialized = true;
-    if (clientChange === "clientChange") {
+    if (clientChange === "clientUpdated") {
       this.searchForm
         .get("searchStandardFormGroup")
         .get("clientCode")
@@ -312,7 +329,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
 
   refreshFilters() {
     this.showPopup = false;
-    this.fetchFiltersToDisplay(this.selectedClientCode, this.clientChanged);
+    this.fetchFiltersToDisplay(this.selectedClientCode, this.isClientUpdated);
   }
 
   onNavigate() {
@@ -331,11 +348,44 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
   }
 
   onSearch() {
+    this.isApplyDisabled = true;
     this.searchService.setSearchParams(
       this.utilService.formatT4SearchPayload(this.searchForm.value)
     );
   }
 
+  countFilters() {
+    let count = 0;
+
+    // Count filters in searchStandardFormGroup
+    if (this.searchForm.value["searchStandardFormGroup"]) {
+      Object.values(this.searchForm.value["searchStandardFormGroup"]).forEach(
+        (value) => {
+          if (Array.isArray(value) && value.length > 0) {
+            count++;
+          }
+        }
+      );
+    }
+
+    // Count filters in searchCustomFormGroup1
+    if (this.searchForm.value["searchCustomFormGroup1"]) {
+      Object.values(this.searchForm.value["searchCustomFormGroup1"]).forEach(
+        (value) => {
+          if (Array.isArray(value) && value.length > 0) {
+            count++;
+          }
+        }
+      );
+    }
+
+    return count;
+  }
+  onFiltersSelect(event,data){
+    console.log(event, data);
+    this.isApplyDisabled = false;
+    this.isClientUpdated = '';
+  }
   ngOnDestroy() {
     if (this.accessInfoSub$) this.accessInfoSub$.unsubscribe();
     if (this.tabChangeSub$) this.tabChangeSub$.unsubscribe();
