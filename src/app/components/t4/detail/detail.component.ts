@@ -34,7 +34,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     },
   };
   summaryModeData: any = [];
-
+  chart: any;
   constructor(
     private searchService: SearchService,
     private appService: AppService,
@@ -109,47 +109,97 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   generateModeChart(data) {
-    this.modeChart = c3.generate({
+    // Function to filter the data
+    const groupValues = data.map(item => item[0]);
+    this.chart = c3.generate({
       bindto: "#mode-chart",
       data: {
         columns: data,
-        type: "pie",
-      },
-      pie: {
-        label: {
-          show: false, // Hide labels by default inside the pie segments
+        type: "bar",
+        groups: [ groupValues ],
+        order: null,
+        onmouseover: (d) => {
+          this.chart.focus(d.id); // Highlight the hovered bar
+        },
+        onmouseout: () => {
+          this.chart.revert(); // Revert back to original state
         },
       },
-      tooltip: {
-        format: {
-          value: function (value, ratio, id) {
-            // Show the actual value, without any percentage
-            return value;
-          }
-        }
+      axis: {
+        rotated: true,
+        x: {
+          show: false,
+        },
+        y: {
+          show: false,
+        },
       },
-      color: {
-        pattern: ["#1f77b4", "#2ca02c", "#ff7f0e", "#d62728"], // Custom colors
-      },
-      legend: {
-        position: "right",
+      bar: {
+        width: {
+          ratio: 1, // Full-width bars
+        },
       },
       size: {
-        width: 400,  // Customize width
-        height: 400, // Customize height
+        height: 70,
+        width: 1200,
+        // width: 700  // Adjust width to fit container
       },
-      padding: {
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
+      color: {
+        pattern: [
+          "#d4af37",
+          "#f39c12",
+          "#d35400",
+          "#16a085",
+          "#2980b9",
+          "#8e44ad",
+        ],
       },
-      margin: {
-        top: 0,
+      legend: {
+        position: "bottom",
+      },
+      tooltip: {
+        grouped: false, // Disable grouped tooltips
+        contents: (d, defaultTitleFormat, defaultValueFormat, color) => {
+          // Safely access chart data values
+          const valuesArray = this.chart.data.values() || []; // Ensure it's an array
+          const total =
+            valuesArray.length > 0
+              ? valuesArray.reduce((sum, val) => sum + val, 0)
+              : 0;
+
+          const value = d[0].value;
+          const percentage =
+            total > 0 ? ((value / total) * 100).toFixed(0) + "%" : "N/A";
+
+          // Customize the tooltip HTML
+          return `<div style="background-color: #333; color: #fff; padding: 8px 12px; border-radius: 5px; text-align: center;">
+                    <strong>${d[0].id}</strong><br/>
+                    ${value} (${percentage})
+                  </div>`;
+        },
+        position: function (data, width, height, element) {
+          const mouseEvent = window.event as MouseEvent;
+          const chartOffsetY = document
+              .querySelector("#mode-chart")
+              .getBoundingClientRect().top,
+            tooltipOffsetY = height,
+            mouseY = mouseEvent.pageY,
+            mouseX = mouseEvent.pageX;
+          return {
+            top: mouseY - chartOffsetY - tooltipOffsetY - 10,
+            left: mouseX - width / 2,
+          };
+        },
+      },
+      grid: {
+        focus: {
+          show: false, // Hide hover line
+        },
+      },
+      interaction: {
+        enabled: true,
       },
     });
-    
-    
   }
 
   toggleTab(tab: string) {
