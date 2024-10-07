@@ -52,13 +52,7 @@
   </div>
   <div
     *ngIf="summaryModeData.length > 0; else noDataModeChart"
-    id="mode-chart"  style="
-    position: relative;
-    height: 300px;
-    margin-left: 320px;
-    top: -53px;
-    max-height: 400px;
-  "
+    id="mode-chart"
   ></div>
   <ng-template #noDataModeChart>
     <p class="no-data-message">No Data available</p>
