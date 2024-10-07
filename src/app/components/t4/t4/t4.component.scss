@@ -9,12 +9,14 @@
 		padding: 15px !important;
 		// width: 330px !important;
 		// min-width: 330px !important;
-		width: 25% !important;
-		min-width: 23% !important;
+		width: 22% !important;
+		// min-width: 23% !important;
 	}
 	.dataSection{
-		width: 72%;
+		width: 78%;
 		height: auto;
-		overflow-y: scroll;
+		// overflow-y: scroll;
+		overflow-x: hidden;
+		overflow-y: hidden;
 	}
 }
