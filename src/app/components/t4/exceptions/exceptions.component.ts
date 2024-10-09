@@ -258,6 +258,7 @@ export class ExceptionsComponent implements OnInit {
   }
 
   exceptionModeGraph(obj) {
+    this.exceptionsModeData = [];
     this.appService.exceptionsModeGraph(obj).subscribe((res: any) => {
       if (res && res.length > 0) {
         this.exceptionsModeData = res;

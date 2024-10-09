@@ -70,6 +70,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     );
   }
   detailModeGraph(payLoad) {
+    this.summaryModeData=[];
     this.appService.detailModeGraph(payLoad).subscribe((res: any) => {
       if (res) {
         this.summaryModeData = res;
@@ -116,13 +117,14 @@ export class DetailComponent implements OnInit, OnDestroy {
       data: {
         columns: data,
         type: "bar",
-        groups: [ groupValues ],
+        groups: [groupValues],
         order: null,
         onmouseover: (d) => {
-          this.chart.focus(d.id); // Highlight the hovered bar
+          this.chart.focus(d.id);  // Focus on the hovered bar
+          // this.greyOutOthers(d.id); // Grey out other bars
         },
         onmouseout: () => {
-          this.chart.revert(); // Revert back to original state
+          this.chart.revert();  // Revert all bars to their original state
         },
       },
       axis: {
@@ -142,7 +144,6 @@ export class DetailComponent implements OnInit, OnDestroy {
       size: {
         height: 70,
         width: 1200,
-        // width: 700  // Adjust width to fit container
       },
       color: {
         pattern: [
@@ -156,39 +157,33 @@ export class DetailComponent implements OnInit, OnDestroy {
       },
       legend: {
         position: "bottom",
+        // This ensures legend hover behaves normally (if needed)
+        item: {
+          onmouseover: (id) => {
+            this.chart.focus(id); // Highlight legend's bar
+            this.greyOutOthers(id); // Grey out other bars
+          },
+          onmouseout: () => {
+            this.chart.revert(); // Revert when leaving the legend hover
+          },
+        },
       },
       tooltip: {
         grouped: false, // Disable grouped tooltips
         contents: (d, defaultTitleFormat, defaultValueFormat, color) => {
-          // Safely access chart data values
           const valuesArray = this.chart.data.values() || []; // Ensure it's an array
-          const total =
-            valuesArray.length > 0
-              ? valuesArray.reduce((sum, val) => sum + val, 0)
-              : 0;
-
+          const total = valuesArray.length > 0
+            ? valuesArray.reduce((sum, val) => sum + val, 0)
+            : 0;
+    
           const value = d[0].value;
           const percentage =
             total > 0 ? ((value / total) * 100).toFixed(0) + "%" : "N/A";
-
-          // Customize the tooltip HTML
+    
           return `<div style="background-color: #333; color: #fff; padding: 8px 12px; border-radius: 5px; text-align: center;">
                     <strong>${d[0].id}</strong><br/>
                     ${value} (${percentage})
                   </div>`;
-        },
-        position: function (data, width, height, element) {
-          const mouseEvent = window.event as MouseEvent;
-          const chartOffsetY = document
-              .querySelector("#mode-chart")
-              .getBoundingClientRect().top,
-            tooltipOffsetY = height,
-            mouseY = mouseEvent.pageY,
-            mouseX = mouseEvent.pageX;
-          return {
-            top: mouseY - chartOffsetY - tooltipOffsetY - 10,
-            left: mouseX - width / 2,
-          };
         },
       },
       grid: {
@@ -200,8 +195,33 @@ export class DetailComponent implements OnInit, OnDestroy {
         enabled: true,
       },
     });
-  }
+    
+    // Function to grey out other bars
 
+    
+    
+  
+    
+  }
+   // Function to grey out other bars
+  //  greyOutOthers(id: string) {
+  //   const ids = this.chart.data().map(item => item.id); // Get all bar IDs
+  //   ids.forEach(barId => {
+  //     if (barId !== id) {
+  //       // Grey out non-hovered bars by reducing opacity
+  //       this.chart.select([barId], true, { opacity: 0.3 });
+  //     }
+  //   });
+  // }
+  greyOutOthers(id: string) {
+    const ids = this.chart.data().map(item => item.id); // Get all bar IDs
+    ids.forEach(barId => {
+      if (barId !== id) {
+        // Grey out non-hovered bars by reducing opacity
+        this.chart.select([barId], true, { opacity: 0.3 });
+      }
+    });
+  }
   toggleTab(tab: string) {
     this.currentTab = tab;
   }
