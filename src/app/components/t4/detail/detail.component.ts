@@ -70,7 +70,6 @@ export class DetailComponent implements OnInit, OnDestroy {
     );
   }
   detailModeGraph(payLoad) {
-    this.summaryModeData=[];
     this.appService.detailModeGraph(payLoad).subscribe((res: any) => {
       if (res) {
         this.summaryModeData = res;
@@ -120,11 +119,11 @@ export class DetailComponent implements OnInit, OnDestroy {
         groups: [groupValues],
         order: null,
         onmouseover: (d) => {
-          this.chart.focus(d.id);  // Focus on the hovered bar
-          // this.greyOutOthers(d.id); // Grey out other bars
+          this.chart.focus(d.id); // Highlight the hovered bar
+          this.greyOutOthers(d.id); // Grey out non-hovered bars
         },
         onmouseout: () => {
-          this.chart.revert();  // Revert all bars to their original state
+          this.chart.revert(); // Revert back to original state
         },
       },
       axis: {
@@ -143,7 +142,6 @@ export class DetailComponent implements OnInit, OnDestroy {
       },
       size: {
         height: 70,
-        width: 1200,
       },
       color: {
         pattern: [
@@ -159,6 +157,9 @@ export class DetailComponent implements OnInit, OnDestroy {
         position: "bottom",
         // This ensures legend hover behaves normally (if needed)
         item: {
+          shape: {
+            type: 'circle'
+        },
           onmouseover: (id) => {
             this.chart.focus(id); // Highlight legend's bar
             this.greyOutOthers(id); // Grey out other bars
@@ -167,25 +168,42 @@ export class DetailComponent implements OnInit, OnDestroy {
             this.chart.revert(); // Revert when leaving the legend hover
           },
         },
+       
       },
       tooltip: {
-        grouped: false, // Disable grouped tooltips
+        grouped: false,
         contents: (d, defaultTitleFormat, defaultValueFormat, color) => {
-          const valuesArray = this.chart.data.values() || []; // Ensure it's an array
-          const total = valuesArray.length > 0
-            ? valuesArray.reduce((sum, val) => sum + val, 0)
-            : 0;
+            const value = d[0].value;
+            this.chart.focus(d[0].id); // Highlight the hovered bar
+            this.greyOutOthers(d[0].id); // Grey out other bars
     
-          const value = d[0].value;
-          const percentage =
-            total > 0 ? ((value / total) * 100).toFixed(0) + "%" : "N/A";
-    
-          return `<div style="background-color: #333; color: #fff; padding: 8px 12px; border-radius: 5px; text-align: center;">
-                    <strong>${d[0].id}</strong><br/>
-                    ${value} (${percentage})
-                  </div>`;
+            // Customize the tooltip HTML
+            return `
+                <div class="tooltip" style="background-color: #323232; color: #fff; padding: 5px 10px; border-radius: 5px; position: relative; z-index: 1000;">
+                    <span style="color: #989898; font-family: 'Open Sans'; font-size: 12px; font-weight: 600;">${d[0].id}</span><br/>
+                    <span style="color: #FFF; font-family: 'Open Sans'; font-size: 12px; font-weight: 600;">${value}</span>
+                    <div style="width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 11px solid #333; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);"></div>
+                </div>`;
         },
+        position: function (data, width, height, element) {
+          const targetBar = element.getBoundingClientRect();
+          const chartOffset = document.querySelector("#mode-chart").getBoundingClientRect();
+          
+          const top = targetBar.top - chartOffset.top - height - 10; // Adjusting for height
+          const left = targetBar.left + targetBar.width / 2 - width / 2 - chartOffset.left;
+      
+          console.log('Tooltip Position - Top:', top, 'Left:', left); // Debugging output
+      
+          return {
+              top: top,
+              left: left
+          };
       },
+        onmouseout: () => {
+            this.chart.revert(); // Revert to the original state
+        },
+    },
+    
       grid: {
         focus: {
           show: false, // Hide hover line
@@ -195,32 +213,14 @@ export class DetailComponent implements OnInit, OnDestroy {
         enabled: true,
       },
     });
-    
-    // Function to grey out other bars
-
-    
-    
-  
-    
   }
-   // Function to grey out other bars
-  //  greyOutOthers(id: string) {
-  //   const ids = this.chart.data().map(item => item.id); // Get all bar IDs
-  //   ids.forEach(barId => {
-  //     if (barId !== id) {
-  //       // Grey out non-hovered bars by reducing opacity
-  //       this.chart.select([barId], true, { opacity: 0.3 });
-  //     }
-  //   });
-  // }
-  greyOutOthers(id: string) {
-    const ids = this.chart.data().map(item => item.id); // Get all bar IDs
-    ids.forEach(barId => {
-      if (barId !== id) {
-        // Grey out non-hovered bars by reducing opacity
-        this.chart.select([barId], true, { opacity: 0.3 });
+  greyOutOthers(hoveredId) {
+    const ids = this.chart.data().map((d) => d.id);
+    ids.forEach((id) => {
+      if (id !== hoveredId) {
+        this.chart.defocus(id); // Grey out non-hovered bars
       }
-    });
+    })
   }
   toggleTab(tab: string) {
     this.currentTab = tab;

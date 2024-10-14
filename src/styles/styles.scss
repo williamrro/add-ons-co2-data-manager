@@ -1730,7 +1730,17 @@ font-weight: 700!important;
 	+ label:before {
 	border-color: #cccccc !important;
   }
-//   .c-btn span::before {
-//     content: "+";
-//     margin-right: 2px;
-// }
+.tooltip {
+    position: absolute;
+    z-index: 1000; /* Ensure the tooltip is on top of other elements */
+    pointer-events: none; /* Prevent mouse events from interacting with the tooltip */
+	// overflow: hidden;
+}
+.c3-legend-item-tile {
+	shape-rendering: auto;
+	stroke-linecap: round;
+	stroke-dasharray: 0.1 10;
+	stroke-width: 8;
+	transform: translate(6px, 1px);
+	margin-left: 50px;
+  }
