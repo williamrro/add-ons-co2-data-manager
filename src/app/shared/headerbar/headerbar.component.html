@@ -2,7 +2,7 @@
 	<div class="appHeader--brand"></div>
 	<div class="appHeader--title">
 		<span class="appHeader--title__name">CO2 Manager</span>
-			<span class="text" (click)="onNavigate()">Switch to FPS App</span>
+			<span class="text" (click)="onNavigate()" *ngIf="isT4User">Switch to FPS App</span>
 	</div>
 	<nav class="appHeader--navLinks">
 		<ul class="appHeader--navLinks__group" *ngIf="isT4User">

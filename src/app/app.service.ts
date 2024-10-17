@@ -163,4 +163,10 @@ export class AppService {
       reqPayload
     );
   }
+  redirectCo2App(){
+    const reqUrl = `${this.BASE_URL}co2emission/api/homeRedirect`;
+    return this.http.get(reqUrl).map((response) => {
+      return response;
+    });
+  }
 }
