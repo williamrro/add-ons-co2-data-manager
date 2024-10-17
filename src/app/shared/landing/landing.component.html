@@ -2,7 +2,7 @@
 	<div class="title error" *ngIf="!(hasFpsAccess || hasT4Access)">
 		You don't have access to view the FPS or T4 application
 	</div>
-	<div class="applicationContainer autoFlexColumn" *ngIf="hasFpsAccess || hasT4Access">
+	<div class="applicationContainer autoFlexColumn" *ngIf="hasFpsAccess && hasT4Access">
 		<div class="title">Select An Application</div>
 		<div class="selector">
 			<div class="selector--item" *ngIf="hasFpsAccess">
