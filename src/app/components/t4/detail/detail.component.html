@@ -1,4 +1,4 @@
-<div class="table-container" style="padding-left: 5px; margin-top: 10px">
+<!-- <div class="table-container" style="padding-left: 5px; margin-top: 10px">
   <table>
     <thead>
       <tr>
@@ -45,7 +45,7 @@
       </ng-template>
     </tbody>
   </table>
-</div>
+</div> -->
 <div class="graph-container" style="margin-left: 5px; margin-top: 10px">
   <div class="title-container" >
     <h2>By Mode</h2>
@@ -54,6 +54,8 @@
     *ngIf="summaryModeData.length > 0; else noDataModeChart"
     id="mode-chart"
   ></div>
+  <div id="mode-chart-legend" class="custom-legend"></div>
+
   <ng-template #noDataModeChart>
     <p class="no-data-message">No Data available</p>
   </ng-template>

@@ -133,15 +133,35 @@ export class DetailComponent implements OnInit, OnDestroy {
         },
         y: {
           show: false,
+          padding: {
+            top: 50,  // Add space above bars
+          },
         },
       },
+      // axis: {
+      //   rotated: true,
+      //   x: {
+      //     show: false,
+      //   },
+      //   y: {
+      //     show: false,
+      //     min: 0, // Ensures the y-axis starts at 0
+      //     padding: {
+      //       top: 100, // Add some padding at the top for better visibility
+      //     },
+      //   },
+      // },
+      
       bar: {
         width: {
-          ratio: 1, // Full-width bars
+          ratio: 0.9, // Full-width bars
+          max: 50,  
         },
       },
       size: {
-        height: 70,
+        height: 70, // Keep the height as it is
+        width: 1000,
+        // width: (document.querySelector("#mode-chart") as HTMLElement).offsetWidth // Cast to HTMLElement to access offsetWidth
       },
       color: {
         pattern: [
@@ -168,7 +188,7 @@ export class DetailComponent implements OnInit, OnDestroy {
             this.chart.revert(); // Revert when leaving the legend hover
           },
         },
-       
+       show:false
       },
       tooltip: {
         grouped: false,
@@ -213,6 +233,24 @@ export class DetailComponent implements OnInit, OnDestroy {
         enabled: true,
       },
     });
+    this.insertCustomLegend();
+  }
+  insertCustomLegend() {
+    const legendContainer = document.querySelector('#mode-chart-legend');
+  
+    // Clear previous legends if any
+    legendContainer.innerHTML = '';
+  
+    // Create custom legend manually
+    const legendData = this.chart.data().map(d => {
+      return `<span class="legend-item">
+                <span style="background-color:${this.chart.color(d.id)};" class="legend-color"></span>
+                ${d.id}
+              </span>`;
+    }).join(' ');
+  
+    // Append the generated legend HTML to the container
+    legendContainer.innerHTML = legendData;
   }
   greyOutOthers(hoveredId) {
     const ids = this.chart.data().map((d) => d.id);
