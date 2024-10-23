@@ -118,7 +118,7 @@ td {
 
 .bar {
   height: 20px;
-  background-color: #6BB4B4;;
+  background-color: #6bb4b4;
   margin-right: 8px;
 }
 #mode-chart {
@@ -126,12 +126,42 @@ td {
   height: auto; /* Auto adjust based on the chart content */
   margin: 0 auto;
 }
-h2 span{
+h2 span {
   margin-left: 14px;
   font-size: 12px;
   text-decoration-line: underline;
-  color: #4DA697;
+  color: #4da697;
   font-style: normal;
   font-weight: 600;
   font-family: "Open Sans";
+}
+
+.c3-bar {
+  min-height: 5px; /* Set a minimum height for bars */
+}
+
+.custom-legend {
+  display: flex;
+  justify-content: left;
+  margin-bottom: 10px; /* Adjust as needed */
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  color: #000;
+  font-family: "Open Sans";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 35px;
+}
+
+.legend-color {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 5px;
+  border-radius: 50%;
 }
