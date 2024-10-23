@@ -18,3 +18,155 @@
 		overflow-y: scroll;
 	}
 }
+
+
+
+
+.baseline-comparison {
+	border: 1px solid #e5e5e5;
+	padding: 20px;
+	border-radius: 10px;
+	background-color: #fff;
+	margin: 15px;
+  }
+  
+  .baseline-comparison h3 {
+	margin: 0;
+	font-size: 20px;
+	font-weight: 600;
+	color: #000;
+    font-family: "Open Sans";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.72px;
+  }
+  
+  .baseline-comparison p {
+	font-size: 14px;
+	margin-bottom: 20px;
+	// width: 25%;
+    margin-right: 20px;
+	color: #000;
+    font-family: "Open Sans";
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.48px;
+  }
+  
+  .comparison-container {
+	display: flex;
+	align-items: flex-start;
+	width: 75%;
+  }
+  
+  .year-selection {
+	display: flex;
+	flex-direction: column;
+	margin-right: 20px;
+  }
+  
+  .year-selection .row {
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+  }
+  
+  .year-selection .label {
+	width: 80px;
+	font-weight: bold;
+	color: #000;
+    font-family: "Open Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.36px;
+  }
+  
+  .comparison-table {
+	width: 100%;
+	border-collapse: collapse;
+  }
+  
+  .comparison-table th,
+  .comparison-table td {
+	text-align: center;
+	padding: 12px;
+	border: 1px solid #e5e5e5;
+	color: #000;
+    font-family: "Open Sans";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.36px;
+
+	div{
+		color: #989898;
+	}
+  }
+  
+  .comparison-table th {
+	font-weight: bold;
+	// background-color: #f9f9f9;
+	border: none;
+  }
+  
+  .delta-row td {
+	background-color: #f1f1f1;
+	// font-weight: bold;
+  }
+  
+  .tooltip-container {
+	position: relative;
+	cursor: pointer;
+  }
+  
+  .tooltip-text {
+	visibility: hidden;
+	background-color: #333;
+	color: #fff;
+	text-align: left;
+	border-radius: 4px;
+	padding: 6px 10px 10px;
+	position: absolute;
+	z-index: 1;
+	transform: translateX(-50%);
+    left: 70%;
+	opacity: 0;
+	transition: opacity 0.3s;
+	font-size: 12px;
+	line-height: 1.4;
+	box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2); /* Add shadow for a subtle 3D effect */
+	width: 200px;
+	bottom: 35px;
+  }
+  
+/* Tooltip arrow (triangle pointing down) */
+.tooltip-text::after {
+	content: '';
+	position: absolute;
+	top: 100%; /* At the bottom of the tooltip */
+	left: 45%;
+	border-width: 8px;
+	border-style: solid;
+	border-color: #333 transparent transparent transparent;
+}
+.tooltip-container:hover .tooltip-text {
+	visibility: visible;
+	opacity: 1;
+}
+  
+.info-icon {
+	position: relative;
+	top: 3px;
+	left: 5px;
+}
+
+.tooltip-adjusted .tooltip-text::after{
+      left:47%;
+}
