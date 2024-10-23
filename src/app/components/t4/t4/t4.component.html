@@ -1,8 +1,160 @@
+<div class="baseline-comparison" *ngIf="basePeriodTableHide">
+  <h3>Baseline Comparison</h3>
+  <div style="display: flex; width: 100%">
+    <div style="width: 25%; margin-right: 20px">
+      <p style="margin-top: 46px; color: #000; font-size: 15px">
+        Compare your annual performance against a baseline and view the
+        calculated delta. Select any years available to compare.
+      </p>
+    </div>
+
+    <div class="comparison-container" style="width: 75%">
+      <div
+        class="year-selection"
+        style="margin-top: 45px"
+        *ngIf="summaryTableData && summaryTableData.length > 0"
+      >
+        <div class="row">
+          <div class="label">Baseline</div>
+          <select [(ngModel)]="baselineYear">
+            <option *ngFor="let year of years">{{ year }}</option>
+          </select>
+        </div>
+        <div class="row">
+          <div class="label">Current</div>
+          <select [(ngModel)]="currentYear">
+            <option *ngFor="let year of years">{{ year }}</option>
+          </select>
+        </div>
+        <div class="row">
+          <div class="label">DELTA</div>
+        </div>
+      </div>
+
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <!-- <th>PERIOD</th> -->
+            <th class="tooltip-container">
+              UOM
+              <span class="tooltip-text"
+                ><div>UOM</div>
+                Unit Of Measure</span
+              >
+              <img
+                width="16px"
+                height="16px"
+                src="assets/img/Info i.svg"
+                alt="Energy consumption (ENE)"
+                class="info-icon"
+              />
+            </th>
+            <th class="tooltip-container">
+              ENE
+              <span class="tooltip-text"
+                ><div>ENE</div>
+                Energy consumption (ENE)</span
+              >
+              <img
+                width="16px"
+                height="16px"
+                src="assets/img/Info i.svg"
+                alt="Energy consumption (ENE)"
+                class="info-icon"
+              />
+            </th>
+            <th class="tooltip-container">
+              OPS
+              <span class="tooltip-text"
+                ><div>OPS</div>
+                Operational emissions, comparable to tank-to-wheel (TTW)</span
+              >
+              <img
+                width="16px"
+                height="16px"
+                src="assets/img/Info i.svg"
+                alt="Energy consumption (ENE)"
+                class="info-icon"
+              />
+            </th>
+            <th class="tooltip-container">
+              TOT
+              <span class="tooltip-text" 
+                ><div>TOT</div>
+                Energy consumption (ENE)</span
+              >
+              <img
+                width="16px"
+                height="16px"
+                src="assets/img/Info i.svg"
+                alt="Energy consumption (ENE)"
+                class="info-icon"
+              />
+            </th>
+            <th class="tooltip-container">
+              TOT_EI
+              <span class="tooltip-text" 
+                ><div>TOT_EI</div>
+                Energy consumption (ENE)</span
+              >
+              <img
+                width="16px"
+                height="16px"
+                src="assets/img/Info i.svg"
+                alt="Energy consumption (ENE)"
+                class="info-icon"
+              />
+            </th>
+            <th class="tooltip-container tooltip-adjusted">
+              Compensation USD
+              <span
+                class="tooltip-text"
+                style="width: 162px !important;"
+                ><div>Compensation USD</div>
+                Energy consumption (ENE)</span
+              >
+              <img
+                width="16px"
+                height="16px"
+                src="assets/img/Info i.svg"
+                alt="Energy consumption (ENE)"
+                class="info-icon"
+              />
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container
+            *ngIf="summaryTableData && summaryTableData.length > 0; else noData"
+          >
+            <tr *ngFor="let item of summaryTableData; let i = index">
+              <!-- <td>{{ item.PERIOD }}</td> -->
+              <td>{{ item.UOM }}</td>
+              <td>{{ item.ENE || "-" }}</td>
+              <td>{{ item.OPS || "-" }}</td>
+              <td>{{ item.TOT || "-" }}</td>
+              <td>{{ item.TOT_EI || "-" }}</td>
+              <td>
+                {{ item.COMPENSATION_USD ? "$" + item.COMPENSATION_USD : "-" }}
+              </td>
+            </tr>
+          </ng-container>
+          <ng-template #noData>
+            <tr>
+              <td colspan="8" class="no-data-message">No data available</td>
+            </tr>
+          </ng-template>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 <div class="t4Container">
-	<div class="criteriaSection">
-		<app-search-form></app-search-form>
-	</div>
-	<div class="dataSection">
-		<router-outlet></router-outlet>
-	</div>
+  <div class="criteriaSection">
+    <app-search-form></app-search-form>
+  </div>
+  <div class="dataSection">
+    <router-outlet></router-outlet>
+  </div>
 </div>
