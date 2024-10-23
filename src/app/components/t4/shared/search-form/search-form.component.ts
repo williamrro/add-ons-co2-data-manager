@@ -5,6 +5,7 @@ import {
   Component,
   ElementRef,
   HostBinding,
+  Input,
   OnInit,
   Renderer2,
   ViewChild,
@@ -100,7 +101,6 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
       .pipe(debounceTime(300))
       .subscribe((filterKey: string) => {
         this.clearFilterValuesAndToken();
-        alert(2);
         this.fetchFilterValues(filterKey, false);
       });
   }
