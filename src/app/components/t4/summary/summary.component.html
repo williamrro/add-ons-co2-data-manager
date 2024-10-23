@@ -1,6 +1,6 @@
 <div class="table parent-container">
   <div *ngIf="currentTab === 'Graph'">
-    <div class="table-container">
+    <!-- <div class="table-container">
       <table>
         <thead>
           <tr>
@@ -51,13 +51,15 @@
           </ng-template>
         </tbody>
       </table>
-    </div>
+    </div> -->
     <div class="graph-container">
       <div class="title-container">
-        <h2>YoY Comparison</h2>
+        <h2>Comparative Graph</h2>
       </div>
+      <div id="yoy-chart-legend" class="custom-legend" *ngIf="summaryGraphData.length > 0"></div>
       <div  *ngIf="summaryGraphData.length > 0; else noDataChart"
-        id="yoy-chart"></div>
+        id="yoy-chart">
+      </div>
       <ng-template #noDataChart>
         <p class="no-data-message">No Data available</p>
       </ng-template>
