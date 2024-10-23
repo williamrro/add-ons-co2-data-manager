@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ISubscription } from "rxjs/Subscription";
 import { AuthGuard } from "../../guards/auth.guard";
+import { SearchService } from "../../services/search.service";
 
 @Component({
   selector: "app-headerbar",
@@ -12,7 +13,11 @@ export class HeaderbarComponent implements OnInit {
   @Input() isT4User: boolean = false;
   hasFpsAccess: boolean = false;
   accessInfoSub$: ISubscription;
-  constructor(private router: Router,private authGuard: AuthGuard,) {}
+  constructor(
+    private router: Router,
+    private authGuard: AuthGuard,
+    private searchService: SearchService
+  ) {}
 
   ngOnInit() {
     this.accessInfoSub$ = this.authGuard.getAccessInfo.subscribe(
@@ -24,5 +29,8 @@ export class HeaderbarComponent implements OnInit {
 
   onNavigate() {
     this.router.navigateByUrl("/fps");
+  }
+  routerLinkNavigation(data) {
+    this.searchService.setTabData(data);
   }
 }

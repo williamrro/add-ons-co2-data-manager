@@ -53,10 +53,12 @@ export class ExceptionsComponent implements OnInit {
             standardFilters: this.searchParams.searchStandardFormGroup,
             customFilters: this.searchParams.searchCustomFormGroup1,
           };
+          
           this.exceptionsTable();
           this.exceptionModeGraph(obj);
           this.exceptionCarrerGraph(obj);
           this.exceptionLaneGraph(obj);
+          this.searchService.setTabData('data');
         }
       }
     );
