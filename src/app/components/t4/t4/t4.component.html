@@ -16,13 +16,13 @@
       >
         <div class="row">
           <div class="label">Baseline</div>
-          <select [(ngModel)]="baselineYear">
+          <select [(ngModel)]="baselineYear" (change)="summaryYear($event.target.value, 'Base Period')">
             <option *ngFor="let year of years">{{ year }}</option>
           </select>
         </div>
         <div class="row">
           <div class="label">Current</div>
-          <select [(ngModel)]="currentYear">
+          <select [(ngModel)]="currentYear" (change)="summaryYear($event.target.value, 'Current Period')">
             <option *ngFor="let year of years">{{ year }}</option>
           </select>
         </div>

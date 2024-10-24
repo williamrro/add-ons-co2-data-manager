@@ -38,7 +38,7 @@ export class T4Component implements OnInit, AfterViewInit {
   summaryGraphData: any = [];
   selectedYear: { [key: number]: number } = {};
   currentYear: number = new Date().getFullYear();
-  baselineYear: number;
+  baselineYear: number = new Date().getFullYear() - 1;
   searchParams: any = {};
   searchParamsChangeSub$: ISubscription;
   basePeriodTableHide: boolean = true;
@@ -57,14 +57,15 @@ export class T4Component implements OnInit, AfterViewInit {
 
       this.searchService.setUserData(userId, sortedClientsList);
     });
-    this.selectedYear[this.currentYear] = this.currentYear;
-    this.selectedYear[this.currentYear - 1] = this.currentYear - 1;
+
     this.searchParamsChangeSub$ = this.searchService.getSearchParams$.subscribe(
       (params: any) => {
         this.searchParams = params || {};
         if (Object.keys(this.searchParams).length) {
           this.appService.getAllSummaryYears().subscribe((res: any) => {
             this.summaryYearData = res;
+            this.currentYear = new Date().getFullYear();
+            this.baselineYear = this.currentYear - 1;
             this.summaryApiData();
           });
         }
@@ -84,9 +85,9 @@ export class T4Component implements OnInit, AfterViewInit {
   summaryApiData(data?, item?) {
     const obj = {
       basePeriod:
-        item && item["PERIOD"] === "Base Period" ? Number(data) : 2023,
+        item && item === "Base Period" ? Number(data) : this.baselineYear,
       currentPeriod:
-        item && item["PERIOD"] === "Current Period" ? Number(data) : 2024,
+        item && item === "Current Period" ? Number(data) : this.currentYear,
       standardFilters: this.searchParams.searchStandardFormGroup,
       customFilters: this.searchParams.searchCustomFormGroup1,
     };
