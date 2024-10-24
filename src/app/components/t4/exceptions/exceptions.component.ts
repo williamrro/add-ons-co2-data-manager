@@ -58,7 +58,7 @@ export class ExceptionsComponent implements OnInit {
           this.exceptionModeGraph(obj);
           this.exceptionCarrerGraph(obj);
           this.exceptionLaneGraph(obj);
-          this.searchService.setTabData('data');
+          this.searchService.setTabData(false);
         }
       }
     );

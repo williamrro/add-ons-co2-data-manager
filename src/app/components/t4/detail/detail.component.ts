@@ -68,6 +68,7 @@ export class DetailComponent implements OnInit, OnDestroy {
         }
       }
     );
+    this.searchService.setTabData(true);
   }
   detailModeGraph(payLoad) {
     this.appService.detailModeGraph(payLoad).subscribe((res: any) => {

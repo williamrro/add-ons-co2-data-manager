@@ -1,4 +1,4 @@
-<div class="baseline-comparison" *ngIf="basePeriodTableHide">
+<div class="baseline-comparison" *ngIf="showBaselineComparison">
   <h3>Baseline Comparison</h3>
   <div style="display: flex; width: 100%">
     <div style="width: 25%; margin-right: 20px">
@@ -16,13 +16,13 @@
       >
         <div class="row">
           <div class="label">Baseline</div>
-          <select [(ngModel)]="baselineYear">
+          <select [(ngModel)]="baselineYear" (change)="summaryYear($event.target.value, 'Base Period')">
             <option *ngFor="let year of years">{{ year }}</option>
           </select>
         </div>
         <div class="row">
           <div class="label">Current</div>
-          <select [(ngModel)]="currentYear">
+          <select [(ngModel)]="currentYear" (change)="summaryYear($event.target.value, 'Current Period')">
             <option *ngFor="let year of years">{{ year }}</option>
           </select>
         </div>
@@ -53,7 +53,7 @@
               ENE
               <span class="tooltip-text"
                 ><div>ENE</div>
-                Energy consumption (ENE)</span
+                Energy provision(comparable to WTT:Well-to-tank)</span
               >
               <img
                 width="16px"
@@ -67,7 +67,7 @@
               OPS
               <span class="tooltip-text"
                 ><div>OPS</div>
-                Operational emissions, comparable to tank-to-wheel (TTW)</span
+                Operational emissions(comparable to TTW:Tank-to-wheel)</span
               >
               <img
                 width="16px"
@@ -81,7 +81,7 @@
               TOT
               <span class="tooltip-text" 
                 ><div>TOT</div>
-                Energy consumption (ENE)</span
+                Total emissions(comparable to WTW:well-to-wheel)</span
               >
               <img
                 width="16px"
@@ -95,7 +95,7 @@
               TOT_EI
               <span class="tooltip-text" 
                 ><div>TOT_EI</div>
-                Energy consumption (ENE)</span
+                Total Emission Intensity</span
               >
               <img
                 width="16px"
@@ -111,7 +111,7 @@
                 class="tooltip-text"
                 style="width: 162px !important;"
                 ><div>Compensation USD</div>
-                Energy consumption (ENE)</span
+                GHG emissions can be offset by enabling carbon dioxide capture activities.</span
               >
               <img
                 width="16px"
