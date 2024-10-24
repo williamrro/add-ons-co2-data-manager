@@ -30,7 +30,5 @@ export class HeaderbarComponent implements OnInit {
   onNavigate() {
     this.router.navigateByUrl("/fps");
   }
-  routerLinkNavigation(data) {
-    this.searchService.setTabData(data);
-  }
+
 }

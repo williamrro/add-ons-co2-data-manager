@@ -16,17 +16,13 @@ export class LandingComponent implements OnInit {
   hasT4Access: boolean = true;
   accessSub$: ISubscription;
 
-  constructor(
-    private router: Router,
-    private authGuard: AuthGuard,
-  ) {}
+  constructor(private router: Router, private authGuard: AuthGuard) {}
 
   ngOnInit() {
     this.accessSub$ = this.authGuard.getAccessInfo.subscribe((info: any) => {
       const { fpsAccess, t4Access } = info;
       this.hasFpsAccess = fpsAccess;
       this.hasT4Access = t4Access;
-      console.log(info);
       if (this.hasFpsAccess && this.hasT4Access) {
         this.hasFpsAccess = this.hasT4Access = true;
       } else if (this.hasFpsAccess || this.hasT4Access) {
