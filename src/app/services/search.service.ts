@@ -28,7 +28,7 @@ export class SearchService {
 	setSearchParams(params: any) {
 		this.searchParams.next(params || {});
 	}
-	setTabData(tabData: string) {
-		this.userData.next(tabData);
+	setTabData(tabData: boolean) {
+		this.tabData.next(tabData);
 	}
 }

@@ -163,6 +163,7 @@ export class SummaryComponent implements OnInit {
     this.appService.getAllSummaryYears().subscribe((res: any) => {
       this.summaryYearData = res;
     });
+    this.searchService.setTabData(true);
   }
 
   summaryYear(data, i) {
@@ -351,6 +352,10 @@ export class SummaryComponent implements OnInit {
   insertCustomLegend() {
     const legendContainer = document.querySelector("#yoy-chart-legend");
 
+    // Check if the legend container is found
+    if (!legendContainer) {
+      return; // Exit the function if the element is not found
+    }
     // Clear previous legends if any
     legendContainer.innerHTML = "";
 

@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   HostBinding,
@@ -21,8 +22,6 @@ export class T4Component implements OnInit, AfterViewInit {
   @HostBinding("class") class = "autoFlexColumn";
   @ViewChild("tooltipContainer") tooltipContainer: ElementRef;
   years = [2024, 2023, 2022];
-  //   baselineYear = "2023";
-  //   currentYear = "2024";
   headers = [
     { label: "UOM", tooltip: "Unit Of Measure" },
     { label: "ENE", tooltip: "Energy consumption" },
@@ -43,12 +42,12 @@ export class T4Component implements OnInit, AfterViewInit {
   searchParams: any = {};
   searchParamsChangeSub$: ISubscription;
   basePeriodTableHide: boolean = true;
+  showBaselineComparison: boolean = true;
   constructor(
     private appService: AppService,
     private searchService: SearchService,
     private renderer: Renderer2,
-    private router: Router,
-    private route: ActivatedRoute
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -71,20 +70,13 @@ export class T4Component implements OnInit, AfterViewInit {
         }
       }
     );
-    const currentUrl = this.router.url;
-    // Define the path to match
-    const pathToMatch = "/t4/exceptions";
-    if (currentUrl === pathToMatch) {
-      this.basePeriodTableHide = false;
-    } else {
-      this.basePeriodTableHide = true;
-    }
     this.searchService.getTabData$.subscribe((res) => {
-      console.log(res);
+      // Defer the change to the next JavaScript execution cycle
+      setTimeout(() => {
+        this.showBaselineComparison = res;
+      }, 0);
     });
-    this.route.url.subscribe((url) => {
-      console.log(url);
-    });
+    this.cdr.detectChanges();
   }
   summaryYear(data, i) {
     this.summaryApiData(data, i);
@@ -102,8 +94,14 @@ export class T4Component implements OnInit, AfterViewInit {
     this.appService.summaryTableInfo(obj).subscribe((res: any) => {
       if (res) {
         this.summaryTableData = res.table_data;
-        this.baselineYear = this.summaryTableData[0].const_year;
-        this.currentYear = this.summaryTableData[1].const_year;
+        if (this.summaryTableData && this.summaryTableData.length > 1) {
+          this.baselineYear = this.summaryTableData[0].const_year;
+          this.currentYear = this.summaryTableData[1].const_year;
+        } else {
+          // Optionally set default values for baselineYear and currentYear
+          this.baselineYear = null; // or a default value
+          this.currentYear = null; // or a default value
+        }
       }
     });
   }
