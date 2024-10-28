@@ -87,6 +87,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
   isClientUpdated: string;
   selectedClientCode: any;
   isApplyDisabled: boolean = false;
+  filterType: string;
 
   constructor(
     private router: Router,
@@ -101,7 +102,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
       .pipe(debounceTime(300))
       .subscribe((filterKey: string) => {
         this.clearFilterValuesAndToken();
-        this.fetchFilterValues(filterKey, false);
+        this.fetchFilterValues(filterKey, false, this.filterType);
       });
   }
 
@@ -222,9 +223,10 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     this.searchForm.controls[this.CLIENT_CODE_FILTER_KEY].setValue([item]);
   }
 
-  onFilterOpen(event: any, filterKey: string, filterType?) {
+  onFilterOpen(event: any, filterKey: string, filterType: string) {
     this.clearFilterValuesAndToken();
-    this.filterValuesSearchText = "";
+    this.filterValuesSearchText = "";this.filterType = "";
+    this.filterType = filterType;
   }
   scrollEvents(event) {
     //     const scrollTop = event.target.scrollTop;
@@ -235,8 +237,9 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     //     }
   }
 
-  onFilterValuesScrollToEnd(event: any, filterKeys, filter?) {
+  onFilterValuesScrollToEnd(event: any, filterKeys, filterType?) {
     const filterKey = filterKeys.key;
+    this.filterType = filterType;
     const { isFilterValuesSearching, filterValues, filterValuesToken } = this;
     const { startIndex, endIndex, scrollEndPosition } = event;
     // alert(1)
@@ -244,15 +247,17 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     if (!isFilterValuesSearching && scrollEndPosition > 0) {
       if (startIndex === -1) {
         // Fetch first set of values
-        this.fetchFilterValues(filterKey, false, filter);
+        this.fetchFilterValues(filterKey, false, filterType);
       } else if (endIndex === filterValues.length - 1 && filterValuesToken) {
         // User scrolled to last item &  next page data is available
-        this.fetchFilterValues(filterKey, true, filter);
+        this.fetchFilterValues(filterKey, true, filterType);
       }
     }
   }
 
-  onFilterSearch(filterKey: string) {
+  onFilterSearch(filterKey: string, filterType?) {
+    console.log(filterType);
+    this.filterType = filterType; // Update filterType here
     this.filterSearchInput.next(filterKey);
   }
 
@@ -289,6 +294,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
       .pipe(
         finalize(() => {
           this.isFilterValuesSearching = false;
+          // this.filterType = "";
           this.utilService.resetDropdownPosition();
         })
       )
@@ -300,6 +306,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
             ? this.filterValues.concat(newFilterValues)
             : newFilterValues;
           this.filterValuesToken = token;
+          this.filterType = "";
           this.isFilterValuesSearching = true;
           if (initialLoad === "initialLoad" && filterKey === "showBy") {
             this.searchForm
