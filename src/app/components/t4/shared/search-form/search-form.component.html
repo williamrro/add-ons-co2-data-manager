@@ -17,7 +17,7 @@
 			</div>
 		</div>
 		<ng-container *ngFor="let filter of filtersList">
-			<div class="searchFormBody--item" *ngIf="!(!isIntensityTab && filter.key === INTENSITY_FILTER_KEY)">
+			<div class="searchFormBody--item" *ngIf="!(!isIntensityTab && filter.key === 'intensity')">
 				<div class="searchFormBody--item__label">{{ filter.label }}</div>
 				<div
 					class="searchFormBody--item__control"
@@ -39,7 +39,7 @@
 							<ng-template>
 								<input
 									type="text"
-									(keyup)="onFilterSearch(filter.key)"
+									(keyup)="onFilterSearch(filter.key,filterType)"
 									[(ngModel)]="filterValuesSearchText"
 									[ngModelOptions]="{ standalone: true }"
 									placeholder="Search"
