@@ -1838,3 +1838,48 @@ font-weight: 700!important;
   .c3-line {
 	stroke-width: 2px;
   }
+
+
+  
+ /* Custom CSS to change the font color of x-axis and y-axis for the chart with id 'yoy-chart' */
+ #yoy-chart .c3-axis-x .tick text {
+	fill: #989898; /* Set your desired color for x-axis, e.g., red */
+  }
+  
+  #yoy-chart .c3-axis-y .tick text {
+	fill: #989898; /* Set your desired color for y-axis, e.g., blue */
+  }
+
+ /* Change the color of the tick labels */
+ #yoy-chart .c3-axis-x .tick text {
+  fill: #989898; /* Set the desired color, e.g., a shade of red */
+ }
+ /* Change the color of the vertical grid lines */
+#yoy-chart .c3-grid .c3-xgrid-line line {
+	stroke: #ff5722; /* Set the desired color, e.g., a shade of red */
+	stroke-width: 2px; /* Optional: Make the lines thicker */
+  }
+  
+  #exception-chart {
+	width: 100%;
+  }
+  #exception-chart {
+	padding: 0;
+	margin: 0;
+  }
+  #exception-chart svg {
+	width: 100%;
+  }
+  #exception-chart .c3-bar {
+	width: 100%;
+	transform: scaleX(1);
+  }
+  #exception-chart .c3-bars rect {
+    width: 100%!important;
+    transform: none!important;
+}
+
+/* Add this in your component's CSS file */
+:host ::ng-deep .c3-chart-bars {
+    width: 100%!important; /* Forces the width of the bars container to full width */
+}

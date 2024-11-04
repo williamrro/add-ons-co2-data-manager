@@ -30,7 +30,11 @@
     <h2>Exceptions By Mode</h2>
   </div>
   <!-- <div> -->
-  <div *ngIf="exceptionsModeData.length > 0; else noDataChart" id="chart"></div>
+  <div
+    *ngIf="exceptionsModeData.length > 0; else noDataChart"
+    id="exception-chart"
+  ></div>
+  <div id="exception-chart-legend" class="custom-legend"></div>
   <ng-template #noDataChart>
     <p class="no-data-message">No Data available</p>
   </ng-template>
