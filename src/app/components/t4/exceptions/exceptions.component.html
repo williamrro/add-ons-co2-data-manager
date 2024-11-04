@@ -1,6 +1,5 @@
 <div class="table-container" style="margin-left: 5px; margin-top: 10px">
-  <!-- <h2 style="border-bottom: 4px solid #fff">Exceptions</h2> -->
-  <div class="scrollable-table" style="height: 250px;border:1px solid #ddd">
+  <div class="scrollable-table" style="height: 250px; border: 1px solid #ddd">
     <ng-container>
       <table *ngIf="hasData(); else noDataExceptionTable">
         <thead>
@@ -26,7 +25,7 @@
     </ng-container>
   </div>
 </div>
-<div class="graph-container"  style="margin-left: 5px; margin-top: 10px">
+<div class="graph-container" style="margin-left: 5px; margin-top: 10px">
   <div class="title-container">
     <h2>Exceptions By Mode</h2>
   </div>
@@ -36,98 +35,85 @@
     <p class="no-data-message">No Data available</p>
   </ng-template>
   <div
-  style="
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin: 7px;
-  "
->
-  <!-- By Carrier Table -->
-  <div style="width: 49%;" *ngIf="carriers.length > 0; else noDataCarrierLaneTable">
-    <h2 style="border-bottom: 4px solid #fff">By Carrier</h2>
-    <div class="tbl-header">
-      <table cellpadding="0" cellspacing="0" border="0">
-        <thead>
-          <tr>
-            <th style="width: 30%">CARRIER</th>
-            <th style="width: 30%">CARRIER_NAME</th>
-            <th style="width: 40%">VALUE</th>
-          </tr>
-        </thead>
-      </table>
+    style="
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin: 7px;
+    "
+  >
+    <!-- By Carrier Table -->
+    <div
+      *ngIf="carriers.length > 0; else noDataCarrierLaneTable"
+      style="width: 49%"
+    >
+      <h2
+        style="
+          border-bottom: 4px solid #fff;
+          margin-bottom: 8px;
+          margin-top: 15px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <span>Exceptions By Carrier</span>
+      </h2>
+      <div class="tbl-header">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <thead>
+            <tr style="border-left: none; border-right: none; border-top: none">
+              <th style="width: 20%">Carrier Code</th>
+              <th style="width: 35%">Carrier Name</th>
+              <th style="width: 45%">Value</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="tbl-content">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <tbody>
+            <tr
+              *ngFor="let item of carriers"
+              style="border-left: none; border-right: none; border-top: none"
+            >
+              <td style="width: 20%" title="{{ item.param1 }}">
+                {{ item.param1 }}
+              </td>
+              <td style="width: 35%" title="{{ item.param2 }}">
+                {{ item.param2 }}
+              </td>
+              <td style="width: 45%">
+                <div class="bar-container">
+                  <div
+                    class="bar"
+                    [ngStyle]="{ width: getBarWidth(carriers, item.value) }"
+                  ></div>
+                  <span>{{ item.value | number }}</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="tbl-content">
-      <table cellpadding="0" cellspacing="0" border="0">
-        <tbody>
-          <tr *ngFor="let item of carriers">
-            <td style="width: 30%">{{ item.param1 }}</td>
-            <td style="width: 30%">{{ item.param2 }}</td>
-            <td style="width: 40%">
-              <div class="bar-container">
-                <div
-                  class="bar"
-                  [ngStyle]="{ width: getBarWidth(carriers, item.value) }"
-                ></div>
-                <span>{{ item.value | number }}</span>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+
+   
+
+    <!-- No Data Template for Carrier -->
+    <ng-template #noDataCarrierLaneTable>
+      <div style="width: 49%">
+        <h2>Exceptions By Carrier</h2>
+        <p class="no-data-message">No Data available</p>
+      </div>
+    </ng-template>
+
+    <!-- No Data Template for Lane -->
+    <ng-template #noDataLaneTable>
+      <div style="width: 49%">
+        <h2>Exceptions By Lane</h2>
+        <p class="no-data-message">No Data available</p>
+      </div>
+    </ng-template>
   </div>
-
-  <!-- By Lane Table -->
-  <div style="width: 49%;" *ngIf="lanes.length > 0; else noDataLaneTable">
-    <h2>By Lane</h2>
-    <div class="tbl-header">
-      <table cellpadding="0" cellspacing="0" border="0">
-        <thead>
-          <tr>
-            <th style="width: 30%">Lane by Country</th>
-            <th style="width: 30%">Lane by City</th>
-            <th style="width: 40%">VALUE</th>
-          </tr>
-        </thead>
-      </table>
-    </div>
-    <div class="tbl-content" style="border-bottom: 1px solid #ddd;">
-      <table cellpadding="0" cellspacing="0" border="0">
-        <tbody>
-          <tr *ngFor="let item of lanes">
-            <td style="width: 30%">{{ item.param1 }}</td>
-            <td style="width: 30%">{{ item.param2 }}</td>
-            <td style="width: 40%">
-              <div class="bar-container">
-                <div
-                  class="bar"
-                  [ngStyle]="{ width: getBarWidth(lanes, item.value) }"
-                ></div>
-                <span>{{ item.value | number }}</span>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- No Data Template for Carrier -->
-  <ng-template #noDataCarrierLaneTable>
-    <div style="width: 49%;">
-      <h2>By Carrier</h2>
-      <p class="no-data-message">No Data available</p>
-    </div>
-  </ng-template>
-
-  <!-- No Data Template for Lane -->
-  <ng-template #noDataLaneTable>
-    <div style="width: 49%;">
-      <h2>By Lane</h2>
-      <p class="no-data-message">No Data available</p>
-    </div>
-  </ng-template>
-</div>
-
 </div>
