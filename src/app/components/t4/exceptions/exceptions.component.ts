@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Renderer2, ElementRef } from "@angular/core";
 import { ISubscription } from "rxjs/Subscription";
 import { SearchService } from "../../../services/search.service";
 import { AppService } from "../../../app.service";
@@ -31,10 +31,13 @@ export class ExceptionsComponent implements OnInit {
     "12": "Dec",
   };
   exceptionsModeData: any = [];
+  exceptionChart: any;
   constructor(
     private searchService: SearchService,
     private appService: AppService,
-    private router: Router
+    private router: Router,
+    private renderer: Renderer2,
+    private el: ElementRef
   ) {}
 
   ngOnInit() {
@@ -53,7 +56,6 @@ export class ExceptionsComponent implements OnInit {
             standardFilters: this.searchParams.searchStandardFormGroup,
             customFilters: this.searchParams.searchCustomFormGroup1,
           };
-          
           this.exceptionsTable();
           this.exceptionModeGraph(obj);
           this.exceptionCarrerGraph(obj);
@@ -271,31 +273,165 @@ export class ExceptionsComponent implements OnInit {
     });
   }
   generateModeChart(data) {
-    console.log("Generating chart...");
-    c3.generate({
-      bindto: "#chart",
+    const groupValues = data.map((item) => item[0]);
+    this.exceptionChart = c3.generate({
+      bindto: "#exception-chart",
       data: {
         columns: data,
-        type: "pie", // Bubble might not be directly available; use scatter
-      },
-      pie: {
-        label: {
-          show: false, // Hide labels by default inside the pie segments
+        type: "bar",
+        groups: [groupValues],
+        order: null,
+        onmouseover: (d) => {
+          this.exceptionChart.focus(d.id); // Highlight the hovered bar
+          this.greyOutOthers(d.id); // Grey out non-hovered bars
+        },
+        onmouseout: () => {
+          this.exceptionChart.revert(); // Revert back to original state
         },
       },
-      tooltip: {
-        format: {
-          value: function (value, ratio, id) {
-            // Show the actual value, without any percentage
-            return value;
+      axis: {
+        rotated: true,
+        x: {
+          show: false,
+        },
+        y: {
+          show: false,
+          padding: {
+            top: 50, // Add space above bars
           },
         },
       },
+      // axis: {
+      //   rotated: true,
+      //   x: {
+      //     show: false,
+      //   },
+      //   y: {
+      //     show: false,
+      //     min: 0, // Ensures the y-axis starts at 0
+      //     padding: {
+      //       top: 100, // Add some padding at the top for better visibility
+      //     },
+      //   },
+      // },
+
+      bar: {
+        width: {
+          ratio: 0.9, // Full-width bars
+          max: 50,
+        },
+      },
+      size: {
+        height: 70, // Keep the height as it is
+        // width: 1000,
+        // width: (document.querySelector("#exception-chart") as HTMLElement).offsetWidth,
+        // width: document.querySelector("#exception-chart").clientWidth,
+        // width: (document.querySelector("#mode-chart") as HTMLElement).offsetWidth // Cast to HTMLElement to access offsetWidth
+      },
+      color: {
+        pattern: [
+          "#d4af37",
+          "#f39c12",
+          "#d35400",
+          "#16a085",
+          "#2980b9",
+          "#8e44ad",
+        ],
+      },
       legend: {
-        show: true,
         position: "bottom",
+        // This ensures legend hover behaves normally (if needed)
+        item: {
+          shape: {
+            type: "circle",
+          },
+          onmouseover: (id) => {
+            this.exceptionChart.focus(id); // Highlight legend's bar
+            this.greyOutOthers(id); // Grey out other bars
+          },
+          onmouseout: () => {
+            this.exceptionChart.revert(); // Revert when leaving the legend hover
+          },
+        },
+        show: false,
+      },
+      tooltip: {
+        grouped: false,
+        contents: (d, defaultTitleFormat, defaultValueFormat, color) => {
+          const value = d[0].value;
+          this.exceptionChart.focus(d[0].id); // Highlight the hovered bar
+          this.greyOutOthers(d[0].id); // Grey out other bars
+
+          // Customize the tooltip HTML
+          return `
+                <div class="tooltip" style="background-color: #323232; color: #fff; padding: 5px 10px; border-radius: 5px; position: relative; z-index: 1000;">
+                    <span style="color: #989898; font-family: 'Open Sans'; font-size: 12px; font-weight: 600;">${d[0].id}</span><br/>
+                    <span style="color: #FFF; font-family: 'Open Sans'; font-size: 12px; font-weight: 600;">${value}</span>
+                    <div style="width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 11px solid #333; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);"></div>
+                </div>`;
+        },
+        position: function (data, width, height, element) {
+          const targetBar = element.getBoundingClientRect();
+          const chartOffset = document
+            .querySelector("#exception-chart")
+            .getBoundingClientRect();
+
+          const top = targetBar.top - chartOffset.top - height - 10; // Adjusting for height
+          const left =
+            targetBar.left + targetBar.width / 2 - width / 2 - chartOffset.left;
+
+          console.log("Tooltip Position - Top:", top, "Left:", left); // Debugging output
+
+          return {
+            top: top,
+            left: left,
+          };
+        },
+        onmouseout: () => {
+          this.exceptionChart.revert(); // Revert to the original state
+        },
+      },
+
+      grid: {
+        focus: {
+          show: false, // Hide hover line
+        },
+      },
+      interaction: {
+        enabled: true,
       },
     });
+    this.insertCustomLegend();
+  }
+  greyOutOthers(hoveredId) {
+    const ids = this.exceptionChart.data().map((d) => d.id);
+    ids.forEach((id) => {
+      if (id !== hoveredId) {
+        this.exceptionChart.defocus(id); // Grey out non-hovered bars
+      }
+    });
+  }
+  insertCustomLegend() {
+    const legendContainer = document.querySelector("#exception-chart-legend");
+
+    // Clear previous legends if any
+    legendContainer.innerHTML = "";
+
+    // Create custom legend manually
+    const legendData = this.exceptionChart
+      .data()
+      .map((d) => {
+        return `<span class="legend-item">
+                <span style="background-color:${this.exceptionChart.color(
+                  d.id
+                )};" class="legend-color"></span>
+                ${d.id}
+              </span>`;
+      })
+      .join(" ");
+
+    // Append the generated legend HTML to the container
+    legendContainer.innerHTML = legendData;
   }
   exceptionCarrerGraph(payLoad) {
     this.appService.exceptionsCarrerGraph(payLoad).subscribe((res: any) => {
