@@ -28,11 +28,6 @@ th {
   color: #fff;
   font-weight: bold;
 }
-.bar {
-  height: 20px; /* Adjust the height of the bars as needed */
-  background-color: #fff; /* Set the bar color to blue */
-  transition: width 0.3s ease; /* Smooth width transition */
-}
 
 .bar-container {
   display: flex;
@@ -40,7 +35,7 @@ th {
 }
 .bar {
   height: 20px;
-  background-color: #1f77b4;
+  background-color: #6bb4b4;
   margin-right: 8px;
 }
 .table-container {
@@ -98,15 +93,6 @@ th {
 .scrollable-table td {
   background-color: #fff;
 }
-h2 {
-  font-size: 1.5em;
-  margin: 0;
-  font-weight: 400;
-  background-color: #ddd;
-  text-align: center;
-  border-bottom: 5px solid #fff;
-  color: #000;
-}
 .tbl-header {
   background-color: rgba(255, 255, 255, 0.3);
 }
@@ -115,7 +101,7 @@ h2 {
   overflow-y: auto;
   margin-top: 0px;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  
+  border-bottom: 1px solid #ddd;
 }
 
 .tbl-header table,
@@ -124,12 +110,18 @@ h2 {
   table-layout: fixed;
   th,
   td {
-    padding: 7px 13px;
+    padding: 8px 5px;
     text-align: left;
-    font-weight: 400;
-    font-size: 15px;
-    color: #fff;
-    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 14px;
+    color: #000;
+    background: #fff;
+    border-left: none;
+    border-top: none;
+    border-right: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
   thead {
     background-color: #000;
@@ -147,11 +139,77 @@ h2 {
 }
 
 h2 {
-  font-size: 1.5em;
+  font-size: 1.3em;
   margin: 0;
   font-weight: 400;
-  background-color: #ddd;
-  text-align: center;
   border-bottom: 5px solid #fff;
   color: #000;
+  font-family: "Open Sans";
+  letter-spacing: -0.72px;
+}
+
+.titleSpan {
+  margin-left: 14px;
+  font-size: 12px;
+  text-decoration-line: underline;
+  color: #4da697;
+  font-style: normal;
+  font-weight: 600;
+  font-family: "Open Sans";
+}
+#exception-chart {
+  width: 100%;
+  height: auto; /* Auto adjust based on the chart content */
+  margin: 0 auto;
+}
+
+
+.custom-legend {
+  display: flex;
+  justify-content: left;
+  margin-bottom: 10px; /* Adjust as needed */
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  color: #000;
+  font-family: "Open Sans";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 35px;
+}
+
+.legend-color {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 5px;
+  border-radius: 50%;
+}
+#exception-chart {
+	width: 100%;
+  }
+  #exception-chart {
+	padding: 0;
+	margin: 0;
+  }
+  #exception-chart svg {
+	width: 100%;
+  }
+  #exception-chart .c3-bar {
+	width: 100%;
+	transform: scaleX(1);
+  }
+  #exception-chart .c3-bars rect {
+    width: 100%!important;
+    transform: none!important;
+}
+
+/* Add this in your component’s CSS file */
+:host ::ng-deep .c3-chart-bars rect {
+  width: calc(100% / 10) !important;
+  transform: scaleX(1.05); /* Slightly scales up each bar */
 }
