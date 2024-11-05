@@ -16,6 +16,7 @@ import { TotalCo2Component } from './total-co2/total-co2.component';
 import { ExceptionsComponent } from './exceptions/exceptions.component';
 import { DataTableModule } from '@trax/datatable';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { PopupModalComponent } from '../../shared/popup-modal/popup-modal.component';
 
 @NgModule({
 	imports: [CommonModule, FormsModule, ReactiveFormsModule, T4RoutingModule, AngularMultiSelectModule,
@@ -30,6 +31,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 		IntensityComponent,
 		TotalCo2Component,
 		ExceptionsComponent,
+		PopupModalComponent
 	],
 })
 export class T4Module {}
