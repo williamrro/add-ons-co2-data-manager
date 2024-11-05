@@ -21,20 +21,31 @@ export class DetailComponent implements OnInit, OnDestroy {
   currentYear: number = new Date().getFullYear();
   selectedYear: { [key: number]: number } = {};
   modeChart: any;
-  lanes = [];
+  lanes: any[] = [];
   carriers = [];
   tableConfig = {
     "By Carrier": {
-      headers: ["CARRIER", "CARRIER_NAME", "VALUE"],
+      headers: ["Carrier Code", "Carrier Name", "Value"],
       dataKey: "carriers",
     },
     "By Lane": {
-      headers: ["Lane by Country", "Lane by City", "VALUE"],
+      headers: ["Lane by Country", "Lane by City", "Value"],
       dataKey: "lanes",
     },
   };
   summaryModeData: any = [];
   chart: any;
+  showPopup: boolean;
+  pageNumber: number = 1;
+  pageSize: number = 20;
+  totalCount: any;
+  totalPages: any;
+  popupData: any[];
+  popupTitle: string;
+  carrierTotalPages: any;
+  laneTotalPages: any;
+  carrierTotalCount: any;
+  laneTotalCount: any;
   constructor(
     private searchService: SearchService,
     private appService: AppService,
@@ -81,18 +92,32 @@ export class DetailComponent implements OnInit, OnDestroy {
     });
   }
   detailCarrerGraph(payLoad) {
-    this.appService.detailCarrerGraph(payLoad).subscribe((res: any) => {
-      if (res) {
-        this.carriers = res;
-      }
-    });
+    this.appService
+      .detailCarrerGraph(payLoad, this.pageNumber, this.pageSize)
+      .subscribe((res: any) => {
+        if (res) {
+          this.carriers = [];
+          setTimeout(() => {
+            this.carriers = res.data;
+            this.carrierTotalPages = res.totalPages;
+            this.carrierTotalCount = res.count;
+          }, 0); // Short delay to trigger change detection
+        }
+      });
   }
   detailLaneGraph(payLoad) {
-    this.appService.detailLaneGraph(payLoad).subscribe((res: any) => {
-      if (res) {
-        this.lanes = res;
-      }
-    });
+    this.appService
+      .detailLaneGraph(payLoad, this.pageNumber, this.pageSize)
+      .subscribe((res: any) => {
+        if (res) {
+          this.lanes = [];
+          setTimeout(() => {
+            this.lanes = [...res.data];
+            this.laneTotalPages = res.totalPages;
+            this.laneTotalCount = res.count;
+          }, 0); // Short delay to trigger change detection
+        }
+      });
   }
   // To calculate width of the bar graph in table row
   getBarWidth(data, value: number): string {
@@ -111,7 +136,7 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   generateModeChart(data) {
     // Function to filter the data
-    const groupValues = data.map(item => item[0]);
+    const groupValues = data.map((item) => item[0]);
     this.chart = c3.generate({
       bindto: "#mode-chart",
       data: {
@@ -135,7 +160,7 @@ export class DetailComponent implements OnInit, OnDestroy {
         y: {
           show: false,
           padding: {
-            top: 50,  // Add space above bars
+            top: 50, // Add space above bars
           },
         },
       },
@@ -152,11 +177,11 @@ export class DetailComponent implements OnInit, OnDestroy {
       //     },
       //   },
       // },
-      
+
       bar: {
         width: {
           ratio: 0.9, // Full-width bars
-          max: 50,  
+          max: 50,
         },
       },
       size: {
@@ -179,8 +204,8 @@ export class DetailComponent implements OnInit, OnDestroy {
         // This ensures legend hover behaves normally (if needed)
         item: {
           shape: {
-            type: 'circle'
-        },
+            type: "circle",
+          },
           onmouseover: (id) => {
             this.chart.focus(id); // Highlight legend's bar
             this.greyOutOthers(id); // Grey out other bars
@@ -189,17 +214,17 @@ export class DetailComponent implements OnInit, OnDestroy {
             this.chart.revert(); // Revert when leaving the legend hover
           },
         },
-       show:false
+        show: false,
       },
       tooltip: {
         grouped: false,
         contents: (d, defaultTitleFormat, defaultValueFormat, color) => {
-            const value = d[0].value;
-            this.chart.focus(d[0].id); // Highlight the hovered bar
-            this.greyOutOthers(d[0].id); // Grey out other bars
-    
-            // Customize the tooltip HTML
-            return `
+          const value = d[0].value;
+          this.chart.focus(d[0].id); // Highlight the hovered bar
+          this.greyOutOthers(d[0].id); // Grey out other bars
+
+          // Customize the tooltip HTML
+          return `
                 <div class="tooltip" style="background-color: #323232; color: #fff; padding: 5px 10px; border-radius: 5px; position: relative; z-index: 1000;">
                     <span style="color: #989898; font-family: 'Open Sans'; font-size: 12px; font-weight: 600;">${d[0].id}</span><br/>
                     <span style="color: #FFF; font-family: 'Open Sans'; font-size: 12px; font-weight: 600;">${value}</span>
@@ -208,23 +233,26 @@ export class DetailComponent implements OnInit, OnDestroy {
         },
         position: function (data, width, height, element) {
           const targetBar = element.getBoundingClientRect();
-          const chartOffset = document.querySelector("#mode-chart").getBoundingClientRect();
-          
+          const chartOffset = document
+            .querySelector("#mode-chart")
+            .getBoundingClientRect();
+
           const top = targetBar.top - chartOffset.top - height - 10; // Adjusting for height
-          const left = targetBar.left + targetBar.width / 2 - width / 2 - chartOffset.left;
-      
-          console.log('Tooltip Position - Top:', top, 'Left:', left); // Debugging output
-      
+          const left =
+            targetBar.left + targetBar.width / 2 - width / 2 - chartOffset.left;
+
+          console.log("Tooltip Position - Top:", top, "Left:", left); // Debugging output
+
           return {
-              top: top,
-              left: left
+            top: top,
+            left: left,
           };
-      },
-        onmouseout: () => {
-            this.chart.revert(); // Revert to the original state
         },
-    },
-    
+        onmouseout: () => {
+          this.chart.revert(); // Revert to the original state
+        },
+      },
+
       grid: {
         focus: {
           show: false, // Hide hover line
@@ -237,19 +265,24 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.insertCustomLegend();
   }
   insertCustomLegend() {
-    const legendContainer = document.querySelector('#mode-chart-legend');
-  
+    const legendContainer = document.querySelector("#mode-chart-legend");
+
     // Clear previous legends if any
-    legendContainer.innerHTML = '';
-  
+    legendContainer.innerHTML = "";
+
     // Create custom legend manually
-    const legendData = this.chart.data().map(d => {
-      return `<span class="legend-item">
-                <span style="background-color:${this.chart.color(d.id)};" class="legend-color"></span>
+    const legendData = this.chart
+      .data()
+      .map((d) => {
+        return `<span class="legend-item">
+                <span style="background-color:${this.chart.color(
+                  d.id
+                )};" class="legend-color"></span>
                 ${d.id}
               </span>`;
-    }).join(' ');
-  
+      })
+      .join(" ");
+
     // Append the generated legend HTML to the container
     legendContainer.innerHTML = legendData;
   }
@@ -259,7 +292,7 @@ export class DetailComponent implements OnInit, OnDestroy {
       if (id !== hoveredId) {
         this.chart.defocus(id); // Grey out non-hovered bars
       }
-    })
+    });
   }
   toggleTab(tab: string) {
     this.currentTab = tab;
@@ -284,6 +317,43 @@ export class DetailComponent implements OnInit, OnDestroy {
     if (this.searchParamsChangeSub$) this.searchParamsChangeSub$.unsubscribe();
     if (this.modeChart) {
       this.modeChart.destroy();
+    }
+  }
+  openPopup(headerValue: string) {
+    // Reset popup display
+    this.showPopup = false;
+    // Set popup data and title based on headerValue
+    const isCarrier = headerValue === "carrier";
+    this.popupData = isCarrier ? this.carriers : this.lanes;
+    this.popupTitle = isCarrier ? "By Carrier" : "By Lane";
+    this.totalPages = isCarrier ? this.carrierTotalPages : this.laneTotalPages;
+    this.totalCount = isCarrier ? this.carrierTotalCount : this.laneTotalCount;
+
+    // Show popup only if there's data
+    this.showPopup = this.popupData.length > 0;
+  }
+  closePopupClicked(data) {
+    console.log(data);
+    this.showPopup = false;
+  }
+  closePopup() {
+    this.showPopup = false;
+  }
+  // Listen to page change from the child component
+  onPageChange(event: { page: number; itemsPerPage: number }, title?: string) {
+    console.log(event, event.page, event.itemsPerPage, title);
+    this.pageNumber = event.page;
+    this.pageSize = event.itemsPerPage;
+    // console.log(page);
+    const obj = {
+      standardFilters: this.searchParams.searchStandardFormGroup,
+      customFilters: this.searchParams.searchCustomFormGroup1,
+    };
+    // this.detailCarrerGraph(obj);
+    if (title === "By Carrier") {
+      this.detailCarrerGraph(obj);
+    } else {
+      this.detailLaneGraph(obj);
     }
   }
 }
