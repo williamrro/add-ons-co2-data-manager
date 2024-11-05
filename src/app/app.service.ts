@@ -127,15 +127,16 @@ export class AppService {
       reqPayload
     );
   }
-  detailCarrerGraph(reqPayload: any) {
+  detailCarrerGraph(reqPayload: any, pageNo, PageSize) {
     return this.http.post(
-      this.BASE_URL + "co2emission/api/detail/carrierGraph",
+      this.BASE_URL +
+        `co2emission/api/detail/carrierGraph?pageNumber=${pageNo}&pageSize=${PageSize}`,
       reqPayload
     );
   }
-  detailLaneGraph(reqPayload: any) {
+  detailLaneGraph(reqPayload: any, pageNo, PageSize) {
     return this.http.post(
-      this.BASE_URL + "co2emission/api/detail/laneGraph",
+      this.BASE_URL + `co2emission/api/detail/laneGraph?pageNumber=${pageNo}&pageSize=${PageSize}`,
       reqPayload
     );
   }
@@ -153,7 +154,8 @@ export class AppService {
   }
   exceptionsCarrerGraph(reqPayload: any) {
     return this.http.post(
-      this.BASE_URL + "co2emission/api/exceptions/carrierGraph",
+      this.BASE_URL +
+        "co2emission/api/exceptions/carrierGraph",
       reqPayload
     );
   }
@@ -163,7 +165,7 @@ export class AppService {
       reqPayload
     );
   }
-  redirectCo2App(){
+  redirectCo2App() {
     const reqUrl = `${this.BASE_URL}co2emission/api/homeRedirect`;
     return this.http.get(reqUrl).map((response) => {
       return response;
