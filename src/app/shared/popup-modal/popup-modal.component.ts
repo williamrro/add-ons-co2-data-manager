@@ -24,7 +24,7 @@ export class PopupModalComponent implements OnInit, OnChanges {
   @Output() closePopupClicked = new EventEmitter<boolean>();
   @Output() pageChange = new EventEmitter<{
     page: number;
-    itemsPerPage: number;
+    itemsPerPage: number;rowChange?: boolean
   }>(); // Event for page change
   carrierHeader = ["Carrier Code", "Carrier Name", "Value"];
   laneHeader = ["Lane by Country", "Lane by City", "Value"];
@@ -33,11 +33,9 @@ export class PopupModalComponent implements OnInit, OnChanges {
   constructor(private cd:ChangeDetectorRef) {}
 
   ngOnInit() {
-    console.log(this.data);
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data) {
-      console.log("Updated data:", this.data); // This should now log new data when `data` changes
       this.cd.detectChanges(); // Manually trigger change detection
     }
   }
@@ -83,7 +81,7 @@ export class PopupModalComponent implements OnInit, OnChanges {
   }
 
   goToPage(page: number): void {
-    this.currentPage = page;
+    this.currentPage = Number(page);
     this.pageChange.emit({
       page: this.currentPage,
       itemsPerPage: this.itemsPerPage,
@@ -95,6 +93,7 @@ export class PopupModalComponent implements OnInit, OnChanges {
     this.pageChange.emit({
       page: this.currentPage,
       itemsPerPage: this.itemsPerPage,
+      rowChange: true
     });
   }
   trackById(index: number, item: any): any {
