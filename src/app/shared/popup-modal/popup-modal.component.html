@@ -2,7 +2,7 @@
   <div class="popup-container">
     <div class="popup-header">
       <h2 class="title">{{ title }}</h2>
-      <button class="close-btn" (click)="closePopup()">&times;</button>
+      <img width="15px" height="15px" src="assets/img/x-mark.svg" class="x-icon" (click)="closePopup()"/>
     </div>
 
     <div class="popup-content">
@@ -43,24 +43,26 @@
       </div>
 
       <!-- Pagination Controls -->
-      <div class="pagination-controls">
-        <span>{{ totalCount }} Results</span>
+      <div class="pagination-controls" style="width:100%">
+        <span class="results-count">{{ totalCount }} Results</span>
+        <div>
+        <button class="pagination-btn" (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
         
-        <button (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
-        
-        <select [(ngModel)]="currentPage" (change)="goToPage(currentPage)">
+        <select class="page-select" [(ngModel)]="currentPage" (change)="goToPage(currentPage)">
           <option *ngFor="let page of pageNumbers()" [value]="page">{{ page | number : '2.0' }}</option>
         </select>
         
-        <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+        <button class="pagination-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+         </div>
+         <div>
+        <span class="show-text">Show</span>
         
-        <span>Show</span>
-        
-        <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+        <select class="rows-select" [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
           <option *ngFor="let option of [20, 40, 60, 80, 100]" [value]="option">{{ option }}</option>
         </select>
         
-        <span>rows per page</span>
+        <span class="rows-text">rows per page</span>
+      </div>
       </div>
       
     </div>

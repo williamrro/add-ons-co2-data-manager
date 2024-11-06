@@ -140,9 +140,9 @@
 <app-popup-modal
   *ngIf="showPopup"
   [data]="popupData"
-  [isHeader]="true"
+  [isHeader]="popupTitle === 'By Carrier' ? true :false"
   [isPopupOpen]="showPopup"
-  (closePopupClicked)="closePopupClicked($event)"
+  (closePopupClicked)="closePopupClicked($event,popupTitle)"
   (close)="closePopup()"
   [title]="popupTitle" [totalCount]="totalCount" [totalPages]="totalPages"
   (pageChange)="onPageChange($event,popupTitle)" 

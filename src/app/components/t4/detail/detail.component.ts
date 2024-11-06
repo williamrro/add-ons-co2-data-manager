@@ -42,10 +42,18 @@ export class DetailComponent implements OnInit, OnDestroy {
   totalPages: any;
   popupData: any[];
   popupTitle: string;
-  carrierTotalPages: any;
-  laneTotalPages: any;
-  carrierTotalCount: any;
-  laneTotalCount: any;
+  carrierTotalPages: number;
+  laneTotalPages: number;
+  carrierTotalCount: number;
+  laneTotalCount: number;
+  initialLanesPageData: any[] = [];
+  initialCarrierPageData: any[] = [];
+  initialLanesTotalPages: number;
+  initialLanesTotalCount: number;
+  initialCarrierTotalPages: number;
+  initialCarrierTotalCount: number;
+  lanesPopupData: any[] = [];
+  carriersPopupData: any[] = [];
   constructor(
     private searchService: SearchService,
     private appService: AppService,
@@ -91,31 +99,39 @@ export class DetailComponent implements OnInit, OnDestroy {
       }
     });
   }
-  detailCarrerGraph(payLoad) {
+  detailCarrerGraph(payLoad, rowChange?) {
     this.appService
       .detailCarrerGraph(payLoad, this.pageNumber, this.pageSize)
       .subscribe((res: any) => {
         if (res) {
-          this.carriers = [];
-          setTimeout(() => {
+          this.carriersPopupData = res.data;
+          this.carrierTotalPages = res.totalPages;
+          this.carrierTotalCount = res.count;
+          if (this.pageNumber === 1 && !rowChange) {
+            this.initialCarrierPageData = res.data;
+            this.initialCarrierTotalPages = res.totalPages;
+            this.initialCarrierTotalCount = res.count;
             this.carriers = res.data;
-            this.carrierTotalPages = res.totalPages;
-            this.carrierTotalCount = res.count;
-          }, 0); // Short delay to trigger change detection
+          }
+          this.openPopup("carrier", "pagination");
         }
       });
   }
-  detailLaneGraph(payLoad) {
+  detailLaneGraph(payLoad, rowChange?) {
     this.appService
       .detailLaneGraph(payLoad, this.pageNumber, this.pageSize)
       .subscribe((res: any) => {
         if (res) {
-          this.lanes = [];
-          setTimeout(() => {
-            this.lanes = [...res.data];
-            this.laneTotalPages = res.totalPages;
-            this.laneTotalCount = res.count;
-          }, 0); // Short delay to trigger change detection
+          this.lanesPopupData = res.data;
+          this.laneTotalPages = res.totalPages;
+          this.laneTotalCount = res.count;
+          if (this.pageNumber === 1 && !rowChange) {
+            this.initialLanesPageData = res.data;
+            this.initialLanesTotalPages = res.totalPages;
+            this.initialLanesTotalCount = res.count;
+            this.lanes = res.data;
+          }
+          this.openPopup("lane", "pagination");
         }
       });
   }
@@ -319,41 +335,53 @@ export class DetailComponent implements OnInit, OnDestroy {
       this.modeChart.destroy();
     }
   }
-  openPopup(headerValue: string) {
-    // Reset popup display
-    this.showPopup = false;
+  openPopup(headerValue: string, pagination?: string, event?) {
     // Set popup data and title based on headerValue
     const isCarrier = headerValue === "carrier";
-    this.popupData = isCarrier ? this.carriers : this.lanes;
+    this.popupData = isCarrier ? this.carriersPopupData : this.lanesPopupData;
     this.popupTitle = isCarrier ? "By Carrier" : "By Lane";
     this.totalPages = isCarrier ? this.carrierTotalPages : this.laneTotalPages;
     this.totalCount = isCarrier ? this.carrierTotalCount : this.laneTotalCount;
 
     // Show popup only if there's data
-    this.showPopup = this.popupData.length > 0;
+    if (pagination !== "pagination") {
+      this.showPopup = false;
+      this.showPopup = this.popupData.length > 0;
+    }
   }
-  closePopupClicked(data) {
-    console.log(data);
+  closePopupClicked(data, title?: string) {
     this.showPopup = false;
+    if (title === "By Carrier") {
+      this.carriers = this.initialCarrierPageData;
+      this.carrierTotalPages = this.initialCarrierTotalPages;
+      this.carrierTotalCount = this.initialCarrierTotalCount;
+      this.carriersPopupData = this.carriers;
+    } else {
+      this.lanes = this.initialLanesPageData;
+      this.laneTotalPages = this.initialLanesTotalPages;
+      this.laneTotalCount = this.initialLanesTotalCount;
+      this.lanesPopupData = this.lanes;
+    }
   }
   closePopup() {
     this.showPopup = false;
   }
   // Listen to page change from the child component
-  onPageChange(event: { page: number; itemsPerPage: number }, title?: string) {
-    console.log(event, event.page, event.itemsPerPage, title);
+  onPageChange(
+    event: { page: number; itemsPerPage: number; rowChange?: boolean },
+    title?: string
+  ) {
     this.pageNumber = event.page;
     this.pageSize = event.itemsPerPage;
-    // console.log(page);
     const obj = {
       standardFilters: this.searchParams.searchStandardFormGroup,
       customFilters: this.searchParams.searchCustomFormGroup1,
     };
     // this.detailCarrerGraph(obj);
     if (title === "By Carrier") {
-      this.detailCarrerGraph(obj);
+      this.detailCarrerGraph(obj, event.rowChange);
     } else {
-      this.detailLaneGraph(obj);
+      this.detailLaneGraph(obj, event.rowChange);
     }
   }
 }
