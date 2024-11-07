@@ -159,8 +159,8 @@ h2 {
 }
 #exception-chart {
   width: 100%;
-  height: auto; /* Auto adjust based on the chart content */
-  margin: 0 auto;
+  // height: auto; /* Auto adjust based on the chart content */
+  // margin: 0 auto;
 }
 
 
@@ -168,6 +168,7 @@ h2 {
   display: flex;
   justify-content: left;
   margin-bottom: 10px; /* Adjust as needed */
+  padding-left: 10px;
 }
 
 .legend-item {
@@ -192,21 +193,21 @@ h2 {
 #exception-chart {
 	width: 100%;
   }
-  #exception-chart {
-	padding: 0;
-	margin: 0;
-  }
-  #exception-chart svg {
-	width: 100%;
-  }
-  #exception-chart .c3-bar {
-	width: 100%;
-	transform: scaleX(1);
-  }
-  #exception-chart .c3-bars rect {
-    width: 100%!important;
-    transform: none!important;
-}
+//   #exception-chart {
+// 	padding: 0;
+// 	margin: 0;
+//   }
+//   #exception-chart svg {
+// 	width: 100%;
+//   }
+//   #exception-chart .c3-bar {
+// 	width: 100%;
+// 	transform: scaleX(1);
+//   }
+//   #exception-chart .c3-bars rect {
+//     width: 100%!important;
+//     transform: none!important;
+// }
 
 /* Add this in your component’s CSS file */
 :host ::ng-deep .c3-chart-bars rect {
