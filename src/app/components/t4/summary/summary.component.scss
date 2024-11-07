@@ -143,8 +143,9 @@ tbody tr {
 
 .no-data-message {
   text-align: center;
-  font-weight: bold;
   padding: 20px; /* Add padding for spacing */
+  font-size: 16px;
+  color: #000;
 }
 
 #carrier-container {
@@ -304,4 +305,14 @@ h2 {
   margin-right: 5px;
   border-radius: 50%;
 }
+
+/* Custom CSS to change the font color of x-axis and y-axis */
+.c3-axis-x .tick text {
+  fill: #989898; /* Set your desired color for x-axis, e.g., red */
+}
+
+.c3-axis-y .tick text {
+  fill: #989898; /* Set your desired color for y-axis, e.g., blue */
+}
+
 /* comparative graph css end*/
