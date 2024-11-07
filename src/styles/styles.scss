@@ -1860,24 +1860,7 @@ font-weight: 700!important;
 	stroke-width: 2px; /* Optional: Make the lines thicker */
   }
   
-  #exception-chart {
-	width: 100%;
-  }
-  #exception-chart {
-	padding: 0;
-	margin: 0;
-  }
-  #exception-chart svg {
-	width: 100%;
-  }
-  #exception-chart .c3-bar {
-	width: 100%;
-	transform: scaleX(1);
-  }
-  #exception-chart .c3-bars rect {
-    width: 100%!important;
-    transform: none!important;
-}
+
 
 /* Add this in your component's CSS file */
 :host ::ng-deep .c3-chart-bars {
