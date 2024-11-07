@@ -140,7 +140,7 @@
               [ngClass]="{ 'highlight-row': i === 2 }"
             >
               <!-- <td>{{ item.PERIOD }}</td> -->
-              <td [ngClass]="{ 'delta-row': i === 2 }">{{ item.UOM }}</td>
+              <td [ngClass]="{ 'delta-row': i === 2 }">{{ i !== 2 ? item.UOM : '' }}</td>
               <td>{{ item.ENE || "-" }}</td>
               <td>{{ item.OPS || "-" }}</td>
               <td>{{ item.TOT || "-" }}</td>
