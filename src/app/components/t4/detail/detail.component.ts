@@ -152,6 +152,93 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   generateModeChart(data) {
     // Function to filter the data
+    const data2=[
+      [
+          "AIR FREIGHT",
+          "11988.39"
+      ],
+      [
+          "OCEAN",
+          "2929.14"
+      ],
+      [
+          "EXPRESS PARCEL",
+          "1289.27"
+      ],
+      [
+          "FF",
+          "1353.33"
+      ],
+      [
+          "GROUND PARCEL",
+          "755.57"
+      ],
+      [
+          "LTL",
+          "5527.14"
+      ],
+      [
+          "POSTAL SERVICES",
+          "5351.49"
+      ],
+      [
+          "HOME DELIVERY1",
+          "5450.05"
+      ],
+      [
+          "FULL TRUCKLOAD1",
+          "5360.0"
+      ], [
+        "POSTAL SERVICES1",
+        "4561.49"
+    ],
+    [
+        "HOME DELIVERY12",
+        "78300.05"
+    ],
+    [
+        "FULL TRUCKLOAD12",
+        "1000.0"
+    ]
+  ]
+  const data1=[
+    [
+        "AIR FREIGHT",
+        "11988.39"
+    ],
+    [
+        "OCEAN",
+        "2929.14"
+    ],
+    [
+        "EXPRESS PARCEL",
+        "1289.27"
+    ],
+    [
+        "FF",
+        "353.33"
+    ],
+    [
+        "GROUND PARCEL",
+        "55.57"
+    ],
+    [
+        "LTL",
+        "27.14"
+    ],
+    [
+        "POSTAL SERVICES",
+        "61.49"
+    ],
+    [
+        "HOME DELIVERY",
+        "50.05"
+    ],
+    [
+        "FULL TRUCKLOAD",
+        "38.0"
+    ]
+]
     const groupValues = data.map((item) => item[0]);
     this.chart = c3.generate({
       bindto: "#mode-chart",
@@ -176,7 +263,7 @@ export class DetailComponent implements OnInit, OnDestroy {
         y: {
           show: false,
           padding: {
-            top: 50, // Add space above bars
+            // top: 50, // Add space above bars
           },
         },
       },
@@ -202,8 +289,11 @@ export class DetailComponent implements OnInit, OnDestroy {
       },
       size: {
         height: 70, // Keep the height as it is
-        width: 1000,
+        // width: 1000,
+        // width: document.querySelector("#mode-chart").offsetWidth // Sets width to container's width
         // width: (document.querySelector("#mode-chart") as HTMLElement).offsetWidth // Cast to HTMLElement to access offsetWidth
+        // width: ((document.querySelector("#mode-chart") as HTMLElement).offsetWidth), // Reduce by 10 pixels
+
       },
       color: {
         pattern: [
@@ -235,12 +325,11 @@ export class DetailComponent implements OnInit, OnDestroy {
       tooltip: {
         grouped: false,
         contents: (d, defaultTitleFormat, defaultValueFormat, color) => {
-          const value = d[0].value;
-          this.chart.focus(d[0].id); // Highlight the hovered bar
-          this.greyOutOthers(d[0].id); // Grey out other bars
-
-          // Customize the tooltip HTML
-          return `
+            const value = d[0].value;
+            this.chart.focus(d[0].id);
+            this.greyOutOthers(d[0].id);
+    
+            return `
                 <div class="tooltip" style="background-color: #323232; color: #fff; padding: 5px 10px; border-radius: 5px; position: relative; z-index: 1000;">
                     <span style="color: #989898; font-family: 'Open Sans'; font-size: 12px; font-weight: 600;">${d[0].id}</span><br/>
                     <span style="color: #FFF; font-family: 'Open Sans'; font-size: 12px; font-weight: 600;">${value}</span>
@@ -249,26 +338,30 @@ export class DetailComponent implements OnInit, OnDestroy {
         },
         position: function (data, width, height, element) {
           const targetBar = element.getBoundingClientRect();
-          const chartOffset = document
-            .querySelector("#mode-chart")
-            .getBoundingClientRect();
-
-          const top = targetBar.top - chartOffset.top - height - 10; // Adjusting for height
-          const left =
-            targetBar.left + targetBar.width / 2 - width / 2 - chartOffset.left;
-
-          console.log("Tooltip Position - Top:", top, "Left:", left); // Debugging output
-
-          return {
-            top: top,
-            left: left,
-          };
-        },
-        onmouseout: () => {
-          this.chart.revert(); // Revert to the original state
-        },
+          const chartOffset = document.querySelector("#mode-chart").getBoundingClientRect();
+  
+          let top = targetBar.top - chartOffset.top - height - 10;
+          let left = targetBar.left + targetBar.width / 2 - width / 2 - chartOffset.left;
+  
+          // Adjust if tooltip goes beyond the right edge
+          const chartWidth = chartOffset.width;
+          if (left + width > chartWidth) {
+              left = chartWidth - width - 10; // Shift left to avoid overflow
+          }
+  
+          // Adjust if tooltip goes beyond the left edge
+          if (left < 0) {
+              left = 10; // Shift right to stay within bounds
+          }
+  
+          return { top: top, left: left };
       },
-
+        
+        onmouseout: () => {
+            this.chart.revert();
+        },
+    },
+    
       grid: {
         focus: {
           show: false, // Hide hover line
