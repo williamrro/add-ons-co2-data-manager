@@ -53,7 +53,7 @@ export class SummaryComponent implements OnInit {
   constructor(
     private searchService: SearchService,
     private appService: AppService,
-    private cd: ChangeDetectorRef
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -159,7 +159,6 @@ export class SummaryComponent implements OnInit {
       serverSideFiltering: false,
       disableSelection: false,
     };
-    this.toggleTab("Graph");
     this.appService.getAllSummaryYears().subscribe((res: any) => {
       this.summaryYearData = res;
     });
@@ -193,11 +192,13 @@ export class SummaryComponent implements OnInit {
       standardFilters: this.searchParams.searchStandardFormGroup,
       customFilters: this.searchParams.searchCustomFormGroup1,
     };
+    this.summaryGraphData = [];
     this.appService.summaryGraph(obj).subscribe((res: any) => {
       if (res) {
         this.summaryGraphData = res.data;
         this.generateChart(this.summaryGraphData);
         this.chartGenerated = true;
+        this.cdr.detectChanges(); // Trigger change detection
       }
     });
   }
@@ -225,128 +226,135 @@ export class SummaryComponent implements OnInit {
   }
   generateChart(data) {
     // this.showVerticalBar = this.debounce(this.showVerticalBar.bind(this), 0);
-    // Initialize a variable to keep track of the maximum value
-    let maxYValue = 0;
-    // Loop through the data to find the maximum value, ignoring the first element (year)
-    data.forEach((row) => {
-      for (let i = 1; i < row.length; i++) {
-        const value = row[i];
-        if (typeof value === "number" && value > maxYValue) {
-          maxYValue = value;
+    setTimeout(() => {
+      // Initialize a variable to keep track of the maximum value
+      let maxYValue = 0;
+      // Loop through the data to find the maximum value, ignoring the first element (year)
+      data.forEach((row) => {
+        for (let i = 1; i < row.length; i++) {
+          const value = row[i];
+          if (typeof value === "number" && value > maxYValue) {
+            maxYValue = value;
+          }
         }
-      }
-    });
-    // Optionally, add a 10% padding to the calculated maximum value
-    const yAxisMax = maxYValue + maxYValue * 0.1;
-    this.chart = c3.generate({
-      bindto: "#yoy-chart",
-      data: {
-        columns: data,
-        type: "line",
-        // onmouseover: (d) => {
-        //   this.showVerticalBar(d);
-        // },
-        // onmouseout: () => {
-        //   this.removeVerticalBar();
-        // },
-        colors: {
-          "2021": "#F48E16", // Orange
-          "2022": "#D5AA0D", // Yellow
-          "2023": "#24A756", // Green
-          "2024": "#5C98F3", // Blue
-        },
-      },
-      axis: {
-        x: {
-          type: "category",
-          categories: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
-          tick: {
-            rotate: -75,
-            multiline: false,
+      });
+      // Optionally, add a 10% padding to the calculated maximum value
+      const yAxisMax = maxYValue + maxYValue * 0.1;
+      this.chart = c3.generate({
+        bindto: "#yoy-chart",
+        data: {
+          columns: data,
+          type: "line",
+          // onmouseover: (d) => {
+          //   this.showVerticalBar(d);
+          // },
+          // onmouseout: () => {
+          //   this.removeVerticalBar();
+          // },
+          colors: {
+            "2021": "#F48E16", // Orange
+            "2022": "#D5AA0D", // Yellow
+            "2023": "#24A756", // Green
+            "2024": "#5C98F3", // Blue
           },
-          height: 60,
         },
-        y: {
-          min: 0, // Set minimum value of Y-axis to 0
-          max: yAxisMax,
-          padding: {
-            top: 5,
-            bottom: 20, // Remove padding below 0 to avoid negative values
+        axis: {
+          x: {
+            type: "category",
+            categories: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec",
+            ],
+            tick: {
+              // rotate: -75,
+              multiline: false,
+            },
+            height: 60,
           },
-          tick: {
-            format: function (d) {
-              return d / 1000 + "k"; // Format value in 'k' and start from 0k
+          y: {
+            min: 0, // Set minimum value of Y-axis to 0
+            max: yAxisMax,
+            padding: {
+              top: 5,
+              bottom: 20, // Remove padding below 0 to avoid negative values
+            },
+            tick: {
+              format: function (d) {
+                return d / 1000 + "k"; // Format value in 'k' and start from 0k
+              },
             },
           },
         },
-      },
-      legend: {
-        // position: "top", // Adjust legend position as per your requirement
-        show: false,
-      },
-      tooltip: {
-        grouped: true, // To group the values in the tooltip
-        format: {
-          title: function (d) {
-            return "Data for " + d;
-          }, // Customize title in tooltip
-          value: function (value, ratio, id) {
-            return value; // Ensure values are displayed as decimals
+        legend: {
+          // position: "top", // Adjust legend position as per your requirement
+          show: false,
+        },
+        tooltip: {
+          grouped: true, // To group the values in the tooltip
+          format: {
+            title: function (d) {
+              return "Data for " + d;
+            }, // Customize title in tooltip
+            value: function (value, ratio, id) {
+              return value; // Ensure values are displayed as decimals
+            },
+          },
+          contents: function (
+            d,
+            defaultTitleFormat,
+            defaultValueFormat,
+            color
+          ) {
+            var html = "<div class='custom-tooltip'><table>";
+            d.forEach(function (data) {
+              html +=
+                "<tr><td><span style='color:" +
+                "#989898" +
+                "'></span> " +
+                data.name +
+                ": </td>";
+              html +=
+                "<td style='font-weight:bold;'>" +
+                (data.value !== null ? data.value : "0") +
+                "</td></tr>";
+            });
+            html += "</table></div>";
+            return html;
           },
         },
-        contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
-          var html = "<div class='custom-tooltip'><table>";
-          d.forEach(function (data) {
-            html +=
-              "<tr><td><span style='color:" +
-              "#989898" +
-              "'></span> " +
-              data.name +
-              ": </td>";
-            html +=
-              "<td style='font-weight:bold;'>" +
-              (data.value !== null ? data.value : "0") +
-              "</td></tr>";
-          });
-          html += "</table></div>";
-          return html;
-        },
-      },
-      interaction: {
-        enabled: true, // Enable hover interaction
-        highlight: {
-          point: true, // Highlight points when hovered
-        },
-      },
-      focus: {
-        enabled: false, // Enable focus on specific regions when hovered
-      },
-      grid: {
-        y: {
-          show: false, // Disable the horizontal gridlines on the y-axis
+        interaction: {
+          enabled: true, // Enable hover interaction
+          highlight: {
+            point: true, // Highlight points when hovered
+          },
         },
         focus: {
-          show: false, // Disable the vertical gridlines on hover
+          enabled: false, // Enable focus on specific regions when hovered
         },
-      },
-      regions: [
-        // This is an initial empty region. The region is dynamically updated when hovered.
-      ],
-    });
-    this.insertCustomLegend();
+        grid: {
+          y: {
+            show: false, // Disable the horizontal gridlines on the y-axis
+          },
+          focus: {
+            show: false, // Disable the vertical gridlines on hover
+          },
+        },
+        regions: [
+          // This is an initial empty region. The region is dynamically updated when hovered.
+        ],
+      });
+      this.insertCustomLegend();
+    }, 0);
   }
 
   insertCustomLegend() {
@@ -374,12 +382,6 @@ export class SummaryComponent implements OnInit {
 
     // Append the generated legend HTML to the container
     legendContainer.innerHTML = legendData;
-  }
-
-  toggleTab(tab: string) {
-    this.currentTab = tab;
-    this.chartGenerated = false;
-    this.tableDataLoaded = false;
   }
 
   initializeTableData() {
@@ -1594,9 +1596,3 @@ export class SummaryComponent implements OnInit {
     if (this.searchParamsChangeSub$) this.searchParamsChangeSub$.unsubscribe();
   }
 }
-
-//   .c3-line {
-// 	stroke-width: 2px;
-//   }
-
-// 21-10-2024
