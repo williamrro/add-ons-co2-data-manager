@@ -297,7 +297,7 @@ export class ExceptionsComponent implements OnInit {
         y: {
           show: false,
           padding: {
-            top: 50, // Add space above bars
+            // top: 50, // Add space above bars
           },
         },
       },
@@ -330,10 +330,10 @@ export class ExceptionsComponent implements OnInit {
       },
       color: {
         pattern: [
-          "#d4af37",
-          "#f39c12",
-          "#d35400",
-          "#16a085",
+          "#5C98F3",
+          "#3949AB",
+          "#F48E16",
+          "#AFF7D0",
           "#2980b9",
           "#8e44ad",
         ],

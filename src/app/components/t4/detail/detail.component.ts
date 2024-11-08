@@ -176,7 +176,7 @@ export class DetailComponent implements OnInit, OnDestroy {
         y: {
           show: false,
           padding: {
-            top: 50, // Add space above bars
+            // top: 50, // Add space above bars
           },
         },
       },
@@ -202,8 +202,10 @@ export class DetailComponent implements OnInit, OnDestroy {
       },
       size: {
         height: 70, // Keep the height as it is
-        width: 1000,
+        // width: 1000,
+        // width: document.querySelector("#mode-chart").offsetWidth // Sets width to container's width
         // width: (document.querySelector("#mode-chart") as HTMLElement).offsetWidth // Cast to HTMLElement to access offsetWidth
+        // width: ((document.querySelector("#mode-chart") as HTMLElement).offsetWidth), // Reduce by 10 pixels
       },
       color: {
         pattern: [
@@ -236,10 +238,9 @@ export class DetailComponent implements OnInit, OnDestroy {
         grouped: false,
         contents: (d, defaultTitleFormat, defaultValueFormat, color) => {
           const value = d[0].value;
-          this.chart.focus(d[0].id); // Highlight the hovered bar
-          this.greyOutOthers(d[0].id); // Grey out other bars
+          this.chart.focus(d[0].id);
+          this.greyOutOthers(d[0].id);
 
-          // Customize the tooltip HTML
           return `
                 <div class="tooltip" style="background-color: #323232; color: #fff; padding: 5px 10px; border-radius: 5px; position: relative; z-index: 1000;">
                     <span style="color: #989898; font-family: 'Open Sans'; font-size: 12px; font-weight: 600;">${d[0].id}</span><br/>
@@ -253,19 +254,26 @@ export class DetailComponent implements OnInit, OnDestroy {
             .querySelector("#mode-chart")
             .getBoundingClientRect();
 
-          const top = targetBar.top - chartOffset.top - height - 10; // Adjusting for height
-          const left =
+          let top = targetBar.top - chartOffset.top - height - 10;
+          let left =
             targetBar.left + targetBar.width / 2 - width / 2 - chartOffset.left;
 
-          console.log("Tooltip Position - Top:", top, "Left:", left); // Debugging output
+          // Adjust if tooltip goes beyond the right edge
+          const chartWidth = chartOffset.width;
+          if (left + width > chartWidth) {
+            left = chartWidth - width - 10; // Shift left to avoid overflow
+          }
 
-          return {
-            top: top,
-            left: left,
-          };
+          // Adjust if tooltip goes beyond the left edge
+          if (left < 0) {
+            left = 10; // Shift right to stay within bounds
+          }
+
+          return { top: top, left: left };
         },
+
         onmouseout: () => {
-          this.chart.revert(); // Revert to the original state
+          this.chart.revert();
         },
       },
 

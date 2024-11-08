@@ -123,8 +123,8 @@ td {
 }
 #mode-chart {
   width: 100%;
-  height: auto; /* Auto adjust based on the chart content */
-  margin: 0 auto;
+  // height: auto; /* Auto adjust based on the chart content */
+  // margin: 0 auto;
 }
 h2 span {
   margin-left: 14px;
@@ -145,6 +145,8 @@ h2 span {
   display: flex;
   justify-content: left;
   margin-bottom: 10px; /* Adjust as needed */
+  flex-wrap: wrap;
+  padding-left: 10px;
 }
 
 .legend-item {
@@ -165,4 +167,7 @@ h2 span {
   height: 12px;
   margin-right: 5px;
   border-radius: 50%;
+}
+#mode-chart {
+  width: 100%;
 }
