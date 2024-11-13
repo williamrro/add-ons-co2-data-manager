@@ -32,6 +32,7 @@ export class ExceptionsComponent implements OnInit {
   };
   exceptionsModeData: any = [];
   exceptionChart: any;
+  showByValue: any;
   constructor(
     private searchService: SearchService,
     private appService: AppService,
@@ -56,6 +57,7 @@ export class ExceptionsComponent implements OnInit {
             standardFilters: this.searchParams.searchStandardFormGroup,
             customFilters: this.searchParams.searchCustomFormGroup1,
           };
+          this.showByValue = this.searchParams.searchStandardFormGroup.showBy[0];
           this.exceptionsTable();
           this.exceptionModeGraph(obj);
           this.exceptionCarrerGraph(obj);
