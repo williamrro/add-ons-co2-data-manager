@@ -33,7 +33,9 @@
 						(scroll)="scrollEvents($event)"
 						(onSelect)="onFiltersSelect($event,filter)"
 						(onDeSelect)="onFiltersSelect($event)"
+						(onDeSelectAll)="onDeSelectAll($event, filter,filterType)"
 						(onScrollToEnd)="onFilterValuesScrollToEnd($event, filter,filterType)"
+						(onClose)="onDropdownClose($event,filter,filterType)"
 					>
 						<c-search>
 							<ng-template>
