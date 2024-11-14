@@ -54,6 +54,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   initialCarrierTotalCount: number;
   lanesPopupData: any[] = [];
   carriersPopupData: any[] = [];
+  showByValue: any;
   constructor(
     private searchService: SearchService,
     private appService: AppService,
@@ -73,6 +74,7 @@ export class DetailComponent implements OnInit, OnDestroy {
           Object.keys(this.searchParams).length &&
           currentUrl === pathToMatch
         ) {
+          this.showByValue = this.searchParams.searchStandardFormGroup.showBy[0];
           this.appService.getAllSummaryYears().subscribe((res: any) => {
             this.summaryYearData = res;
           });

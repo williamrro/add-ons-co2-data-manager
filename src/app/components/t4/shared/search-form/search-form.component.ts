@@ -312,7 +312,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
             this.searchForm
               .get("searchStandardFormGroup")
               .get("showBy")
-              .setValue([this.filterValues[0]]);
+              .setValue([this.filterValues[1]]);
           }
           if (initialLoad === "initialLoad" && filterKey === "monthYear") {
             this.searchForm
@@ -323,7 +323,9 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
           if (
             this.searchForm.get("searchStandardFormGroup").get("monthYear")
               .value &&
-            this.searchForm.get("searchStandardFormGroup").get("showBy").value
+            this.searchForm.get("searchStandardFormGroup").get("showBy")
+              .value &&
+            initialLoad === "initialLoad"
           ) {
             this.onSearch();
           }
@@ -388,10 +390,36 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
 
     return count;
   }
-  onFiltersSelect(event,data){
+  onFiltersSelect(event, data) {
     console.log(event, data);
     this.isApplyDisabled = false;
-    this.isClientUpdated = '';
+    this.isClientUpdated = "";
+  }
+  onDeSelectAll(event, filter, filterType) {
+    if (filter.key === "showBy") {
+      this.searchForm
+        .get("searchStandardFormGroup")
+        .get("showBy")
+        .setValue([{ id: "OPS", itemName: "OPS" }]);
+    }
+    this.isApplyDisabled = false;
+    this.isClientUpdated = "";
+  }
+  onDropdownClose(event, filter, filterType) {
+    if (filterType === "standard" && filter.key === "showBy") {
+      console.log(
+        this.searchForm.get("searchStandardFormGroup").get("showBy").value
+      );
+      if (
+        this.searchForm.get("searchStandardFormGroup").get("showBy").value
+          .length === 0
+      ) {
+        this.searchForm
+          .get("searchStandardFormGroup")
+          .get("showBy")
+          .setValue([{ id: "OPS", itemName: "OPS" }]);
+      }
+    }
   }
   ngOnDestroy() {
     if (this.accessInfoSub$) this.accessInfoSub$.unsubscribe();
