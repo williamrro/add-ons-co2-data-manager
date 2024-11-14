@@ -312,7 +312,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
             this.searchForm
               .get("searchStandardFormGroup")
               .get("showBy")
-              .setValue([this.filterValues[1]]);
+              .setValue([this.filterValues[0]]);
           }
           if (initialLoad === "initialLoad" && filterKey === "monthYear") {
             this.searchForm
