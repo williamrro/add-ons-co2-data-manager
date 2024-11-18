@@ -1,24 +1,40 @@
 .manageContainer {
 	display: flex;
 	flex-direction: column;
-	width: 650px;
+	width: 530px;
 	height: 86vh;
-	border-radius: 8px;
+	// border-radius: 8px;
 	background: #fff;
-	padding: 15px;
+	// padding: 15px;
 	color: #000;
 	font-weight: 600;
+	border-radius: 20px;
+    border: 1px solid #C1C3C3;
+    background: #FFF;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 
 	&--header {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		height: 40px;
+		border-bottom: 1px solid #D9D9D9;
 
 		.headerTitle {
 			font-size: 24px;
+			padding: 0px 15px;
 		}
-
+		.addFontChange{
+			color: #000;
+			font-family: "Open Sans";
+			font-size: 18px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: normal;
+			letter-spacing: -0.72px;
+		}
+		
+        
 		.headerButtons {
 			display: flex;
 
@@ -32,7 +48,7 @@
 		display: flex;
 		flex: 1;
 		border: 1px solid #d9d9d9;
-		border-radius: 20px;
+		// border-radius: 20px;
 		margin: 10px 0;
 		overflow: hidden;
 
@@ -40,7 +56,8 @@
 			display: flex;
 			flex-direction: column;
 			width: 50%;
-			padding: 20px 10px 10px 15px;
+			padding: 10px 10px 10px 15px;
+			background: #EAEEEF;
 
 			&:first-child {
 				border-right: 1px solid #d9d9d9;
@@ -50,6 +67,13 @@
 				display: flex;
 				font-size: 20px;
 				margin-bottom: 15px;
+				color: #000;
+				font-family: "Open Sans";
+				font-size: 13px;
+				font-style: normal;
+				font-weight: 600;
+				line-height: normal;
+				letter-spacing: -0.48px;
 			}
 
 			&--message {
@@ -77,7 +101,7 @@
 			&--list {
 				display: flex;
 				flex-direction: column;
-				padding: 12px 12px 12px 0;
+				padding: 0px 12px 12px 0px;
 				overflow-y: auto;
 
 				.listItem {
@@ -91,27 +115,34 @@
 						display: flex;
 						flex: 1;
 						padding: 10px 15px;
-						border-radius: 5px;
-						border: 1px solid #000;
+						// border-radius: 5px;
+						// border: 1px solid #000;
 						box-sizing: border-box;
 						line-height: 20px;
+						border-radius: 5px;
+                        border: 1px solid #989898;
+                        background: #FFF;
+						color: #000;
+						font-family: "Open Sans";
+						font-size: 12px;
+						font-style: normal;
+						font-weight: 400;
+						line-height: normal;
+						letter-spacing: -0.36px;
 					}
 
 					.iconButton {
 						width: 18px;
-						margin: 0 0 0 8px;
-						background-image: (url(/assets/img/arrow.svg));
-						background-repeat: no-repeat;
-						background-position: center;
 					}
 
 					&.disabled {
 						cursor: not-allowed;
 
 						.listItem--name {
-							background-color: #f0f3f4;
-							color: #99a0a4;
-							border-color: #f0f3f4;
+							background-color: #D7D8D8;
+                            color: #5F6368;
+                            border-color: #f0f3f4;
+							
 						}
 
 						.iconButton {
@@ -126,7 +157,7 @@
 
 						.iconButton {
 							margin: 0 8px 0 0;
-							transform: rotate(180deg);
+							// transform: rotate(180deg);
 						}
 					}
 				}
@@ -135,12 +166,13 @@
 	}
 
 	&--error {
-		padding-top: 10px;
+		// padding-top: 10px;
 		.errorMessage {
 			font-size: 15px;
 			font-weight: 400;
 			line-height: 15px;
 			color: #f00;
+			padding-left: 5px;
 
 			&::before {
 				content: '*';
@@ -161,4 +193,68 @@
 .manageContainerFlex{
 	display: flex;
 	justify-content: space-between;
+}
+.highlight-value {
+	display: inline-block; /* Forces the value to stay as a unit */
+	padding-left: 15px;
+  }
+.fontChange{
+	padding: 10px 15px 5px;
+	color: #000;
+	font-family: "Open Sans";
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	letter-spacing: -0.48px;
+}
+.x-icon {
+  height: 15px;
+  width: 15px;
+  cursor: pointer;
+}
+.btnClear{
+	color: #4DA697;
+    text-align: center;
+    font-family: "Open Sans";
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.36px;
+    text-decoration-line: underline;
+	margin-right: 17px;
+    margin-top: 5px;
+	cursor: pointer;
+}
+.btnsavecancl{
+	border-radius: 3px;
+    border: 1px solid #A3A1A1;
+    width: 68px;
+    height: 29px;
+    padding: 0px 16px;
+	margin-right: 17px;
+    margin-bottom: 10px;
+}
+.text{
+	color: #575656 !important ;
+    font-family: 'Open Sans' !important;
+    font-size: 12px !important;
+}
+.textSave{
+	color: #fff !important;
+}
+.actionButton:disabled span.text {
+    color: #99a0a4 !important;
+}
+.no-data-message{
+	text-align: center;
+    margin-top: 50%;
+    font-weight: normal;
+}
+.selectedfilter{
+	font-style: italic;
+	font-size: 12px;
+	font-weight: 400;
+    padding-left: 5px;
 }
