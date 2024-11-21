@@ -1,4 +1,9 @@
-import { Component, OnInit, Renderer2, ElementRef } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Renderer2,
+  ElementRef,
+} from "@angular/core";
 import { ISubscription } from "rxjs/Subscription";
 import { SearchService } from "../../../services/search.service";
 import { AppService } from "../../../app.service";
@@ -32,6 +37,7 @@ export class ExceptionsComponent implements OnInit {
   };
   exceptionsModeData: any = [];
   exceptionChart: any;
+  chart: any;
   showByValue: any;
   constructor(
     private searchService: SearchService,
@@ -57,7 +63,7 @@ export class ExceptionsComponent implements OnInit {
             standardFilters: this.searchParams.searchStandardFormGroup,
             customFilters: this.searchParams.searchCustomFormGroup1,
           };
-          this.showByValue = this.searchParams.searchStandardFormGroup.showBy[0];
+          this.showByValue =this.searchParams.searchStandardFormGroup.showBy[0];
           this.exceptionsTable();
           this.exceptionModeGraph(obj);
           this.exceptionCarrerGraph(obj);
@@ -105,7 +111,10 @@ export class ExceptionsComponent implements OnInit {
     this.appService.exceptionsTableSummary(obj).subscribe((res: any) => {
       if (res) {
         this.exceptionsTableData = res.data;
-        this.transformedData = this.transformData(this.exceptionsTableData);
+        // this.transformedData = this.transformData(this.exceptionsTableData);
+        setTimeout(() => {
+          this.renderCharts();
+        }, 0);
       }
     });
   }
@@ -303,20 +312,6 @@ export class ExceptionsComponent implements OnInit {
           },
         },
       },
-      // axis: {
-      //   rotated: true,
-      //   x: {
-      //     show: false,
-      //   },
-      //   y: {
-      //     show: false,
-      //     min: 0, // Ensures the y-axis starts at 0
-      //     padding: {
-      //       top: 100, // Add some padding at the top for better visibility
-      //     },
-      //   },
-      // },
-
       bar: {
         width: {
           ratio: 0.9, // Full-width bars
@@ -440,6 +435,59 @@ export class ExceptionsComponent implements OnInit {
       if (res) {
         this.carriers = res;
       }
+    });
+  }
+  renderCharts(): void {
+    this.exceptionsTableData.forEach((exception, index) => {
+      const chartId = `#chart-DEST-${index}`;
+      const categories = exception.monthlyTotals.map((item) => item[0]);
+      c3.generate({
+        bindto: chartId,
+        size: {
+          height: 50, // Chart height
+          // width: 600, // Chart width
+        },
+        data: {
+          columns: [
+            ["", ...exception.monthlyTotals.map((item) => Number(item[1]))], // Data values
+          ],
+          type: "bar",
+        },
+        bar: {
+          width: {
+            ratio: 0.6, // Make the bars thinner (lower ratio = narrower bars)
+          },
+        },
+        axis: {
+          x: {
+            type: "category",
+            categories: categories, // X-axis labels
+            padding: {
+              left: 0, // Reduce padding on the left
+              right: 10, // Reduce padding on the right
+            },
+            show: false, // Hide X-axis labels for a compact look
+          },
+          y: {
+            show: false, // Hide Y-axis labels
+          },
+        },
+        legend: {
+          show: false, // Hide legend
+        },
+        padding: {
+          left: 0, // Minimal padding on the left
+          right: 0, // Minimal padding on the right
+          top: 0, // Compact top padding
+          bottom: 0, // Compact bottom padding
+        },
+        color: {
+          pattern: ["#C1C3C3"], // Bar color
+        },
+        tooltip: {
+          show: true, // Make sure tooltip is enabled
+        }
+      });
     });
   }
   exceptionLaneGraph(payLoad) {
