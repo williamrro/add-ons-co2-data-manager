@@ -113,7 +113,7 @@ th {
     padding: 8px 5px;
     text-align: left;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
     color: #000;
     background: #fff;
     border-left: none;
@@ -133,7 +133,7 @@ th {
   td {
     vertical-align: middle;
     font-weight: 400;
-    font-size: 15px;
+    font-size: 13px;
     color: #000;
   }
 }
@@ -213,4 +213,17 @@ h2 {
 :host ::ng-deep .c3-chart-bars rect {
   width: calc(100% / 10) !important;
   transform: scaleX(1.05); /* Slightly scales up each bar */
+}
+
+.chart {
+  width: 100%;
+  height: 50px;
+  min-width: 100px;  /* Add a minimum width to ensure visibility */
+  min-height: 50px;  /* Add a minimum height */
+}
+.exceptionTable {
+  padding-left: 7px;
+ .tbl-content table td{
+  padding: 0px 5px !important;
+}
 }
