@@ -309,6 +309,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
           this.filterType = "";
           this.isFilterValuesSearching = true;
           if (initialLoad === "initialLoad" && filterKey === "showBy") {
+            console.log([this.filterValues[0]]);
             this.searchForm
               .get("searchStandardFormGroup")
               .get("showBy")
@@ -336,8 +337,9 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
       });
   }
 
-  refreshFilters() {
+  refreshFilters(clientData) {
     this.showPopup = false;
+    this.selectedClientCode = clientData;
     this.fetchFiltersToDisplay(this.selectedClientCode, this.isClientUpdated);
   }
 

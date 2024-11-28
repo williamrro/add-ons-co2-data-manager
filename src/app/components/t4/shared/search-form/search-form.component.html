@@ -165,5 +165,5 @@
 	[selectedClients]="(searchForm.get('searchStandardFormGroup').get(CLIENT_CODE_FILTER_KEY)?.value)"
 	[selectedFilters]="customFiltersList"
 	(closePopup)="togglePopup()"
-	(refreshFilters)="refreshFilters()"
+	(refreshFilters)="refreshFilters($event)"
 ></app-manage-filters>
