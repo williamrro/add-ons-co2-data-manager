@@ -117,7 +117,7 @@ export class ManageFiltersComponent implements OnInit {
       this.appService
         .saveCustomFilters(reqPayload, selectedClientCode)
         .subscribe((resp: any) => {
-          this.refreshFilters.emit();
+          this.refreshFilters.emit(selectedClientCode);
         });
   }
 }
