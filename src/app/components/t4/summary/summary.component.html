@@ -56,7 +56,7 @@
       <div class="title-container">
         <h2>Comparative Graph</h2>
       </div>
-      <div id="yoy-chart-legend" class="custom-legend" *ngIf="summaryGraphData.length > 0"></div>
+      <div id="yoy-chart-legend" class="custom-legend" *ngIf="summaryGraphData?.length"></div>
       <div  *ngIf="summaryGraphData.length > 0; else noDataChart"
         id="yoy-chart">
       </div>

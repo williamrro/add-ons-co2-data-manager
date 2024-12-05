@@ -1835,11 +1835,22 @@ font-weight: 700!important;
 	border-radius: 50%;
   }
 
-  .c3-line {
-	stroke-width: 2px;
+.c3-grid line {
+	stroke: #D9D9D9; /* Consistent color */
+	stroke-width: 1px;
+	stroke-opacity: 1; /* Fully opaque */
+	stroke-dasharray: none;
   }
-
-
+  
+  .c3-grid .grid-line-1k line,
+  .c3-grid .grid-line-2k line,
+  .c3-grid .grid-line-3k line,
+  .c3-grid .grid-line-4k line,
+  .c3-grid .grid-line-5k line {
+	stroke: #D9D9D9; /* Black line */
+	stroke-width: 1px;
+	stroke-dasharray: none;
+  }
   
  /* Custom CSS to change the font color of x-axis and y-axis for the chart with id 'yoy-chart' */
  #yoy-chart .c3-axis-x .tick text {
@@ -1866,3 +1877,30 @@ font-weight: 700!important;
 :host ::ng-deep .c3-chart-bars {
     width: 100%!important; /* Forces the width of the bars container to full width */
 }
+
+.legend-item {
+	display: inline-flex;
+	align-items: center;
+	cursor: pointer;
+	margin-right: 10px;
+  }
+  
+  .legend-color {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	margin-right: 5px;
+	display: inline-block;
+  }
+  
+  .legend-item {
+	display: inline-flex;
+	align-items: center;
+	cursor: pointer;
+	margin-right: 25px;
+  }
+  
+/* comparative graph css end*/
+.hidden-line line {
+	display: none;
+  }
