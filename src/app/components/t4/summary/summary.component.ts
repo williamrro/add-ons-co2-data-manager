@@ -7,15 +7,9 @@ import {
 import { ISubscription } from "rxjs/Subscription";
 import { SearchService } from "../../../services/search.service";
 import { FormGroup } from "@angular/forms";
-import { fail } from "assert";
 import { AppService } from "../../../app.service";
-// import * as c3 from 'c3';
+import { Router } from "@angular/router";
 declare var c3: any;
-interface Carrier {
-  code: string;
-  names: string[];
-  value: number[]; // or number if not an array
-}
 @Component({
   selector: "app-summary",
   templateUrl: "./summary.component.html",
@@ -53,16 +47,22 @@ export class SummaryComponent implements OnInit {
   constructor(
     private searchService: SearchService,
     private appService: AppService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.selectedYear[this.currentYear] = this.currentYear;
     this.selectedYear[this.currentYear - 1] = this.currentYear - 1;
+    const currentUrl = this.router.url;
+    const pathToMatch = "/t4/summary";
     this.searchParamsChangeSub$ = this.searchService.getSearchParams$.subscribe(
       (params: any) => {
         this.searchParams = params || {};
-        if (Object.keys(this.searchParams).length) {
+        if (
+          Object.keys(this.searchParams).length &&
+          currentUrl === pathToMatch
+        ) {
           this.summaryApiData();
           this.summaryGraphFunction();
         }
@@ -225,32 +225,59 @@ export class SummaryComponent implements OnInit {
     this.chart.regions.remove({ classes: ["hover-bar"] }); // Remove the region with the class 'hover-bar'
   }
   generateChart(data) {
-    // this.showVerticalBar = this.debounce(this.showVerticalBar.bind(this), 0);
     setTimeout(() => {
-      // Initialize a variable to keep track of the maximum value
-      let maxYValue = 0;
-      // Loop through the data to find the maximum value, ignoring the first element (year)
-      data.forEach((row) => {
-        for (let i = 1; i < row.length; i++) {
-          const value = row[i];
-          if (typeof value === "number" && value > maxYValue) {
-            maxYValue = value;
-          }
+      // Flatten and extract all numeric values from the dataset
+      const allValues = data
+        .map((dataset) => dataset.slice(1)) // Exclude the labels (first column)
+        .reduce((acc, val) => acc.concat(val), []); // Flatten the arrays
+      const numericValues = allValues.map((value) => Number(value));
+      const rawMaxValue = Math.max(...numericValues);
+      const ranges = [
+        { max: 50, step: 5 },
+        { max: 100, step: 10 },
+        { max: 300, step: 20 },
+        { max: 600, step: 50 },
+        { max: 1000, step: 100 },
+        { max: 2000, step: 200 },
+        { max: 6000, step: 500 },
+        { max: 20000, step: 1000 },
+        { max: 30000, step: 2000 },
+        { max: 60000, step: 5000 },
+        { max: 100000, step: 10000 },
+      ];
+      const defaultStep = 5000; // Default step for very large ranges
+      let step = defaultStep;
+      for (const range of ranges) {
+        if (rawMaxValue <= range.max) {
+          step = range.step;
+          break;
         }
+      }
+      if (rawMaxValue > 100000) {
+        step = 20000; // Use this step for values above 100000
+      }
+      const maxYValue = Math.ceil(rawMaxValue / step) * step;
+      const alternateLines = [];
+      // Alternate gridlines (step * 2 for more sparse lines)
+      for (let i = 0; i <= maxYValue; i += step * 2) {
+        alternateLines.push({
+          value: i,
+          text: "",
+          class: i === 0 ? "hidden-line" : `alternate-grid-line-${i}`,
+        });
+      }
+      alternateLines.push({
+        value: 0,
+        text: "",
+        class: "alternate-grid-line-0 hidden-line",
       });
-      // Optionally, add a 10% padding to the calculated maximum value
-      const yAxisMax = maxYValue + maxYValue * 0.1;
+      console.log(alternateLines);
+      // Generate the C3 chart
       this.chart = c3.generate({
         bindto: "#yoy-chart",
         data: {
           columns: data,
           type: "line",
-          // onmouseover: (d) => {
-          //   this.showVerticalBar(d);
-          // },
-          // onmouseout: () => {
-          //   this.removeVerticalBar();
-          // },
           colors: {
             "2021": "#F48E16", // Orange
             "2022": "#D5AA0D", // Yellow
@@ -275,30 +302,33 @@ export class SummaryComponent implements OnInit {
               "Nov",
               "Dec",
             ],
-            tick: {
-              // rotate: -75,
-              multiline: false,
-            },
+            tick: { multiline: false },
             height: 60,
           },
           y: {
-            min: 0, // Set minimum value of Y-axis to 0
-            max: yAxisMax,
-            padding: {
-              top: 5,
-              bottom: 20, // Remove padding below 0 to avoid negative values
-            },
+            min: 0,
+            max: maxYValue,
+            padding: { top: 5, bottom: 20 },
             tick: {
+              values: Array.from(
+                { length: maxYValue / step + 1 },
+                (_, i) => i * step
+              ),
               format: function (d) {
-                return d / 1000 + "k"; // Format value in 'k' and start from 0k
+                return rawMaxValue >= 100000
+                  ? d / 100000 + "L"
+                  : d / 1000 + "k";
               },
             },
           },
         },
-        legend: {
-          // position: "top", // Adjust legend position as per your requirement
-          show: false,
+        grid: {
+          y: {
+            show: false,
+            lines: alternateLines, // Combine both regular and alternate gridlines
+          },
         },
+        legend: { show: false },
         tooltip: {
           grouped: true, // To group the values in the tooltip
           format: {
@@ -341,14 +371,14 @@ export class SummaryComponent implements OnInit {
         focus: {
           enabled: false, // Enable focus on specific regions when hovered
         },
-        grid: {
-          y: {
-            show: false, // Disable the horizontal gridlines on the y-axis
-          },
-          focus: {
-            show: false, // Disable the vertical gridlines on hover
-          },
-        },
+        // grid: {
+        //   y: {
+        //     show: false, // Disable the horizontal gridlines on the y-axis
+        //   },
+        //   focus: {
+        //     show: false, // Disable the vertical gridlines on hover
+        //   },
+        // },
         regions: [
           // This is an initial empty region. The region is dynamically updated when hovered.
         ],
