@@ -55,6 +55,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   lanesPopupData: any[] = [];
   carriersPopupData: any[] = [];
   showByValue: any;
+  validData: any;
   constructor(
     private searchService: SearchService,
     private appService: AppService,
@@ -74,7 +75,8 @@ export class DetailComponent implements OnInit, OnDestroy {
           Object.keys(this.searchParams).length &&
           currentUrl === pathToMatch
         ) {
-          this.showByValue = this.searchParams.searchStandardFormGroup.showBy[0];
+          this.showByValue =
+            this.searchParams.searchStandardFormGroup.showBy[0];
           this.appService.getAllSummaryYears().subscribe((res: any) => {
             this.summaryYearData = res;
           });
@@ -155,6 +157,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   generateModeChart(data) {
     // Function to filter the data
     const groupValues = data.map((item) => item[0]);
+    this.validData = data.some((column) => column[1] > 0);
     this.chart = c3.generate({
       bindto: "#mode-chart",
       data: {
@@ -289,13 +292,23 @@ export class DetailComponent implements OnInit, OnDestroy {
       },
     });
     this.insertCustomLegend();
+    if (!this.validData) {
+      document.getElementById("mode-chart").innerHTML = `
+    <p style="text-align: center;font-size: 16px;color: #000;height: 100%;display: flex; 
+              justify-content: center;align-items: center;margin: 0;">No data available
+    </p>`;
+    }
   }
   insertCustomLegend() {
     const legendContainer = document.querySelector("#mode-chart-legend");
 
     // Clear previous legends if any
     legendContainer.innerHTML = "";
-
+    // Check if the chart has data
+    const validData = this.chart.data().some((d) => d.values.length > 0);
+    if (!validData) {
+      return; // Exit the function if there's no data
+    }
     // Create custom legend manually
     const legendData = this.chart
       .data()
