@@ -7,15 +7,9 @@ import {
 import { ISubscription } from "rxjs/Subscription";
 import { SearchService } from "../../../services/search.service";
 import { FormGroup } from "@angular/forms";
-import { fail } from "assert";
 import { AppService } from "../../../app.service";
-// import * as c3 from 'c3';
+import { Router } from "@angular/router";
 declare var c3: any;
-interface Carrier {
-  code: string;
-  names: string[];
-  value: number[]; // or number if not an array
-}
 @Component({
   selector: "app-summary",
   templateUrl: "./summary.component.html",
@@ -49,19 +43,26 @@ export class SummaryComponent implements OnInit {
   summaryTableData: any = [];
   summaryGraphData: any = [];
   maxValue: number;
+  chart: any;
   constructor(
     private searchService: SearchService,
     private appService: AppService,
-    private cd: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.selectedYear[this.currentYear] = this.currentYear;
     this.selectedYear[this.currentYear - 1] = this.currentYear - 1;
+    const currentUrl = this.router.url;
+    const pathToMatch = "/t4/summary";
     this.searchParamsChangeSub$ = this.searchService.getSearchParams$.subscribe(
       (params: any) => {
         this.searchParams = params || {};
-        if (Object.keys(this.searchParams).length) {
+        if (
+          Object.keys(this.searchParams).length &&
+          currentUrl === pathToMatch
+        ) {
           this.summaryApiData();
           this.summaryGraphFunction();
         }
@@ -158,10 +159,10 @@ export class SummaryComponent implements OnInit {
       serverSideFiltering: false,
       disableSelection: false,
     };
-    this.toggleTab("Graph");
     this.appService.getAllSummaryYears().subscribe((res: any) => {
       this.summaryYearData = res;
     });
+    this.searchService.setTabData(true);
   }
 
   summaryYear(data, i) {
@@ -183,73 +184,234 @@ export class SummaryComponent implements OnInit {
       }
     });
   }
+  ngAfterViewInit() {
+    this.summaryGraphFunction(); // Initialize chart after view is loaded
+  }
   summaryGraphFunction() {
     const obj = {
       standardFilters: this.searchParams.searchStandardFormGroup,
       customFilters: this.searchParams.searchCustomFormGroup1,
     };
+    this.summaryGraphData = [];
     this.appService.summaryGraph(obj).subscribe((res: any) => {
-      this.summaryGraphData = res.data;
-      this.generateChart(this.summaryGraphData);
-      this.chartGenerated = true;
-    });
-  }
-  generateChart(data) {
-    c3.generate({
-      bindto: "#yoy-chart",
-      data: {
-        columns: data,
-        type: "line",
-      },
-      axis: {
-        x: {
-          type: "category",
-          categories: [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
-          ],
-          tick: {
-            rotate: -90, // Rotate the x-axis labels by -90 degrees to make them vertical
-            multiline: false, // Ensure multiline is disabled for better readability
-          },
-          height: 70, // Adjust height to accommodate vertical labels
-        },
-        y: {
-          min: 0, // Set minimum value of Y-axis to 0
-          padding: {
-            bottom: 0, // Remove padding below 0 to avoid negative values
-          },
-          tick: {
-            format: function (d) {
-              return d / 1000 + "k"; // Format value in 'k' and start from 0k
-            }
-          }
-        }
-      },
-      tooltip: {
-        format: {
-          value: function (value) {
-            return value; // Display the raw value in the tooltip
-          }
-        }
+      if (res) {
+        this.summaryGraphData = res.data;
+        this.generateChart(this.summaryGraphData);
+        this.chartGenerated = true;
+        this.cdr.detectChanges(); // Trigger change detection
       }
     });
   }
+  // Debounce helper function
+  debounce(fn, delay) {
+    let timeoutID;
+    return function (...args) {
+      clearTimeout(timeoutID);
+      timeoutID = setTimeout(() => fn.apply(this, args), delay);
+    };
+  }
+  showVerticalBar(d) {
+    const xIndex = d.index; // Get the index of the hovered point
+    this.chart.regions.remove();
+    this.chart.regions.add({
+      axis: "x",
+      start: xIndex - 0.4, // Start the region before the data point
+      end: xIndex + 0.4, // End the region after the data point
+      class: "hover-bar", // Add a custom class for styling
+    });
+  }
 
-  toggleTab(tab: string) {
-    this.currentTab = tab;
-    this.chartGenerated = false;
-    this.tableDataLoaded = false;
+  removeVerticalBar() {
+    this.chart.regions.remove({ classes: ["hover-bar"] }); // Remove the region with the class 'hover-bar'
+  }
+  generateChart(data) {
+    setTimeout(() => {
+      // Flatten and extract all numeric values from the dataset
+      const allValues = data
+        .map((dataset) => dataset.slice(1)) // Exclude the labels (first column)
+        .reduce((acc, val) => acc.concat(val), []); // Flatten the arrays
+      const numericValues = allValues.map((value) => Number(value));
+      const rawMaxValue = Math.max(...numericValues);
+      const ranges = [
+        { max: 50, step: 5 },
+        { max: 100, step: 10 },
+        { max: 300, step: 20 },
+        { max: 600, step: 50 },
+        { max: 1000, step: 100 },
+        { max: 2000, step: 200 },
+        { max: 6000, step: 500 },
+        { max: 20000, step: 1000 },
+        { max: 30000, step: 2000 },
+        { max: 60000, step: 5000 },
+        { max: 100000, step: 10000 },
+      ];
+      const defaultStep = 5000; // Default step for very large ranges
+      let step = defaultStep;
+      for (const range of ranges) {
+        if (rawMaxValue <= range.max) {
+          step = range.step;
+          break;
+        }
+      }
+      if (rawMaxValue > 100000) {
+        step = 20000; // Use this step for values above 100000
+      }
+      const maxYValue = Math.ceil(rawMaxValue / step) * step;
+      const alternateLines = [];
+      // Alternate gridlines (step * 2 for more sparse lines)
+      for (let i = 0; i <= maxYValue; i += step * 2) {
+        alternateLines.push({
+          value: i,
+          text: "",
+          class: i === 0 ? "hidden-line" : `alternate-grid-line-${i}`,
+        });
+      }
+      alternateLines.push({
+        value: 0,
+        text: "",
+        class: "alternate-grid-line-0 hidden-line",
+      });
+      console.log(alternateLines);
+      // Generate the C3 chart
+      this.chart = c3.generate({
+        bindto: "#yoy-chart",
+        data: {
+          columns: data,
+          type: "line",
+          colors: {
+            "2021": "#F48E16", // Orange
+            "2022": "#D5AA0D", // Yellow
+            "2023": "#24A756", // Green
+            "2024": "#5C98F3", // Blue
+          },
+        },
+        axis: {
+          x: {
+            type: "category",
+            categories: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec",
+            ],
+            tick: { multiline: false },
+            height: 60,
+          },
+          y: {
+            min: 0,
+            max: maxYValue,
+            padding: { top: 5, bottom: 20 },
+            tick: {
+              values: Array.from(
+                { length: maxYValue / step + 1 },
+                (_, i) => i * step
+              ),
+              format: function (d) {
+                return rawMaxValue >= 100000
+                  ? d / 100000 + "L"
+                  : d / 1000 + "k";
+              },
+            },
+          },
+        },
+        grid: {
+          y: {
+            show: false,
+            lines: alternateLines, // Combine both regular and alternate gridlines
+          },
+        },
+        legend: { show: false },
+        tooltip: {
+          grouped: true, // To group the values in the tooltip
+          format: {
+            title: function (d) {
+              return "Data for " + d;
+            }, // Customize title in tooltip
+            value: function (value, ratio, id) {
+              return value; // Ensure values are displayed as decimals
+            },
+          },
+          contents: function (
+            d,
+            defaultTitleFormat,
+            defaultValueFormat,
+            color
+          ) {
+            var html = "<div class='custom-tooltip'><table>";
+            d.forEach(function (data) {
+              html +=
+                "<tr><td><span style='color:" +
+                "#989898" +
+                "'></span> " +
+                data.name +
+                ": </td>";
+              html +=
+                "<td style='font-weight:bold;'>" +
+                (data.value !== null ? data.value : "0") +
+                "</td></tr>";
+            });
+            html += "</table></div>";
+            return html;
+          },
+        },
+        interaction: {
+          enabled: true, // Enable hover interaction
+          highlight: {
+            point: true, // Highlight points when hovered
+          },
+        },
+        focus: {
+          enabled: false, // Enable focus on specific regions when hovered
+        },
+        // grid: {
+        //   y: {
+        //     show: false, // Disable the horizontal gridlines on the y-axis
+        //   },
+        //   focus: {
+        //     show: false, // Disable the vertical gridlines on hover
+        //   },
+        // },
+        regions: [
+          // This is an initial empty region. The region is dynamically updated when hovered.
+        ],
+      });
+      this.insertCustomLegend();
+    }, 0);
+  }
+
+  insertCustomLegend() {
+    const legendContainer = document.querySelector("#yoy-chart-legend");
+
+    // Check if the legend container is found
+    if (!legendContainer) {
+      return; // Exit the function if the element is not found
+    }
+    // Clear previous legends if any
+    legendContainer.innerHTML = "";
+
+    // Create custom legend manually
+    const legendData = this.chart
+      .data()
+      .map((d) => {
+        return `<span class="legend-item">
+                <span style="background-color:${this.chart.color(
+                  d.id
+                )};" class="legend-color"></span>
+                ${d.id}
+              </span>`;
+      })
+      .join(" ");
+
+    // Append the generated legend HTML to the container
+    legendContainer.innerHTML = legendData;
   }
 
   initializeTableData() {

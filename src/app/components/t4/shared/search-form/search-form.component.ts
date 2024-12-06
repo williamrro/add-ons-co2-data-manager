@@ -1,8 +1,11 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   HostBinding,
+  Input,
   OnInit,
   Renderer2,
   ViewChild,
@@ -23,26 +26,34 @@ import { DirectivesAnimation } from "../../../../animations/animations";
   animations: DirectivesAnimation,
   templateUrl: "./search-form.component.html",
   styleUrls: ["./search-form.component.scss"],
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchFormComponent implements OnInit, AfterViewInit {
   @HostBinding("class") class = "autoFlexColumn";
   @ViewChild("dropdown") dropdown: ElementRef;
   MULTI_SELECT_SETTINGS = {
-    text: "Select Values",
+    text: "Select",
     enableSearchFilter: true,
     lazyLoading: true,
     badgeShowLimit: 1,
     autoPosition: false,
+    classes: "myclass custom-class-example",
   };
   SINGLE_SELECT_SETTINGS = {
-    ...this.MULTI_SELECT_SETTINGS,
+    lazyLoading: true,
+    badgeShowLimit: 1,
+    autoPosition: false,
     singleSelection: true,
+    enableSearchFilter: true,
+    enableCheckAll: false,
+    enableFilterSelectAll: false,
     showCheckbox: false,
+    classes: "myclass custom-class-example",
   };
   CLIENT_FILTER_SETTINGS = {
     ...this.SINGLE_SELECT_SETTINGS,
     lazyLoading: false,
-    clearAll: false,
+    // clearAll: false,
   };
 
   INTENSITY_TAB: string = "intensity";
@@ -73,8 +84,10 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
   searchForm: FormGroup = new FormGroup({});
 
   showPopup: boolean = false;
-  clientChanged: string;
+  isClientUpdated: string;
   selectedClientCode: any;
+  isApplyDisabled: boolean = false;
+  filterType: string;
 
   constructor(
     private router: Router,
@@ -82,14 +95,14 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     private appService: AppService,
     private searchService: SearchService,
     private utilService: UtilService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef
   ) {
     this.filterSearchInput
       .pipe(debounceTime(300))
       .subscribe((filterKey: string) => {
         this.clearFilterValuesAndToken();
-        alert(2);
-        this.fetchFilterValues(filterKey, false);
+        this.fetchFilterValues(filterKey, false, this.filterType);
       });
   }
 
@@ -118,11 +131,13 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         }
       }
     );
+    this.cdr.detectChanges();
   }
   clientSelect(clientData) {
-    this.clientChanged = 'clientChange';
+    this.isClientUpdated = "clientUpdated";
     this.selectedClientCode = clientData["id"];
-    this.fetchFiltersToDisplay(clientData["id"], "clientChange");
+    this.isApplyDisabled = false;
+    this.fetchFiltersToDisplay(clientData["id"], "clientUpdated");
   }
   ngAfterViewInit(): void {
     if (this.dropdown && this.dropdown.nativeElement) {
@@ -133,15 +148,20 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
           "scroll",
           this.scrollEvents.bind(this)
         );
+        this.cdr.detectChanges();
       }
     }
+
+    this.cdr.detectChanges();
   }
-  fetchFiltersToDisplay(clientCode?, clientChange?) {
+  fetchFiltersToDisplay(clientCode?, clientChange?, resetData?) {
     this.appService
       .getFiltersToDisplay(clientCode)
       .pipe(
         finalize(() => {
-          this.initializeForm(clientChange, clientCode);
+          if (resetData !== "reset") {
+            this.initializeForm(clientChange, clientCode);
+          }
         })
       )
       .subscribe((res: any) => {
@@ -178,7 +198,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
       searchCustomFormGroup1: new FormGroup(searchCustomFormGroup1),
     });
     this.isFiltersInitialized = true;
-    if (clientChange === "clientChange") {
+    if (clientChange === "clientUpdated") {
       this.searchForm
         .get("searchStandardFormGroup")
         .get("clientCode")
@@ -203,9 +223,10 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     this.searchForm.controls[this.CLIENT_CODE_FILTER_KEY].setValue([item]);
   }
 
-  onFilterOpen(event: any, filterKey: string, filterType?) {
+  onFilterOpen(event: any, filterKey: string, filterType: string) {
     this.clearFilterValuesAndToken();
-    this.filterValuesSearchText = "";
+    this.filterValuesSearchText = "";this.filterType = "";
+    this.filterType = filterType;
   }
   scrollEvents(event) {
     //     const scrollTop = event.target.scrollTop;
@@ -216,8 +237,9 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     //     }
   }
 
-  onFilterValuesScrollToEnd(event: any, filterKeys, filter?) {
+  onFilterValuesScrollToEnd(event: any, filterKeys, filterType?) {
     const filterKey = filterKeys.key;
+    this.filterType = filterType;
     const { isFilterValuesSearching, filterValues, filterValuesToken } = this;
     const { startIndex, endIndex, scrollEndPosition } = event;
     // alert(1)
@@ -225,15 +247,17 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     if (!isFilterValuesSearching && scrollEndPosition > 0) {
       if (startIndex === -1) {
         // Fetch first set of values
-        this.fetchFilterValues(filterKey, false, filter);
+        this.fetchFilterValues(filterKey, false, filterType);
       } else if (endIndex === filterValues.length - 1 && filterValuesToken) {
         // User scrolled to last item &  next page data is available
-        this.fetchFilterValues(filterKey, true, filter);
+        this.fetchFilterValues(filterKey, true, filterType);
       }
     }
   }
 
-  onFilterSearch(filterKey: string) {
+  onFilterSearch(filterKey: string, filterType?) {
+    console.log(filterType);
+    this.filterType = filterType; // Update filterType here
     this.filterSearchInput.next(filterKey);
   }
 
@@ -270,6 +294,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
       .pipe(
         finalize(() => {
           this.isFilterValuesSearching = false;
+          // this.filterType = "";
           this.utilService.resetDropdownPosition();
         })
       )
@@ -281,8 +306,10 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
             ? this.filterValues.concat(newFilterValues)
             : newFilterValues;
           this.filterValuesToken = token;
+          this.filterType = "";
           this.isFilterValuesSearching = true;
           if (initialLoad === "initialLoad" && filterKey === "showBy") {
+            console.log([this.filterValues[0]]);
             this.searchForm
               .get("searchStandardFormGroup")
               .get("showBy")
@@ -297,7 +324,9 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
           if (
             this.searchForm.get("searchStandardFormGroup").get("monthYear")
               .value &&
-            this.searchForm.get("searchStandardFormGroup").get("showBy").value
+            this.searchForm.get("searchStandardFormGroup").get("showBy")
+              .value &&
+            initialLoad === "initialLoad"
           ) {
             this.onSearch();
           }
@@ -308,9 +337,10 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
       });
   }
 
-  refreshFilters() {
+  refreshFilters(clientData) {
     this.showPopup = false;
-    this.fetchFiltersToDisplay(this.selectedClientCode,this.clientChanged);
+    this.selectedClientCode = clientData;
+    this.fetchFiltersToDisplay(this.selectedClientCode, this.isClientUpdated);
   }
 
   onNavigate() {
@@ -321,6 +351,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     this.isFiltersInitialized = false;
     this.searchForm.reset();
     this.initializeForm();
+    this.fetchFiltersToDisplay(this.clientCodesList[0]["id"], "", "reset");
   }
 
   togglePopup() {
@@ -328,11 +359,70 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
   }
 
   onSearch() {
+    this.isApplyDisabled = true;
     this.searchService.setSearchParams(
       this.utilService.formatT4SearchPayload(this.searchForm.value)
     );
   }
 
+  countFilters() {
+    let count = 0;
+
+    // Count filters in searchStandardFormGroup
+    if (this.searchForm.value["searchStandardFormGroup"]) {
+      Object.values(this.searchForm.value["searchStandardFormGroup"]).forEach(
+        (value) => {
+          if (Array.isArray(value) && value.length > 0) {
+            count++;
+          }
+        }
+      );
+    }
+
+    // Count filters in searchCustomFormGroup1
+    if (this.searchForm.value["searchCustomFormGroup1"]) {
+      Object.values(this.searchForm.value["searchCustomFormGroup1"]).forEach(
+        (value) => {
+          if (Array.isArray(value) && value.length > 0) {
+            count++;
+          }
+        }
+      );
+    }
+
+    return count;
+  }
+  onFiltersSelect(event, data) {
+    console.log(event, data);
+    this.isApplyDisabled = false;
+    this.isClientUpdated = "";
+  }
+  onDeSelectAll(event, filter, filterType) {
+    if (filter.key === "showBy") {
+      this.searchForm
+        .get("searchStandardFormGroup")
+        .get("showBy")
+        .setValue([{ id: "OPS", itemName: "OPS" }]);
+    }
+    this.isApplyDisabled = false;
+    this.isClientUpdated = "";
+  }
+  onDropdownClose(event, filter, filterType) {
+    if (filterType === "standard" && filter.key === "showBy") {
+      console.log(
+        this.searchForm.get("searchStandardFormGroup").get("showBy").value
+      );
+      if (
+        this.searchForm.get("searchStandardFormGroup").get("showBy").value
+          .length === 0
+      ) {
+        this.searchForm
+          .get("searchStandardFormGroup")
+          .get("showBy")
+          .setValue([{ id: "OPS", itemName: "OPS" }]);
+      }
+    }
+  }
   ngOnDestroy() {
     if (this.accessInfoSub$) this.accessInfoSub$.unsubscribe();
     if (this.tabChangeSub$) this.tabChangeSub$.unsubscribe();

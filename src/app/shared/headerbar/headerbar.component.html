@@ -2,6 +2,7 @@
 	<div class="appHeader--brand"></div>
 	<div class="appHeader--title">
 		<span class="appHeader--title__name">CO2 Manager</span>
+			<span class="text" (click)="onNavigate()" *ngIf="isT4User">Switch to FPS App</span>
 	</div>
 	<nav class="appHeader--navLinks">
 		<ul class="appHeader--navLinks__group" *ngIf="isT4User">
@@ -13,21 +14,18 @@
 			<li class="navLinkItem">
 				<a class="navLink" routerLink="/t4/detail" routerLinkActive="active" ariaCurrentWhenActive="page">Detail</a>
 			</li>
-			<li class="navLinkItem">
-				<!-- <a class="navLink" routerLink="/t4/intensity" routerLinkActive="active" ariaCurrentWhenActive="page"> -->
-					<a class="navLink disabled" [routerLink]="null" [attr.disabled]="true">
+			<!-- <li class="navLinkItem">
+				<a class="navLink" routerLink="/t4/intensity" routerLinkActive="active" ariaCurrentWhenActive="page">
 					Intensity
 				</a>
-			</li>
-			<li class="navLinkItem">
-				<!-- <a class="navLink" routerLink="/t4/total" routerLinkActive="active" ariaCurrentWhenActive="page"> -->
-					<a class="navLink disabled" [routerLink]="null" [attr.disabled]="true">
+			</li> -->
+			<!-- <li class="navLinkItem">
+				<a class="navLink" routerLink="/t4/total" routerLinkActive="active" ariaCurrentWhenActive="page">
 					Total Emissions by Carrier
 				</a>
-			</li>
+			</li> -->
 			<li class="navLinkItem">
-				<!-- <a class="navLink" routerLink="/t4/exceptions" routerLinkActive="active" ariaCurrentWhenActive="page"> -->
-					<a class="navLink disabled" [routerLink]="null" [attr.disabled]="true">
+				<a class="navLink" routerLink="/t4/exceptions" routerLinkActive="active" ariaCurrentWhenActive="page">
 					Exceptions
 				</a>
 			</li>

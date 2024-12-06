@@ -98,7 +98,7 @@ export class AppService {
   }
 
   getAllSummaryYears() {
-    const reqUrl = `${this.BASE_URL}co2emission/api/summary/years/4`;
+    const reqUrl = `${this.BASE_URL}co2emission/api/summary/years/3`;
     return this.http.get(reqUrl).map((response) => {
       return response;
     });
@@ -127,16 +127,48 @@ export class AppService {
       reqPayload
     );
   }
-  detailCarrerGraph(reqPayload: any) {
+  detailCarrerGraph(reqPayload: any, pageNo, PageSize) {
     return this.http.post(
-      this.BASE_URL + "co2emission/api/detail/carrierGraph",
+      this.BASE_URL +
+        `co2emission/api/detail/carrierGraph?pageNumber=${pageNo}&pageSize=${PageSize}`,
       reqPayload
     );
   }
-  detailLaneGraph(reqPayload: any) {
+  detailLaneGraph(reqPayload: any, pageNo, PageSize) {
     return this.http.post(
-      this.BASE_URL + "co2emission/api/detail/laneGraph",
+      this.BASE_URL + `co2emission/api/detail/laneGraph?pageNumber=${pageNo}&pageSize=${PageSize}`,
       reqPayload
     );
+  }
+  exceptionsTableSummary(reqPayload: any) {
+    return this.http.post(
+      this.BASE_URL + "co2emission/api/exceptions/tableSummary",
+      reqPayload
+    );
+  }
+  exceptionsModeGraph(reqPayload: any) {
+    return this.http.post(
+      this.BASE_URL + "co2emission/api/exceptions/modeGraph",
+      reqPayload
+    );
+  }
+  exceptionsCarrerGraph(reqPayload: any) {
+    return this.http.post(
+      this.BASE_URL +
+        "co2emission/api/exceptions/carrierGraph",
+      reqPayload
+    );
+  }
+  exceptionsLaneGraph(reqPayload: any) {
+    return this.http.post(
+      this.BASE_URL + "co2emission/api/exceptions/laneGraph",
+      reqPayload
+    );
+  }
+  redirectCo2App() {
+    const reqUrl = `${this.BASE_URL}co2emission/api/homeRedirect`;
+    return this.http.get(reqUrl).map((response) => {
+      return response;
+    });
   }
 }

@@ -1,0 +1,229 @@
+.graph-container {
+  // border: 1px solid rgba(153, 160, 164, 0.45);
+  // padding: 10px;
+  // margin: 25px 5px;
+  border: 1px solid rgba(153, 160, 164, 0.45);
+  padding: 10px;
+}
+.no-data-message {
+  text-align: center;
+  font-weight: bold;
+  padding: 20px; /* Add padding for spacing */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 5px 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #000;
+  color: #fff;
+  font-weight: bold;
+}
+
+.bar-container {
+  display: flex;
+  align-items: center;
+}
+.bar {
+  height: 20px;
+  background-color: #6bb4b4;
+  margin-right: 8px;
+}
+.table-container {
+  // max-height: 200px; /* Limit the height to 200px */
+  overflow-y: auto; /* Enable vertical scrolling */
+  margin: 10px 5px 5px;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table-container thead th {
+  position: sticky; /* Make the header sticky */
+  top: 0;
+  z-index: 2; /* Ensure header stays on top of the body */
+  background-color: #000; /* Background color for header */
+  padding: 10px;
+  text-align: left;
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1); /* Subtle shadow for header */
+  font-weight: 400;
+}
+.table-container tbody td {
+  padding: 10px;
+  border: 1px solid #ddd; /* Optional border for cells */
+  color: #000;
+}
+.table-container {
+  width: 100%;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  border: 1px solid #ccc;
+}
+.scrollable-table {
+  display: block;
+  width: 100%;
+  // overflow-x: auto; /* Enable horizontal scrolling */
+}
+.scrollable-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.scrollable-table th,
+.scrollable-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  white-space: nowrap; /* Prevents text from wrapping */
+}
+.scrollable-table th {
+  background-color: #f2f2f2;
+  position: sticky;
+  top: 0; /* Makes the header sticky */
+  z-index: 1; /* Ensures the header is on top */
+}
+.scrollable-table td {
+  background-color: #fff;
+}
+.tbl-header {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.tbl-content {
+  height: 278px;
+  overflow-y: auto;
+  margin-top: 0px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid #ddd;
+}
+
+.tbl-header table,
+.tbl-content table {
+  width: 100%;
+  table-layout: fixed;
+  th,
+  td {
+    padding: 8px 5px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    color: #000;
+    background: #fff;
+    border-left: none;
+    border-top: none;
+    border-right: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  thead {
+    background-color: #000;
+    color: #fff;
+  }
+  tbody tr {
+    border: 1px solid #ddd;
+  }
+  td {
+    vertical-align: middle;
+    font-weight: 400;
+    font-size: 13px;
+    color: #000;
+  }
+}
+
+h2 {
+  font-size: 1.3em;
+  margin: 0;
+  font-weight: 400;
+  border-bottom: 5px solid #fff;
+  color: #000;
+  font-family: "Open Sans";
+  letter-spacing: -0.72px;
+}
+
+.titleSpan {
+  margin-left: 14px;
+  font-size: 12px;
+  text-decoration-line: underline;
+  color: #4da697;
+  font-style: normal;
+  font-weight: 600;
+  font-family: "Open Sans";
+}
+#exception-chart {
+  width: 100%;
+  // height: auto; /* Auto adjust based on the chart content */
+  // margin: 0 auto;
+}
+
+
+.custom-legend {
+  display: flex;
+  justify-content: left;
+  margin-bottom: 10px; /* Adjust as needed */
+  padding-left: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  color: #000;
+  font-family: "Open Sans";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 35px;
+}
+
+.legend-color {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 5px;
+  border-radius: 50%;
+}
+#exception-chart {
+	width: 100%;
+  }
+//   #exception-chart {
+// 	padding: 0;
+// 	margin: 0;
+//   }
+//   #exception-chart svg {
+// 	width: 100%;
+//   }
+//   #exception-chart .c3-bar {
+// 	width: 100%;
+// 	transform: scaleX(1);
+//   }
+//   #exception-chart .c3-bars rect {
+//     width: 100%!important;
+//     transform: none!important;
+// }
+
+/* Add this in your component’s CSS file */
+:host ::ng-deep .c3-chart-bars rect {
+  width: calc(100% / 10) !important;
+  transform: scaleX(1.05); /* Slightly scales up each bar */
+}
+
+.chart {
+  width: 100%;
+  height: 50px;
+  min-width: 100px;  /* Add a minimum width to ensure visibility */
+  min-height: 50px;  /* Add a minimum height */
+}
+.exceptionTable {
+  padding-left: 7px;
+ .tbl-content table td{
+  padding: 0px 5px !important;
+}
+}

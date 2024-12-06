@@ -1,1 +1,233 @@
-<p>Call Exceptions API with search params: {{ searchParams | json }}</p>
+<div class="table-container" style="margin-left: 5px; margin-top: 10px" *ngIf="false">
+  <div class="scrollable-table" style="height: 250px; border: 1px solid #ddd">
+    <ng-container>
+      <table *ngIf="hasData(); else noDataExceptionTable">
+        <thead>
+          <tr>
+            <th>Reason Description</th>
+            <th>Grand Total</th>
+            <th *ngFor="let month of getExceptionMonths()">{{ month }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reason of getKeys(transformedData)">
+            <td>{{ reason }}</td>
+            <td>{{ transformedData[reason]["Grand Total"] }}</td>
+            <td *ngFor="let month of getExceptionMonths()">
+              {{ transformedData[reason][month] || "-" }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #noDataExceptionTable>
+        <p class="no-data-message">No Data available</p>
+      </ng-template>
+    </ng-container>
+  </div>
+</div>
+<div class="graph-container" style="margin-left: 5px; margin-top: 10px">
+  <div class="title-container">
+    <h2 style="padding-left: 7px;">Exceptions By Mode</h2>
+  </div>
+  <!-- <div> -->
+  <div
+    *ngIf="exceptionsModeData.length > 0; else noDataChart"
+    id="exception-chart" style="padding-left: 10px;"
+  ></div>
+  <div id="exception-chart-legend" class="custom-legend"></div>
+  <ng-template #noDataChart>
+    <p class="no-data-message">No Data available</p>
+  </ng-template>
+  <div
+    style="
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin: 7px;
+    "
+  >
+    <!-- By Carrier Table -->
+    <div
+      *ngIf="carriers.length > 0; else noDataCarrierLaneTable"
+      style="width: 49%"
+    >
+      <h2
+        style="
+          border-bottom: 4px solid #fff;
+          margin-bottom: 8px;
+          margin-top: 15px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <span>Exceptions By Carrier</span>
+      </h2>
+      <div class="tbl-header">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <thead>
+            <tr style="border-left: none; border-right: none; border-top: none">
+              <th style="width: 20%">Carrier Code</th>
+              <th style="width: 35%">Carrier Name</th>
+              <th style="width: 45%">{{showByValue}}</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="tbl-content">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <tbody>
+            <tr
+              *ngFor="let item of carriers"
+              style="border-left: none; border-right: none; border-top: none"
+            >
+              <td style="width: 20%" title="{{ item.param1 }}">
+                {{ item.param1 }}
+              </td>
+              <td style="width: 35%" title="{{ item.param2 }}">
+                {{ item.param2 }}
+              </td>
+              <td style="width: 45%">
+                <div class="bar-container">
+                  <div
+                    class="bar"
+                    [ngStyle]="{ width: getBarWidth(carriers, item.value) }"
+                  ></div>
+                  <span>{{ item.value | number }}</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- By Lane Table -->
+    <div
+      style="margin-left: 20px; width: 50%"
+      *ngIf="lanes.length > 0; else noDataLaneTable"
+    >
+      <h2
+        style="
+          border-bottom: 4px solid #fff;
+          margin-bottom: 8px;
+          margin-top: 15px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <span>Exceptions By Lane</span>
+        <!-- <span class="titleSpan">See all</span> -->
+      </h2>
+      <div class="tbl-header">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <thead>
+            <tr>
+              <th style="width: 20%" title="Lane by Country">
+                Lane by Country
+              </th>
+              <th style="width: 35%">Lane by City</th>
+              <th style="width: 45%">{{showByValue}}</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="tbl-content">
+        <table
+          cellpadding="0"
+          cellspacing="0"
+          border="0"
+          style="border-collapse: unset"
+        >
+          <tbody>
+            <tr *ngFor="let item of lanes">
+              <td style="width: 20%" title="{{ item.param1 }}">
+                {{ item.param1 }}
+              </td>
+              <td style="width: 35%" title="{{ item.param2 }}">
+                {{ item.param2 }}
+              </td>
+              <td style="width: 45%">
+                <div class="bar-container">
+                  <div
+                    class="bar"
+                    [ngStyle]="{ width: getBarWidth(lanes, item.value) }"
+                  ></div>
+                  <span>{{ item.value | number }}</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- No Data Template for Carrier -->
+    <ng-template #noDataCarrierLaneTable>
+      <div style="width: 49%">
+        <h2>Exceptions By Carrier</h2>
+        <p class="no-data-message">No Data available</p>
+      </div>
+    </ng-template>
+
+    <!-- No Data Template for Lane -->
+    <ng-template #noDataLaneTable>
+      <div style="width: 49%">
+        <h2>Exceptions By Lane</h2>
+        <p class="no-data-message">No Data available</p>
+      </div>
+    </ng-template>
+    <!-- No Data Template for Exception Details -->
+    <ng-template #noDataExceptionLaneTable>
+      <div style="width: 49%;padding-left: 7px;">
+        <h2>Exception Details</h2>
+        <p class="no-data-message">No Data available</p>
+      </div>
+    </ng-template>
+  </div>
+  <div
+      *ngIf="exceptionsTableData.length > 0; else noDataExceptionLaneTable"
+    class="exceptionTable">
+    <div class="title-container">
+      <h2
+        style="
+          border-bottom: 4px solid #fff;
+          margin-bottom: 8px;
+          margin-top: 15px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <span>Exceptions Details</span>
+      </h2>
+    </div>
+      <div class="tbl-header">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <thead>
+            <tr style="border-left: none; border-right: none; border-top: none">
+              <th style="width: 40%">Reason Description</th>
+              <th style="width: 20%">Grand Total</th>
+              <th style="width: 40%">Monthly Totals(Previous 12months)</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="tbl-content">
+        <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate !important">
+          <tbody>
+            <tr *ngFor="let exception of exceptionsTableData; let i = index">
+              <td style="width: 40%" title="{{ exception.exceptionReason }}">{{ exception.exceptionReason }}</td>
+              <td style="width: 20%">{{ exception.grandTotal | number }}</td>
+              <td style="width: 40%">
+                <div *ngIf="exception?.monthlyTotals?.length > 0; else noDataChart"
+                  [id]="'chart-DEST-' + i">
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>

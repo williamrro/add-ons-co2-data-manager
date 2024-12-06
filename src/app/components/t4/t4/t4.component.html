@@ -1,8 +1,173 @@
+<div class="baseline-comparison" *ngIf="showBaselineComparison">
+  <h3>Baseline Comparison</h3>
+  <div style="display: flex; width: 100%">
+    <div style="width: 25%; margin-right: 20px">
+      <p>
+        Compare your annual performance against a baseline and view the
+        calculated delta. Select any years available to compare.
+      </p>
+    </div>
+
+    <div class="comparison-container" style="width: 75%">
+      <div
+        class="year-selection"
+        style="margin-top: 36px"
+        *ngIf="summaryTableData && summaryTableData.length > 0"
+      >
+        <div class="row">
+          <div class="label">Baseline</div>
+          <select
+            [(ngModel)]="baselineYear"
+            class="dropdown-select"
+            (change)="summaryYear($event.target.value, 'Base Period')"
+          >
+            <option *ngFor="let year of years">{{ year }}</option>
+          </select>
+        </div>
+        <div class="row">
+          <div class="label">Current</div>
+          <select
+            [(ngModel)]="currentYear"
+            class="dropdown-select"
+            (change)="summaryYear($event.target.value, 'Current Period')"
+          >
+            <option *ngFor="let year of years">{{ year }}</option>
+          </select>
+        </div>
+        <div class="row" style="padding-top: 8px">
+          <div class="label">DELTA</div>
+        </div>
+      </div>
+
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <!-- <th>PERIOD</th> -->
+            <th class="tooltip-container">
+              UOM
+              <span class="tooltip-text"
+                ><div>UOM</div>
+                Unit Of Measure</span
+              >
+              <img
+                width="16px"
+                height="16px"
+                src="assets/img/Info i.svg"
+                alt="Energy consumption (ENE)"
+                class="info-icon"
+              />
+            </th>
+            <th class="tooltip-container">
+              ENE
+              <span class="tooltip-text"
+                ><div>ENE</div>
+                Energy provision(comparable to WTT:Well-to-tank)</span
+              >
+              <img
+                width="16px"
+                height="16px"
+                src="assets/img/Info i.svg"
+                alt="Energy consumption (ENE)"
+                class="info-icon"
+              />
+            </th>
+            <th class="tooltip-container">
+              OPS
+              <span class="tooltip-text"
+                ><div>OPS</div>
+                Operational emissions(comparable to TTW:Tank-to-wheel)</span
+              >
+              <img
+                width="16px"
+                height="16px"
+                src="assets/img/Info i.svg"
+                alt="Energy consumption (ENE)"
+                class="info-icon"
+              />
+            </th>
+            <th class="tooltip-container">
+              TOT
+              <span class="tooltip-text" 
+                ><div>TOT</div>
+                Total emissions(comparable to WTW:well-to-wheel)</span
+              >
+              <img
+                width="16px"
+                height="16px"
+                src="assets/img/Info i.svg"
+                alt="Energy consumption (ENE)"
+                class="info-icon"
+              />
+            </th>
+            <th class="tooltip-container tooltip_totei">
+              TOT_EI&nbsp;&nbsp;(gr/tkm)
+              <span class="tooltip-text" 
+                ><div>TOT_EI&nbsp;&nbsp;(gr/tkm)</div>
+                Total Emission Intensity</span 
+              >
+              <img
+                width="16px"
+                height="16px"
+                src="assets/img/Info i.svg"
+                alt="Energy consumption (ENE)"
+                class="info-icon"
+              />
+            </th>
+            <th class="tooltip-container tooltip-adjusted">
+              Compensation USD
+              <span
+                class="tooltip-text"
+                style="width: 162px !important;"
+                ><div>Compensation USD</div>
+                GHG emissions can be offset by enabling carbon dioxide capture activities.</span
+              >
+              <img
+                width="16px"
+                height="16px"
+                src="assets/img/Info i.svg"
+                alt="Energy consumption (ENE)"
+                class="info-icon"
+              />
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container
+            *ngIf="summaryTableData && summaryTableData.length > 0; else noData"
+          >
+            <tr
+              *ngFor="let item of summaryTableData; let i = index"
+              [ngClass]="{ 'highlight-row': i === 2 }"
+            >
+              <!-- <td>{{ item.PERIOD }}</td> -->
+              <td [ngClass]="{ 'delta-row': i === 2 }">{{ i !== 2 ? item.UOM : '' }}</td>
+              <td>{{ item.ENE || "-" }}</td>
+              <td>{{ item.OPS || "-" }}</td>
+              <td>{{ item.TOT || "-" }}</td>
+              <td>{{ item.TOT_EI || "-" }}</td>
+              <td>
+                {{ item.COMPENSATION_USD ? "$" + item.COMPENSATION_USD : "-" }}
+              </td>
+            </tr>
+          </ng-container>
+          <ng-template #noData>
+            <tr>
+              <td colspan="8" style="padding: 20px; font-size: 15px">
+                No data available
+              </td>
+            </tr>
+          </ng-template>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 <div class="t4Container">
-	<div class="criteriaSection">
-		<app-search-form></app-search-form>
-	</div>
-	<div class="dataSection">
-		<router-outlet></router-outlet>
-	</div>
+  <div class="criteriaSection">
+    <app-search-form></app-search-form>
+  </div>
+  <div class="dataSection">
+    <router-outlet></router-outlet>
+  </div>
 </div>

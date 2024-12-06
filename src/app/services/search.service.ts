@@ -9,6 +9,9 @@ export class SearchService {
 	private userData = new BehaviorSubject<any>({ userId: '', clientCodes: [] });
 	getUserData$ = this.userData.asObservable();
 
+	private tabData = new BehaviorSubject<any>(null);
+	getTabData$ = this.tabData.asObservable();
+
 	private searchParams = new BehaviorSubject<any>({});
 	getSearchParams$ = this.searchParams.asObservable();
 
@@ -24,5 +27,8 @@ export class SearchService {
 
 	setSearchParams(params: any) {
 		this.searchParams.next(params || {});
+	}
+	setTabData(tabData: boolean) {
+		this.tabData.next(tabData);
 	}
 }

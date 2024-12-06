@@ -1,0 +1,356 @@
+/* Button to trigger popup */
+.open-popup-btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Pop-up Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Pop-up Container */
+.popup-container {
+  background: white;
+  width: 700px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  height: 85%;
+}
+
+/* Pop-up Header */
+.popup-header {
+  background: #fff;
+  padding: 10px 30px 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.popup-header h2 {
+  margin: 0;
+  // font-size: 18px;
+  // margin-left: 120px;
+  color: #000;
+  font-family: "Open Sans";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.72px;
+}
+
+/* Close Button */
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+/* Pop-up Content */
+.popup-content {
+  padding: 25px 25px 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 90%;
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #d9d9d9; /* Full-width border for the tabs container */
+  width: 645px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  background: #fff;
+  cursor: pointer;
+  color: #000;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  position: relative; /* Needed for the pseudo-element positioning */
+}
+
+.activated {
+  color: #6bb4b4;
+  text-align: center;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  // border-bottom: 3px solid #6BB4B4; /* Needed for the pseudo-element positioning */
+}
+
+.activated::after {
+  content: "";
+  position: absolute;
+  bottom: -1px; /* Adjust based on the height of the border and padding */
+  // left: 50%; /* Center horizontally */
+  transform: translateX(-78%); /* Center horizontally */
+  width: 100px; /* Set the width of the border */
+  border-bottom: 3px solid #6bb4b4; /* Border width and color */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+}
+
+/* Pop-up Footer */
+.popup-footer {
+  // background: #fff;
+  // padding: 15px;
+  text-align: right;
+  border-top: 1px solid #dee2e6;
+}
+
+.download-btn {
+  color: #fff;
+  text-align: center;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  background-color: #6bb4b4;
+  border: none;
+  border-radius: 3px;
+  height: 30px;
+  width: 120px;
+  cursor: pointer;
+}
+
+.title {
+  color: #000;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+.tHeader {
+  color: #000;
+  font-family: "Open Sans";
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.36px;
+}
+.tData-carrier {
+  color: #000;
+  text-align: left;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+}
+.tData-spend {
+  color: #000;
+  text-align: right;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 600;
+  // line-height: 35px; /* 250% */
+}
+.no-data-message {
+  text-align: center;
+  font-weight: bold;
+  padding: 30px; /* Add padding for spacing */
+}
+
+.table-container {
+  width: 100%; /* or any fixed width */
+  max-height: 470px; /* or any fixed height */
+  overflow-x: auto; /* Horizontal overflow */
+  overflow-y: auto; /* Vertical overflow */
+  // border: 1px solid #ccc; /* Optional: adds a border around the container */
+  border-bottom: 1px solid #D9D9D9;
+}
+
+.disabled-button {
+  color: #fff;
+  text-align: center;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  background-color: #d9d9d9;
+  border: none;
+  border-radius: 3px;
+  height: 30px;
+  width: 120px;
+  pointer-events: none;
+}
+.bar-container {
+  display: flex;
+  align-items: center;
+}
+.bar {
+  height: 20px;
+  background-color: #6bb4b4;
+  margin-right: 8px;
+}
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  // border-top: 1px solid #ccc;
+}
+
+.results-count {
+  // font-weight: bold;
+  color: #000;
+  font-family: "Open Sans";
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.3px;
+}
+
+.pagination-btn {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px 10px;
+  // margin: 0 5px;
+  cursor: pointer;
+  color: #000;
+  font-family: 'Open Sans';
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.3px;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-select,
+.rows-select {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 2px 5px; /* Reduced padding */
+  margin: 0 5px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 12px; /* Smaller font size */
+  width: 50px; /* Set a fixed width to control size */
+  -webkit-appearance: none; /* Remove default arrow */
+  -moz-appearance: none;
+  appearance: none;
+}
+
+
+.show-text,
+.rows-text {
+  // margin: 0 5px;
+  color: #000;
+    font-family: "Open Sans";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.3px;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between elements */
+}
+
+.pagination-controls button {
+  padding: 5px 9px;
+  background-color: #ffffff;
+  border: 1px solid #989898;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #000;
+  font-family: 'Open Sans';
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.3px;
+}
+
+.page-select,
+.rows-select {
+  background-color: #fff;
+  border: 1px solid #989898;
+  border-radius: 5px;
+  padding: 5px 2px;
+  // margin: 0 5px;
+  cursor: pointer;
+  font-size: 12px;
+  width: auto;
+  text-align: center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: relative;
+}
+
+/* Custom arrow icon for the select dropdown */
+.page-select::after,
+.rows-select::after {
+  content: "▼"; /* Use a down arrow symbol */
+  font-size: 10px;
+  color: red;
+  position: absolute;
+  right: 8px; /* Position it to the right inside the select */
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; /* Ensures the icon doesn't interfere with the dropdown click */
+}
+
+/* Adjust the width of the select to account for the icon */
+.page-select,
+.rows-select {
+  padding-right: 30px; /* Ensure space for the custom arrow */
+}
+.x-icon {
+	height: 13px;
+  width: 13px;
+  cursor: pointer;
+}
+
+
+
+

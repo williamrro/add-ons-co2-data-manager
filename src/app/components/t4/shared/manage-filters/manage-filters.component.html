@@ -1,59 +1,62 @@
 <div class="bgOverlay" [@fadeInOut]>
 	<div class="manageContainer" [@fadeInOut]>
 		<div class="manageContainer--header">
-			<div class="headerTitle">CO2 Manager Filter</div>
+			<div class="headerTitle addFontChange">Add or Remove Custom Filters</div>
 			<div class="headerButtons">
-				<button type="button" tabindex="0" class="actionButton" (click)="onResetFilters()">
-					<span class="icon">
-						<img width="16px" height="16px" src="assets/img/refresh.svg" alt="Reset Custom Filters" />
-					</span>
-					<span class="text">RESET</span>
-				</button>
-				<button tabindex="0" class="iconButton" (click)="closePopup.emit()">
-					<img width="16px" height="16px" src="assets/img/close-black.svg" alt="Close Manage Popup" />
+				<button tabindex="0" class="iconButton" style="margin-right: 20px;
+				padding-top: 8px;" (click)="closePopup.emit()">
+					<img width="16px" height="16px" src="assets/img/x-mark.svg" class="x-icon" (click)="closePopup.emit()"/>
 				</button>
 			</div>
 		</div>
+		<div class="headerTitle fontChange">Click the arrows to add or remove selected filters</div>
 		<div class="manageContainer--selector">
 			<div class="selectorItem">
 				<div class="selectorItem--header">Available Filters</div>
-				<div class="selectorItem--message green">*Click the arrow to transfer columns</div>
-				<div class="selectorItem--list">
-					<div class="listItem" [class.disabled]="item.disabled" *ngFor="let item of allFiltersToManage">
+				<div class="selectorItem--list" *ngIf="allFiltersToManage.length > 0; else noDataCarrierLaneTable">
+					<div class="listItem" [class.disabled]="item.disabled" *ngFor="let item of allFiltersToManage" >
 						<div class="listItem--name">{{ item.label }}</div>
-						<button tabindex="0" class="iconButton" (click)="onSelectFilter(item)"></button>
+						<span tabindex="0" class="iconButton"  (click)="onSelectFilter(item)" style="align-content: center;
+                        padding-left: 10px;padding-top:5px">
+							<img width="24px" height="24px" src="assets/img/arrow_circle_right.svg"/>
+						</span>
+						
 					</div>
 				</div>
 			</div>
-			<div class="selectorItem">
-				<div class="selectorItem--header">Selected Filters</div>
-				<div class="selectorItem--message icon">Please select a max of {{ MAX_FILTERS_COUNT }} filters</div>
+			<div class="selectorItem" style="background: #FFF;">
+				<div class="selectorItem--header">Selected Filters<span class="selectedfilter">(max 9)</span></div>
 				<div class="selectorItem--list selected">
 					<div class="listItem" *ngFor="let item of selectedFilterToManage">
 						<div class="listItem--name">{{ item.label }}</div>
-						<button tabindex="0" class="iconButton" (click)="onDeSelectFilter(item.key)"></button>
+						<span tabindex="0" class="iconButton"  (click)="onDeSelectFilter(item.key)" style="align-content: center;
+    padding-right: 10px;padding-top:5px">
+							<img width="24px" height="24px" src="assets/img/arrow_circle_left.svg"/>
+						</span>
 					</div>
 				</div>
 			</div>
 		</div>
+		<ng-template #noDataCarrierLaneTable>
+			  <p class="no-data-message">No Data available</p>
+		  </ng-template>
+		<div class="manageContainerFlex">
 		<div class="manageContainer--error">
 			<span class="errorMessage" *ngIf="hasError">
-				Users can select only upto a maximum of {{ MAX_FILTERS_COUNT }} filters
+				Users can select only upto a maximum of <span class="highlight-value">{{ MAX_FILTERS_COUNT }} filters</span>
 			</span>
 		</div>
 		<div class="manageContainer--buttons">
-			<button type="button" tabindex="0" class="actionButton" (click)="closePopup.emit()">
-				<span class="icon">
-					<img width="16px" height="16px" src="assets/img/close-black.svg" alt="Close Manage Popup" />
-				</span>
+				<span class="btnClear" (click)="onResetFilters()">Clear</span>
+			<button type="button" tabindex="0" class="actionButton btnsavecancl" (click)="closePopup.emit()">
 				<span class="text">Cancel</span>
 			</button>
-			<button type="button" tabindex="0" class="actionButton actionButton__green" (click)="onSave()" [disabled]="!(selectedFilterToManage.length || allFiltersToManage.length)">
-				<span class="icon">
-					<img width="16px" height="16px" src="assets/img/save.svg" alt="Save Changes" />
-				</span>
-				<span class="text">Save</span>
+
+			<button type="button" tabindex="0" class="actionButton btnsavecancl actionButton__green" style="border: none;
+			    margin-right: 25px;" (click)="onSave()" [disabled]="!(selectedFilterToManage.length > 0 && allFiltersToManage.length > 0)">
+				<span class="text textSave">Save</span>
 			</button>
 		</div>
+        </div>
 	</div>
 </div>

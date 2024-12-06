@@ -1,0 +1,70 @@
+<div class="popup-overlay">
+  <div class="popup-container">
+    <div class="popup-header">
+      <h2 class="title">{{ title }}</h2>
+      <img width="15px" height="15px" src="assets/img/x-mark.svg" class="x-icon" (click)="closePopup()"/>
+    </div>
+
+    <div class="popup-content">
+      <div class="table-container">
+        <table *ngIf="data && data.length > 1; else noDataTemplate">
+          <thead>
+            <tr>
+              <th style="text-align: left" class="tHeader" style="width: 20%">
+                {{ isHeader ? carrierHeader[0] : laneHeader[0] }}
+              </th>
+              <th class="tHeader" style="width: 35%">
+                {{ isHeader ? carrierHeader[1] : laneHeader[1] }}
+              </th>
+              <th style="width: 45%" class="tHeader">
+                {{ isHeader ? carrierHeader[2] : laneHeader[2] }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of data; trackBy: trackById">
+              <td class="tData-carrier">{{ item?.param1 }}</td>
+              <td class="tData-carrier">{{ item?.param2 }}</td>
+              <td>
+                <div class="bar-container">
+                  <div
+                    class="bar"
+                    [ngStyle]="{ width: getBarWidth(data, item.value) }"
+                  ></div>
+                  <span>{{ item.value | number }}</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <ng-template #noDataTemplate>
+          <div class="no-data-message">No data available</div>
+        </ng-template>
+      </div>
+
+      <!-- Pagination Controls -->
+      <div class="pagination-controls" style="width:100%">
+        <span class="results-count">{{ totalCount }} Results</span>
+        <div>
+        <button class="pagination-btn" (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
+        
+        <select class="page-select" [(ngModel)]="currentPage" (change)="goToPage(currentPage)">
+          <option *ngFor="let page of pageNumbers()" [value]="page">{{ page | number : '2.0' }}</option>
+        </select>
+        
+        <button class="pagination-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+         </div>
+         <div>
+        <span class="show-text">Show</span>
+        
+        <select class="rows-select" [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+          <option *ngFor="let option of [20, 40, 60, 80, 100]" [value]="option">{{ option }}</option>
+        </select>
+        
+        <span class="rows-text">rows per page</span>
+      </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
