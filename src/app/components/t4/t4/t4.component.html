@@ -140,13 +140,13 @@
               [ngClass]="{ 'highlight-row': i === 2 }"
             >
               <!-- <td>{{ item.PERIOD }}</td> -->
-              <td [ngClass]="{ 'delta-row': i === 2 }">{{ i !== 2 ? item.UOM : '' }}</td>
-              <td>{{ item.ENE || "-" }}</td>
-              <td>{{ item.OPS || "-" }}</td>
-              <td>{{ item.TOT || "-" }}</td>
-              <td>{{ item.TOT_EI || "-" }}</td>
+              <td [ngClass]="{ 'delta-row': i === 2 }">{{ i !== 2 ? item.UOM : 'N/A' }}</td>
+              <td>{{ item.ENE || "N/A" }}</td>
+              <td>{{ item.OPS || "N/A" }}</td>
+              <td>{{ item.TOT || "N/A" }}</td>
+              <td>{{ item.TOT_EI || "N/A" }}</td>
               <td>
-                {{ item.COMPENSATION_USD ? "$" + item.COMPENSATION_USD : "-" }}
+                {{ item.COMPENSATION_USD ? "$" + item.COMPENSATION_USD : "N/A" }}
               </td>
             </tr>
           </ng-container>
