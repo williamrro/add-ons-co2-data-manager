@@ -115,11 +115,10 @@
             </th>
             <th class="tooltip-container tooltip-adjusted">
               Compensation USD
-              <span
-                class="tooltip-text"
-                style="width: 162px !important;"
+              <span class="tooltip-text" style="width: 162px !important"
                 ><div>Compensation USD</div>
-                GHG emissions can be offset by enabling carbon dioxide capture activities.</span
+                GHG emissions can be offset by enabling carbon dioxide capture
+                activities.</span
               >
               <img
                 width="16px"
@@ -140,13 +139,19 @@
               [ngClass]="{ 'highlight-row': i === 2 }"
             >
               <!-- <td>{{ item.PERIOD }}</td> -->
-              <td [ngClass]="{ 'delta-row': i === 2 }">{{ i !== 2 ? item.UOM : 'N/A' }}</td>
-              <td>{{ item.ENE || "N/A" }}</td>
-              <td>{{ item.OPS || "N/A" }}</td>
-              <td>{{ item.TOT || "N/A" }}</td>
-              <td>{{ item.TOT_EI || "N/A" }}</td>
+              <td [ngClass]="{ 'delta-row': i === 2 }">
+                {{ i !== 2 ? item.UOM : "N/A" }}
+              </td>
+              <td>{{ formatNumber(item.ENE) || "N/A" }}</td>
+              <td>{{ formatNumber(item.OPS) || "N/A" }}</td>
+              <td>{{ formatNumber(item.TOT) || "N/A" }}</td>
+              <td>{{ formatNumber(item.TOT_EI) || "N/A" }}</td>
               <td>
-                {{ item.COMPENSATION_USD ? "$" + item.COMPENSATION_USD : "N/A" }}
+                {{
+                  item.COMPENSATION_USD
+                    ? "$" + formatNumber(item.COMPENSATION_USD)
+                    : "N/A"
+                }}
               </td>
             </tr>
           </ng-container>
