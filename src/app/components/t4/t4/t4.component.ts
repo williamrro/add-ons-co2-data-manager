@@ -127,4 +127,26 @@ export class T4Component implements OnInit, AfterViewInit {
       this.renderer.setStyle(tooltip, "left", "0px");
     }
   }
+  formatNumber(value: any): string | null {
+    if (typeof value === 'number') {
+      // Format numbers with commas
+      return new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(value);
+    }
+    if (typeof value === 'string' && value.includes('%')) {
+      // Handle percentages
+      const numericValue = parseFloat(value.replace('%', '').trim());
+      if (!isNaN(numericValue)) {
+        return new Intl.NumberFormat('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }).format(numericValue) + '%';
+      }
+      return value; // Return the value as is if parsing fails
+    }
+    return value;
+  }
+  
 }
