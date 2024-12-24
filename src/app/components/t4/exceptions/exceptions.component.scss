@@ -192,22 +192,7 @@ h2 {
 }
 #exception-chart {
 	width: 100%;
-  }
-//   #exception-chart {
-// 	padding: 0;
-// 	margin: 0;
-//   }
-//   #exception-chart svg {
-// 	width: 100%;
-//   }
-//   #exception-chart .c3-bar {
-// 	width: 100%;
-// 	transform: scaleX(1);
-//   }
-//   #exception-chart .c3-bars rect {
-//     width: 100%!important;
-//     transform: none!important;
-// }
+}
 
 /* Add this in your component’s CSS file */
 :host ::ng-deep .c3-chart-bars rect {
@@ -226,4 +211,30 @@ h2 {
  .tbl-content table td{
   padding: 0px 5px !important;
 }
+}
+
+table {
+  overflow: visible;
+}
+
+/* Hover effect for bars with data */
+.normal-bar:hover {
+  fill: #4682B4;
+  cursor: pointer; /* Indicate hoverable element */
+}
+
+.c3-bar.dotted-bar {
+  stroke-dasharray: 3, 3; /* Create dotted pattern */
+  stroke-width: 1px; /* Adjust thickness of the stroke */
+  stroke: var(--text-color-disabled, #C9D0D6); /* Color of the dotted bar */
+  fill: var(--surface-background-10, #F0F4F8); /* Background color of the dotted bar */
+}
+.c3-bar {
+  fill: var(--surface-background-10, #F0F4F8); /* Default fill color for bars */
+  stroke-width: 0; /* Default no border for bars */
+}
+
+.tablerow{
+  vertical-align: bottom !important;
+  line-height: 25px !important;
 }
