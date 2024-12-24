@@ -1904,3 +1904,15 @@ font-weight: 700!important;
 .hidden-line line {
 	display: none;
   }
+.c3-bar {
+	fill: var(--surface-background-10, #F0F4F8); /* Default fill color for bars */
+	stroke-width: 0; /* Default no border for bars */
+}
+.dotted-bar {
+	// border: none !important; /* Remove default border for SVG elements */
+	fill: var(--surface-background-10, #F0F4F8) !important; /* Background color */
+	stroke: var(--text-color-disabled, #C9D0D6) !important; /* Consistent dotted color */
+	stroke-dasharray: 2, 2 !important; /* Uniform dash pattern for all sides */
+	stroke-width: 1px !important; /* Uniform stroke thickness */
+}
+  
