@@ -16,7 +16,7 @@ const routes: Routes = [
 			{ path: 'detail', component: DetailComponent },
 			{ path: 'intensity', component: IntensityComponent },
 			{ path: 'total', component: TotalCo2Component },
-			{ path: 'exceptions', component: ExceptionsComponent },
+			{ path: 'data-issue', component: ExceptionsComponent },
 			{ path: '', redirectTo: 'summary', pathMatch: 'full' },
 			{ path: '**', redirectTo: 'summary', pathMatch: 'full' },
 		],
