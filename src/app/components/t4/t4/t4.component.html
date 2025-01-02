@@ -140,7 +140,7 @@
             >
               <!-- <td>{{ item.PERIOD }}</td> -->
               <td [ngClass]="{ 'delta-row': i === 2 }">
-                {{ i !== 2 ? item.UOM : "N/A" }}
+                {{ i !== 2 ? item.UOM : " " }}
               </td>
               <td>{{ formatNumber(item.ENE) || "N/A" }}</td>
               <td>{{ formatNumber(item.OPS) || "N/A" }}</td>
