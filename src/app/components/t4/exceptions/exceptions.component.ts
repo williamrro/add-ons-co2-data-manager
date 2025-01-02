@@ -52,7 +52,7 @@ export class ExceptionsComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     const currentUrl = this.router.url;
     // Define the path to match
-    const pathToMatch = "/t4/exceptions";
+    const pathToMatch = "/t4/data-issue";
     this.searchParamsChangeSub$ = this.searchService.getSearchParams$.subscribe(
       (params: any) => {
         this.searchParams = params || {};
