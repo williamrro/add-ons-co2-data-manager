@@ -15,7 +15,6 @@ export class DetailComponent implements OnInit, OnDestroy {
   searchParams: any = {};
   maxValue: number;
   summaryYearData: any[];
-  summaryTableData: any = [];
   tabs = ["By Mode", "By Carrier", "By Lane"];
   currentTab = "By Mode";
   currentYear: number = new Date().getFullYear();
@@ -75,12 +74,17 @@ export class DetailComponent implements OnInit, OnDestroy {
           Object.keys(this.searchParams).length &&
           currentUrl === pathToMatch
         ) {
-          this.showByValue =
-            this.searchParams.searchStandardFormGroup.showBy[0];
-          this.appService.getAllSummaryYears().subscribe((res: any) => {
-            this.summaryYearData = res;
-          });
-          this.summaryApiData();
+          if (
+            this.searchParams.searchStandardFormGroup &&
+            this.searchParams.searchStandardFormGroup.showBy &&
+            this.searchParams.searchStandardFormGroup.showBy.length > 0
+          ) {
+            this.showByValue =
+              this.searchParams.searchStandardFormGroup.showBy[0];
+          } else {
+            // Assign a default value or handle the case where showBy is undefined or empty
+            this.showByValue = null; // or any default value
+          }
           const obj = {
             standardFilters: this.searchParams.searchStandardFormGroup,
             customFilters: this.searchParams.searchCustomFormGroup1,
@@ -158,10 +162,38 @@ export class DetailComponent implements OnInit, OnDestroy {
     // Function to filter the data
     const groupValues = data.map((item) => item[0]);
     this.validData = data.some((column) => column[1] > 0);
+    // Preserve original data for tooltip and adjust data for rendering
+    const originalData = [...data];
+    let scaledData;
+    if (originalData.length > 2) {
+      const minValue = Math.min(...data.map((item) => item[1]));
+      const maxValue = Math.max(...data.map((item) => item[1]));
+      // Power scaling with a custom exponent to emphasize smaller values
+      const exponent = 0.5;
+      scaledData = data.map(([label, value]) => {
+        // Normalize value between 0 and 1, then apply power scaling
+        let normalizedValue = (value - minValue) / (maxValue - minValue);
+        // normalizedValue = normalizedValue == 0 ? 0.01 : normalizedValue;
+        const scaledValue = Math.pow(normalizedValue, exponent) * maxValue;
+        return [label, scaledValue];
+      });
+
+      // Get the previous value
+      const prevValue = scaledData[scaledData.length - 2][1];
+      // Calculate the new value
+      let newValue = prevValue - 1;
+      // Ensure the new value is less than the previous value, not zero or negative
+      if (newValue <= 0 || newValue >= prevValue) {
+        newValue = prevValue > 0 ? prevValue / 2 : 0.1; // Adjust to a valid lesser value
+      }
+      // Update the last value in the array
+      scaledData[scaledData.length - 1][1] = newValue;
+    }
+    // Calculate chart width dynamically based on number of data points
     this.chart = c3.generate({
       bindto: "#mode-chart",
       data: {
-        columns: data,
+        columns: originalData.length > 2 ? scaledData : originalData,
         type: "bar",
         groups: [groupValues],
         order: null,
@@ -204,6 +236,7 @@ export class DetailComponent implements OnInit, OnDestroy {
           ratio: 0.9, // Full-width bars
           max: 50,
         },
+        zerobased: true,
       },
       size: {
         height: 70, // Keep the height as it is
@@ -243,13 +276,16 @@ export class DetailComponent implements OnInit, OnDestroy {
         grouped: false,
         contents: (d, defaultTitleFormat, defaultValueFormat, color) => {
           const value = d[0].value;
+          const originalValue = originalData.find(
+            (item) => item[0] === d[0].id
+          )[1];
           this.chart.focus(d[0].id);
           this.greyOutOthers(d[0].id);
 
           return `
                 <div class="tooltip" style="background-color: #323232; color: #fff; padding: 5px 10px; border-radius: 5px; position: relative; z-index: 1000;">
                     <span style="color: #989898; font-family: 'Open Sans'; font-size: 12px; font-weight: 600;">${d[0].id}</span><br/>
-                    <span style="color: #FFF; font-family: 'Open Sans'; font-size: 12px; font-weight: 600;">${value}</span>
+                    <span style="color: #FFF; font-family: 'Open Sans'; font-size: 12px; font-weight: 600;">${originalValue}</span>
                     <div style="width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 11px solid #333; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);"></div>
                 </div>`;
         },
@@ -335,21 +371,6 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
   toggleTab(tab: string) {
     this.currentTab = tab;
-  }
-
-  summaryApiData() {
-    const obj = {
-      basePeriod: 2023,
-      currentPeriod: 2024,
-      standardFilters: this.searchParams.searchStandardFormGroup,
-      customFilters: this.searchParams.searchCustomFormGroup1,
-    };
-
-    this.appService.summaryTableInfo(obj).subscribe((res: any) => {
-      if (res) {
-        this.summaryTableData = res.table_data;
-      }
-    });
   }
 
   ngOnDestroy() {

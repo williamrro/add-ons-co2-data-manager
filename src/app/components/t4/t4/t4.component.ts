@@ -47,7 +47,8 @@ export class T4Component implements OnInit, AfterViewInit {
     private appService: AppService,
     private searchService: SearchService,
     private renderer: Renderer2,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -64,6 +65,7 @@ export class T4Component implements OnInit, AfterViewInit {
         if (Object.keys(this.searchParams).length) {
           this.appService.getAllSummaryYears().subscribe((res: any) => {
             this.summaryYearData = res;
+            this.years = res;
             this.currentYear = new Date().getFullYear();
             this.baselineYear = this.currentYear - 1;
             this.summaryApiData();
@@ -72,10 +74,14 @@ export class T4Component implements OnInit, AfterViewInit {
       }
     );
     this.searchService.getTabData$.subscribe((res) => {
-      // Defer the change to the next JavaScript execution cycle
-      setTimeout(() => {
-        this.showBaselineComparison = res;
-      }, 0);
+      if (
+        this.router.url === "/t4/summary" ||
+        this.router.url === "/t4/detail"
+      ) {
+        this.showBaselineComparison = true;
+      } else {
+        this.showBaselineComparison = false;
+      }
     });
     this.cdr.detectChanges();
   }
@@ -128,25 +134,26 @@ export class T4Component implements OnInit, AfterViewInit {
     }
   }
   formatNumber(value: any): string | null {
-    if (typeof value === 'number') {
+    if (typeof value === "number") {
       // Format numbers with commas
-      return new Intl.NumberFormat('en-US', {
+      return new Intl.NumberFormat("en-US", {
         minimumFractionDigits: 2,
-        maximumFractionDigits: 2
+        maximumFractionDigits: 2,
       }).format(value);
     }
-    if (typeof value === 'string' && value.includes('%')) {
+    if (typeof value === "string" && value.includes("%")) {
       // Handle percentages
-      const numericValue = parseFloat(value.replace('%', '').trim());
+      const numericValue = parseFloat(value.replace("%", "").trim());
       if (!isNaN(numericValue)) {
-        return new Intl.NumberFormat('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        }).format(numericValue) + '%';
+        return (
+          new Intl.NumberFormat("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }).format(numericValue) + "%"
+        );
       }
       return value; // Return the value as is if parsing fails
     }
     return value;
   }
-  
 }

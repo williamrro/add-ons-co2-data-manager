@@ -282,6 +282,10 @@ export class ExceptionsComponent implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(() => {
           this.generateModeChart(res);
         }, 0);
+      } else if (!res || res.length === 0) {
+        this.exceptionChart = null; // Clear the chart instance if needed
+        document.querySelector("#exception-chart-legend").innerHTML = ""; // Clear legends
+        return; // Exit function early
       }
     });
   }
@@ -413,8 +417,16 @@ export class ExceptionsComponent implements OnInit, AfterViewInit, OnDestroy {
   insertCustomLegend() {
     const legendContainer = document.querySelector("#exception-chart-legend");
 
-    // Clear previous legends if any
-    legendContainer.innerHTML = "";
+    // Clear previous legends
+    if (legendContainer) {
+      legendContainer.innerHTML = "";
+    }
+
+    // Check if chart has valid data
+    const chartData = this.exceptionChart.data();
+    if (!chartData || chartData.length === 0) {
+      return; // Exit if no data
+    }
 
     // Create custom legend manually
     const legendData = this.exceptionChart
