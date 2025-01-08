@@ -63,7 +63,6 @@ export class SummaryComponent implements OnInit {
           Object.keys(this.searchParams).length &&
           currentUrl === pathToMatch
         ) {
-          this.summaryApiData();
           this.summaryGraphFunction();
         }
       }
@@ -159,30 +158,7 @@ export class SummaryComponent implements OnInit {
       serverSideFiltering: false,
       disableSelection: false,
     };
-    this.appService.getAllSummaryYears().subscribe((res: any) => {
-      this.summaryYearData = res;
-    });
     this.searchService.setTabData(true);
-  }
-
-  summaryYear(data, i) {
-    this.summaryApiData(data, i);
-  }
-  summaryApiData(data?, item?) {
-    const obj = {
-      basePeriod:
-        item && item["PERIOD"] === "Base Period" ? Number(data) : 2023,
-      currentPeriod:
-        item && item["PERIOD"] === "Current Period" ? Number(data) : 2024,
-      standardFilters: this.searchParams.searchStandardFormGroup,
-      customFilters: this.searchParams.searchCustomFormGroup1,
-    };
-
-    this.appService.summaryTableInfo(obj).subscribe((res: any) => {
-      if (res) {
-        this.summaryTableData = res.table_data;
-      }
-    });
   }
   ngAfterViewInit() {
     this.summaryGraphFunction(); // Initialize chart after view is loaded
@@ -274,7 +250,6 @@ export class SummaryComponent implements OnInit {
         text: "",
         class: "alternate-grid-line-0 hidden-line",
       });
-      console.log(alternateLines);
       let yAxisLabel = showValue;
       // Generate the C3 chart
       this.chart = c3.generate({
@@ -326,7 +301,7 @@ export class SummaryComponent implements OnInit {
             },
             label: {
               text: yAxisLabel, // Label for the Y-axis
-              position: "outer-middle" // Position of the label
+              position: "outer-middle", // Position of the label
             },
           },
         },
