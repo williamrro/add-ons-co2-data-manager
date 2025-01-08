@@ -21,7 +21,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 export class T4Component implements OnInit, AfterViewInit {
   @HostBinding("class") class = "autoFlexColumn";
   @ViewChild("tooltipContainer") tooltipContainer: ElementRef;
-  years = [2024, 2023, 2022];
+  years = [];
   headers = [
     { label: "UOM", tooltip: "Unit Of Measure" },
     { label: "ENE", tooltip: "Energy consumption" },
@@ -43,6 +43,8 @@ export class T4Component implements OnInit, AfterViewInit {
   searchParamsChangeSub$: ISubscription;
   basePeriodTableHide: boolean = true;
   showBaselineComparison: boolean = true;
+  previousClientCode: any = [];
+  isFirstExecution: boolean = true;
   constructor(
     private appService: AppService,
     private searchService: SearchService,
@@ -63,13 +65,22 @@ export class T4Component implements OnInit, AfterViewInit {
       (params: any) => {
         this.searchParams = params || {};
         if (Object.keys(this.searchParams).length) {
-          this.appService.getAllSummaryYears().subscribe((res: any) => {
-            this.summaryYearData = res;
-            this.years = res;
-            this.currentYear = new Date().getFullYear();
-            this.baselineYear = this.currentYear - 1;
-            this.summaryApiData();
-          });
+          const currentClientCode =
+            this.searchParams.searchStandardFormGroup.clientCode;
+          if (
+            this.isFirstExecution ||
+            currentClientCode[0] !== this.previousClientCode[0]
+          ) {
+            this.isFirstExecution = false; // Disable the first execution flag
+            this.previousClientCode = currentClientCode; // Update the previous client code
+            this.appService.getAllSummaryYears().subscribe((res: any) => {
+              this.summaryYearData = res;
+              this.years = res;
+              this.currentYear = new Date().getFullYear();
+              this.baselineYear = this.currentYear - 1;
+              this.summaryApiData();
+            });
+          }
         }
       }
     );
