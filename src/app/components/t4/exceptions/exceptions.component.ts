@@ -3,18 +3,21 @@ import {
   OnInit,
   Renderer2,
   ElementRef,
+  AfterViewInit,
+  OnDestroy,
 } from "@angular/core";
 import { ISubscription } from "rxjs/Subscription";
 import { SearchService } from "../../../services/search.service";
 import { AppService } from "../../../app.service";
 import { Router } from "@angular/router";
 declare var c3: any;
+declare var d3: any;
 @Component({
   selector: "app-exceptions",
   templateUrl: "./exceptions.component.html",
   styleUrls: ["./exceptions.component.scss"],
 })
-export class ExceptionsComponent implements OnInit {
+export class ExceptionsComponent implements OnInit, AfterViewInit, OnDestroy {
   searchParamsChangeSub$: ISubscription;
   searchParams: any = {};
   exceptionsTableData: any = [];
@@ -39,18 +42,17 @@ export class ExceptionsComponent implements OnInit {
   exceptionChart: any;
   chart: any;
   showByValue: any;
+  private resizeTimeout: any;
   constructor(
     private searchService: SearchService,
     private appService: AppService,
-    private router: Router,
-    private renderer: Renderer2,
-    private el: ElementRef
+    private router: Router
   ) {}
 
   ngOnInit() {
     const currentUrl = this.router.url;
     // Define the path to match
-    const pathToMatch = "/t4/exceptions";
+    const pathToMatch = "/t4/data-issue";
     this.searchParamsChangeSub$ = this.searchService.getSearchParams$.subscribe(
       (params: any) => {
         this.searchParams = params || {};
@@ -63,7 +65,9 @@ export class ExceptionsComponent implements OnInit {
             standardFilters: this.searchParams.searchStandardFormGroup,
             customFilters: this.searchParams.searchCustomFormGroup1,
           };
-          this.showByValue =this.searchParams.searchStandardFormGroup.showBy[0];
+          this.showByValue = (this.searchParams.searchStandardFormGroup
+            .showBy || [])[0];
+
           this.exceptionsTable();
           this.exceptionModeGraph(obj);
           this.exceptionCarrerGraph(obj);
@@ -118,9 +122,7 @@ export class ExceptionsComponent implements OnInit {
       }
     });
   }
-  ngOnDestroy() {
-    if (this.searchParamsChangeSub$) this.searchParamsChangeSub$.unsubscribe();
-  }
+
   private getMonths(startDate: Date, endDate: Date): string[] {
     const months = [];
     const currentDate = new Date(startDate);
@@ -280,6 +282,10 @@ export class ExceptionsComponent implements OnInit {
         setTimeout(() => {
           this.generateModeChart(res);
         }, 0);
+      } else if (!res || res.length === 0) {
+        this.exceptionChart = null; // Clear the chart instance if needed
+        document.querySelector("#exception-chart-legend").innerHTML = ""; // Clear legends
+        return; // Exit function early
       }
     });
   }
@@ -411,8 +417,16 @@ export class ExceptionsComponent implements OnInit {
   insertCustomLegend() {
     const legendContainer = document.querySelector("#exception-chart-legend");
 
-    // Clear previous legends if any
-    legendContainer.innerHTML = "";
+    // Clear previous legends
+    if (legendContainer) {
+      legendContainer.innerHTML = "";
+    }
+
+    // Check if chart has valid data
+    const chartData = this.exceptionChart.data();
+    if (!chartData || chartData.length === 0) {
+      return; // Exit if no data
+    }
 
     // Create custom legend manually
     const legendData = this.exceptionChart
@@ -438,57 +452,245 @@ export class ExceptionsComponent implements OnInit {
     });
   }
   renderCharts(): void {
+    // Loop through each exception and render a chart for each
     this.exceptionsTableData.forEach((exception, index) => {
       const chartId = `#chart-DEST-${index}`;
-      const categories = exception.monthlyTotals.map((item) => item[0]);
-      c3.generate({
+      const categories = exception.monthlyTotals.map((item) => item[0]); // Extract X-axis categories
+      const dataValues = exception.monthlyTotals.map((item) => Number(item[1])); // Extract Y-axis data
+
+      // Get the maximum value from the dataset
+      const maxValue = Math.max(...dataValues);
+
+      // Replace 0 values with the max value for rendering purposes
+      const adjustedDataValues = dataValues.map((value) =>
+        value === 0 ? maxValue : value
+      );
+
+      // Generate the C3.js chart
+      const chart = c3.generate({
         bindto: chartId,
         size: {
-          height: 50, // Chart height
-          // width: 600, // Chart width
+          height: 70, // Compact chart height
+          width: 300, // Compact chart width
         },
         data: {
-          columns: [
-            ["", ...exception.monthlyTotals.map((item) => Number(item[1]))], // Data values
-          ],
+          columns: [[" ", ...adjustedDataValues]],
           type: "bar",
+          classes: {
+            " ": function (d) {
+              return dataValues[d.index] === 0 ? "dotted-bar" : "normal-bar";
+            },
+          },
+          colors: {
+            " ": "#C1C3C3", // Set bar color explicitly
+          },
+          onmouseover: function (d) {
+            // Skip hover effect for dotted bars (value 0)
+            if (dataValues[d.index] === 0) return;
+
+            // Find the specific bar element based on the index
+            d3.select(`${chartId} .c3-bars .c3-bar-${d.index}`)
+              .transition()
+              .duration(200) // Smooth transition
+              .style("fill", "var(--primary-40, #4682B4)") // Change color to blue
+              .style("opacity", 1); // Ensure full opacity
+            // Ensure no stroke is applied on hover
+            d3.selectAll(".c3-bar")
+              .style("stroke", "none")
+              .style("outline", "none");
+          },
+          onmouseout: function (d) {
+            // Skip hover effect for dotted bars (value 0)
+            if (dataValues[d.index] === 0) return;
+
+            // Revert the color of the specific bar element to black
+            d3.select(`${chartId} .c3-bars .c3-bar-${d.index}`)
+              .transition()
+              .duration(200)
+              .style("fill", "#333") // Revert to black
+              .style("opacity", 1); // Ensure full opacity
+          },
         },
         bar: {
           width: {
-            ratio: 0.6, // Make the bars thinner (lower ratio = narrower bars)
+            ratio: 0.5, // Adjust bar width
           },
+          // zerobased: true
         },
         axis: {
           x: {
             type: "category",
-            categories: categories, // X-axis labels
-            padding: {
-              left: 0, // Reduce padding on the left
-              right: 10, // Reduce padding on the right
-            },
-            show: false, // Hide X-axis labels for a compact look
+            categories: categories, // X-axis categories
+            show: false, // Hide X-axis for minimalistic design
           },
           y: {
-            show: false, // Hide Y-axis labels
+            show: false, // Hide Y-axis for simplicity
           },
         },
         legend: {
           show: false, // Hide legend
         },
-        padding: {
-          left: 0, // Minimal padding on the left
-          right: 0, // Minimal padding on the right
-          top: 0, // Compact top padding
-          bottom: 0, // Compact bottom padding
-        },
-        color: {
-          pattern: ["#C1C3C3"], // Bar color
-        },
         tooltip: {
-          show: true, // Make sure tooltip is enabled
-        }
+          contents: function (
+            d,
+            defaultTitleFormat,
+            defaultValueFormat,
+            color
+          ) {
+            // Check if an existing tooltip is present
+            let existingTooltip = document.querySelector(
+              ".custom-tooltip"
+            ) as HTMLElement;
+
+            // If tooltip exists, update its content and position
+            if (existingTooltip) {
+              const index = d[0].index;
+              const title = categories[index];
+              const value1 = dataValues[index] === 0 ? 0 : d[0]["value"];
+              existingTooltip.innerHTML = `
+                <div class="tooltip-title">${title}</div>
+                <div class="tooltip-value">${value1}</div>
+              `;
+
+              // Update tooltip position dynamically
+              const mousePosition = d3.event;
+              existingTooltip.style.left = `${mousePosition.pageX + 10}px`;
+              existingTooltip.style.top = `${mousePosition.pageY - 40}px`; // Position above
+
+              return ""; // Return empty to prevent default tooltip behavior
+            }
+
+            // If no tooltip exists, create a new one
+            const tooltipDiv = document.createElement("div");
+            tooltipDiv.className = "custom-tooltip";
+            tooltipDiv.style.position = "absolute";
+            tooltipDiv.style.zIndex = "1000";
+            tooltipDiv.style.pointerEvents = "none";
+            document.body.appendChild(tooltipDiv);
+
+            // Populate tooltip content
+            const index = d[0].index;
+            const title = categories[index];
+            const value1 = dataValues[index] === 0 ? 0 : d[0]["value"];
+            tooltipDiv.innerHTML = `
+              <div class="tooltip-title">${title}</div>
+              <div class="tooltip-value">${value1}</div>
+            `;
+
+            // Position tooltip dynamically
+            const mousePosition = d3.event;
+            // tooltipDiv.style.left = `${mousePosition.pageX -10}px`;
+            // tooltipDiv.style.top = `${mousePosition.pageY-30}px`; // Position above
+
+            return ""; // Return empty to prevent default tooltip behavior
+          },
+        },
+
+        onmouseout: function () {
+          // Remove the tooltip when the mouse leaves
+          const existingTooltip = document.querySelector(
+            ".custom-tooltip"
+          ) as HTMLElement;
+          if (existingTooltip) {
+            existingTooltip.remove();
+          }
+        },
+        transition: {
+          duration: 0, // Disable transitions during resize
+        },
+        onrendered: function () {
+          // Apply custom styles for bars
+          const bars = Array.from(
+            document.querySelectorAll(`${chartId} .c3-bar`)
+          );
+          bars.forEach((bar, idx) => {
+            const barElement = bar as HTMLElement; // Cast to HTMLElement
+            if (dataValues[idx] === 0) {
+              // Styling for dotted bars
+              barElement.classList.add("dotted-bar");
+              barElement.style.strokeDasharray = "3, 3"; // Dashed border
+              barElement.style.strokeWidth = "0.5px";
+              // barElement.style.stroke = "var(--text-color-disabled, #C9D0D6)";
+              // barElement.style.fill = "var(--surface-background-10, #F0F4F8)";
+            } else {
+              barElement.style.fill = "#333"; // Set default color for normal bars
+            }
+          });
+
+          // Avoid resetting styles during hover by ensuring hover styles remain
+          const hoverBars = d3.select(chartId).selectAll(".c3-bar");
+          hoverBars.on("mouseover", function (event, d) {
+            if (dataValues[d.index] !== 0) {
+              d3.select(this)
+                .transition()
+                .duration(200)
+                .style("fill", "var(--primary-40, #4682B4)");
+            }
+          });
+          hoverBars.on("mouseout", function (event, d) {
+            if (dataValues[d.index] !== 0) {
+              d3.select(this).transition().duration(200).style("fill", "#333");
+            }
+          });
+        },
       });
     });
+  }
+
+  ngAfterViewInit() {
+    const style = document.createElement("style");
+    style.type = "text/css";
+    style.innerHTML = `
+           .custom-tooltip {
+            background-color: #333; /* Tooltip background color */
+            color: white; /* Text color */
+            border: 1px solid #323232;
+            border-radius: 5px;
+            padding: 5px 10px;
+            position: absolute;
+            pointer-events: none;
+            transform: translate(-50%, -100%);
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 10000;
+          }
+
+           .custom-tooltip::before {
+              content: "";
+              position: absolute;
+              top: 100%;
+              left: 48%;
+              transform: translateX(-50%);
+              border-width: 10px;
+              border-style: solid;
+              border-color: #333 transparent transparent transparent; /* Arrow color */
+              z-index: 9999;
+            }
+
+            .custom-tooltip .tooltip-title {
+                font-weight: bold;
+                color: #fffff;
+                margin-bottom: 5px;
+                color: #989898;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: normal;
+                letter-spacing: -0.36px;
+            }
+            .custom-tooltip .tooltip-value {
+                font-size: 16px;
+                color: #ffff;
+            }
+          `;
+    document.head.appendChild(style);
+    // Attach resize event listener
+    window.addEventListener("resize", this.handleResize.bind(this));
+  }
+  handleResize(): void {
+    clearTimeout(this.resizeTimeout);
+    this.resizeTimeout = setTimeout(() => {
+      this.renderCharts(); // Re-render charts with updated sizes
+    }, 300); // Debounce time in milliseconds
   }
   exceptionLaneGraph(payLoad) {
     this.appService.exceptionsLaneGraph(payLoad).subscribe((res: any) => {
@@ -496,5 +698,9 @@ export class ExceptionsComponent implements OnInit {
         this.lanes = res;
       }
     });
+  }
+  // Cleanup on destroy
+  ngOnDestroy() {
+    window.removeEventListener("resize", this.handleResize.bind(this));
   }
 }

@@ -63,7 +63,6 @@ export class SummaryComponent implements OnInit {
           Object.keys(this.searchParams).length &&
           currentUrl === pathToMatch
         ) {
-          this.summaryApiData();
           this.summaryGraphFunction();
         }
       }
@@ -159,30 +158,7 @@ export class SummaryComponent implements OnInit {
       serverSideFiltering: false,
       disableSelection: false,
     };
-    this.appService.getAllSummaryYears().subscribe((res: any) => {
-      this.summaryYearData = res;
-    });
     this.searchService.setTabData(true);
-  }
-
-  summaryYear(data, i) {
-    this.summaryApiData(data, i);
-  }
-  summaryApiData(data?, item?) {
-    const obj = {
-      basePeriod:
-        item && item["PERIOD"] === "Base Period" ? Number(data) : 2023,
-      currentPeriod:
-        item && item["PERIOD"] === "Current Period" ? Number(data) : 2024,
-      standardFilters: this.searchParams.searchStandardFormGroup,
-      customFilters: this.searchParams.searchCustomFormGroup1,
-    };
-
-    this.appService.summaryTableInfo(obj).subscribe((res: any) => {
-      if (res) {
-        this.summaryTableData = res.table_data;
-      }
-    });
   }
   ngAfterViewInit() {
     this.summaryGraphFunction(); // Initialize chart after view is loaded
@@ -196,7 +172,10 @@ export class SummaryComponent implements OnInit {
     this.appService.summaryGraph(obj).subscribe((res: any) => {
       if (res) {
         this.summaryGraphData = res.data;
-        this.generateChart(this.summaryGraphData);
+        this.generateChart(
+          this.summaryGraphData,
+          this.searchParams.searchStandardFormGroup.showBy[0]
+        );
         this.chartGenerated = true;
         this.cdr.detectChanges(); // Trigger change detection
       }
@@ -224,7 +203,7 @@ export class SummaryComponent implements OnInit {
   removeVerticalBar() {
     this.chart.regions.remove({ classes: ["hover-bar"] }); // Remove the region with the class 'hover-bar'
   }
-  generateChart(data) {
+  generateChart(data, showValue?) {
     setTimeout(() => {
       // Flatten and extract all numeric values from the dataset
       const allValues = data
@@ -271,7 +250,7 @@ export class SummaryComponent implements OnInit {
         text: "",
         class: "alternate-grid-line-0 hidden-line",
       });
-      console.log(alternateLines);
+      let yAxisLabel = showValue;
       // Generate the C3 chart
       this.chart = c3.generate({
         bindto: "#yoy-chart",
@@ -319,6 +298,10 @@ export class SummaryComponent implements OnInit {
                   ? d / 100000 + "L"
                   : d / 1000 + "k";
               },
+            },
+            label: {
+              text: yAxisLabel, // Label for the Y-axis
+              position: "outer-middle", // Position of the label
             },
           },
         },

@@ -53,7 +53,7 @@
 			</button>
 
 			<button type="button" tabindex="0" class="actionButton btnsavecancl actionButton__green" style="border: none;
-			    margin-right: 25px;" (click)="onSave()" [disabled]="!(selectedFilterToManage.length > 0 && allFiltersToManage.length > 0)">
+			    margin-right: 25px;" (click)="onSave()" [disabled]="!(selectedFilterToManage.length > 0 || allFiltersToManage.length > 0)">
 				<span class="text textSave">Save</span>
 			</button>
 		</div>

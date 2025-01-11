@@ -21,7 +21,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 export class T4Component implements OnInit, AfterViewInit {
   @HostBinding("class") class = "autoFlexColumn";
   @ViewChild("tooltipContainer") tooltipContainer: ElementRef;
-  years = [2024, 2023, 2022];
+  years = [];
   headers = [
     { label: "UOM", tooltip: "Unit Of Measure" },
     { label: "ENE", tooltip: "Energy consumption" },
@@ -43,11 +43,14 @@ export class T4Component implements OnInit, AfterViewInit {
   searchParamsChangeSub$: ISubscription;
   basePeriodTableHide: boolean = true;
   showBaselineComparison: boolean = true;
+  previousClientCode: any = [];
+  isFirstExecution: boolean = true;
   constructor(
     private appService: AppService,
     private searchService: SearchService,
     private renderer: Renderer2,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -62,20 +65,34 @@ export class T4Component implements OnInit, AfterViewInit {
       (params: any) => {
         this.searchParams = params || {};
         if (Object.keys(this.searchParams).length) {
-          this.appService.getAllSummaryYears().subscribe((res: any) => {
-            this.summaryYearData = res;
-            this.currentYear = new Date().getFullYear();
-            this.baselineYear = this.currentYear - 1;
-            this.summaryApiData();
-          });
+          const currentClientCode =
+            this.searchParams.searchStandardFormGroup.clientCode;
+          if (
+            this.isFirstExecution ||
+            currentClientCode[0] !== this.previousClientCode[0]
+          ) {
+            this.isFirstExecution = false; // Disable the first execution flag
+            this.previousClientCode = currentClientCode; // Update the previous client code
+            this.appService.getAllSummaryYears().subscribe((res: any) => {
+              this.summaryYearData = res;
+              this.years = res;
+              this.currentYear = new Date().getFullYear();
+              this.baselineYear = this.currentYear - 1;
+              this.summaryApiData();
+            });
+          }
         }
       }
     );
     this.searchService.getTabData$.subscribe((res) => {
-      // Defer the change to the next JavaScript execution cycle
-      setTimeout(() => {
-        this.showBaselineComparison = res;
-      }, 0);
+      if (
+        this.router.url === "/t4/summary" ||
+        this.router.url === "/t4/detail"
+      ) {
+        this.showBaselineComparison = true;
+      } else {
+        this.showBaselineComparison = false;
+      }
     });
     this.cdr.detectChanges();
   }
@@ -126,5 +143,28 @@ export class T4Component implements OnInit, AfterViewInit {
       // Otherwise, position it normally
       this.renderer.setStyle(tooltip, "left", "0px");
     }
+  }
+  formatNumber(value: any): string | null {
+    if (typeof value === "number") {
+      // Format numbers with commas
+      return new Intl.NumberFormat("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }).format(value);
+    }
+    if (typeof value === "string" && value.includes("%")) {
+      // Handle percentages
+      const numericValue = parseFloat(value.replace("%", "").trim());
+      if (!isNaN(numericValue)) {
+        return (
+          new Intl.NumberFormat("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }).format(numericValue) + "%"
+        );
+      }
+      return value; // Return the value as is if parsing fails
+    }
+    return value;
   }
 }
