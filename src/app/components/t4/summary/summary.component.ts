@@ -223,6 +223,10 @@ export class SummaryComponent implements OnInit {
         { max: 30000, step: 2000 },
         { max: 60000, step: 5000 },
         { max: 100000, step: 10000 },
+        { max: 1000000, step: 100000 },
+        { max: 3000000, step: 200000 }, // New range for data up to 30L
+        { max: 6000000, step: 500000 }, // New range for data up to 60L
+        { max: 10000000, step: 1000000 }, // New range for data up to 1Cr
       ];
       const defaultStep = 5000; // Default step for very large ranges
       let step = defaultStep;
@@ -232,9 +236,9 @@ export class SummaryComponent implements OnInit {
           break;
         }
       }
-      if (rawMaxValue > 100000) {
-        step = 20000; // Use this step for values above 100000
-      }
+      // if (rawMaxValue > 100000) {
+      //   step = 20000; // Use this step for values above 100000
+      // }
       const maxYValue = Math.ceil(rawMaxValue / step) * step;
       const alternateLines = [];
       // Alternate gridlines (step * 2 for more sparse lines)

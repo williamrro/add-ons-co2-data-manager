@@ -268,7 +268,10 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     initialLoad?
   ) {
     this.isFilterValuesSearching = true;
-
+    if (initialLoad) {
+      this.filterValuesToken = "";
+      this.filterValuesSearchText = "";
+    }
     const {
       searchForm,
       CLIENT_CODE_FILTER_KEY,
@@ -333,6 +336,15 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         } else {
           this.isFilterValuesSearching = false;
           // this.utilService.resetDropdownPosition();
+          if (
+            !this.searchForm.get("searchStandardFormGroup").get("monthYear")
+              .value.length &&
+            !this.searchForm.get("searchStandardFormGroup").get("showBy").value
+              .length &&
+            initialLoad === "initialLoad"
+          ) {
+            this.onSearch();
+          }
         }
       });
   }
