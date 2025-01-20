@@ -149,7 +149,7 @@
               <td>
                 {{
                   item.COMPENSATION_USD
-                    ? "$" + formatNumber(item.COMPENSATION_USD)
+                    ? (i == 2 ? '': "$") + formatNumber(item.COMPENSATION_USD)
                     : "N/A"
                 }}
               </td>
