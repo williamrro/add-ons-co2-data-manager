@@ -3,7 +3,7 @@
   <div style="display: flex; width: 100%">
     <div style="width: 25%; margin-right: 20px">
       <p>
-        Compare your annual performance against a baseline and view the
+        Compare your year-to-date (YTD) performance against a baseline and view the
         calculated delta. Select any years available to compare.
       </p>
     </div>
@@ -149,7 +149,7 @@
               <td>
                 {{
                   item.COMPENSATION_USD
-                    ? "$" + formatNumber(item.COMPENSATION_USD)
+                    ? (i == 2 ? '': "$") + formatNumber(item.COMPENSATION_USD)
                     : "N/A"
                 }}
               </td>
