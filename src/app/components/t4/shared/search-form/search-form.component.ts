@@ -35,6 +35,9 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     text: "Select",
     enableSearchFilter: true,
     lazyLoading: true,
+    enableCheckAll: true,
+    enableFilterSelectAll: false,
+    showCheckbox: true,
     badgeShowLimit: 1,
     autoPosition: false,
     classes: "myclass custom-class-example",
@@ -48,7 +51,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     enableCheckAll: false,
     enableFilterSelectAll: false,
     showCheckbox: false,
-    classes: "myclass custom-class-example",
+    classes: "myclass",
   };
   CLIENT_FILTER_SETTINGS = {
     ...this.SINGLE_SELECT_SETTINGS,
@@ -224,6 +227,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
   }
 
   onFilterOpen(event: any, filterKey: string, filterType: string) {
+    this.isFilterValuesSearching=false;
     this.clearFilterValuesAndToken();
     this.filterValuesSearchText = "";this.filterType = "";
     this.filterType = filterType;
@@ -296,7 +300,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
       )
       .pipe(
         finalize(() => {
-          this.isFilterValuesSearching = false;
+          this.isFilterValuesSearching = true;
           // this.filterType = "";
           this.utilService.resetDropdownPosition();
         })
