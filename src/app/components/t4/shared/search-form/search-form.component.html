@@ -17,7 +17,7 @@
 			</div>
 		</div>
 		<ng-container *ngFor="let filter of filtersList">
-			<div class="searchFormBody--item" *ngIf="!(!isIntensityTab && filter.key === 'intensity')">
+			<div class="searchFormBody--item" *ngIf="(isIntensityTab && filter.key !== 'intensity') || !(isDataIssueTab && filter.key === 'showBy')">
 				<div class="searchFormBody--item__label">{{ filter.label }}</div>
 				<div
 					class="searchFormBody--item__control"
