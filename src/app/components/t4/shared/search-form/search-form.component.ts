@@ -69,6 +69,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
   accessInfoSub$: ISubscription;
 
   isIntensityTab: boolean = false;
+  isDataIssueTab: boolean = false;
   tabChangeSub$: ISubscription;
 
   userId: string = "";
@@ -119,6 +120,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     this.tabChangeSub$ = this.searchService.getCurrentT4Tab$.subscribe(
       (val: string) => {
         this.isIntensityTab = val === "intensity";
+        this.isDataIssueTab = val === "data-issue";
       }
     );
 
