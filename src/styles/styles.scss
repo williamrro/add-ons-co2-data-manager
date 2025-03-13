@@ -1724,6 +1724,74 @@ font-weight: 700!important;
   .custom-class-example .dropdown-list ul li {
 	padding: 5px 10px !important;
   }
+  .custom-class-example .dropdown-list {
+	padding-top: 0px !important;
+	position: absolute;
+	top: 100%; /* Opens just below the input field */
+	left: 0;
+	z-index: 1000; /* Ensure it appears above other elements */
+	background-color: #fff; /* Background color for dropdown */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add some shadow for better visibility */
+	width: 100%; /* Match the width of the parent container */
+.arrow-2,
+.arrow-up,
+.arrow-down {
+	display: none !important;
+}
+
+.list-area {
+	border: none !important;
+	border-radius: 5px !important;
+	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.12) !important;
+
+	.pure-checkbox.select-all {
+		padding: 10px 22px !important;
+	}
+
+	.list-filter {
+		padding-left: 47px !important;
+
+		.c-search {
+			padding-left: 12px !important;
+		}
+
+		.c-input {
+			width: 83% !important;
+		}
+	}
+
+	.filter-select-all .nodata-label {
+		display: none !important;
+		padding: 10px 22px 0 !important;
+
+		&[hidden] {
+			display: none !important;
+		}
+	}
+
+	.lazyContainer {
+		.pure-checkbox {
+			padding: 9px 12px !important;
+			margin-bottom: 8px !important;
+			border-radius: 5px !important;
+
+			&:hover:not(:has(input[type='checkbox']:disabled)),
+			&.selected-item {
+				background-color: #f0f3f4 !important;
+			}
+
+			input[type='checkbox'] + label {
+				padding-left: 33px !important;
+				display: block !important;
+			}
+		}
+	}
+
+	.list-message {
+		margin-top: -300px !important;
+	}
+}
+}
   
   .custom-class-example
 	.pure-checkbox
