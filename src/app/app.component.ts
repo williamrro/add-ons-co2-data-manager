@@ -5,6 +5,7 @@ import { Broadcaster } from "./shared/broadcaster";
 import { SearchService } from "./services/search.service";
 import { AuthGuard } from "./guards/auth.guard";
 import { AppService } from "./app.service";
+declare var window;
 
 @Component({
   selector: "app-root",
@@ -32,6 +33,16 @@ export class AppComponent {
   }
 
   ngOnInit() {
+    this.appService.getT4Auth().subscribe((resp: any) => {
+      console.log(resp);
+      window.userpilot.identify(resp["userId"], {
+        created_at: new Date().toISOString(),
+        role: resp["roles"],
+        user_type: resp["userType"],
+        email: resp['email'],
+        app_name: "co2 Data Manager",
+      });
+    });
     this.svgloaderB = this.broadcaster
       .on<string>("svgLoader")
       .subscribe((isVisible: any) => {
