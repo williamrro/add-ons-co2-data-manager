@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { NavigationEnd, Router } from "@angular/router";
+import { NavigationEnd, NavigationStart, Router } from "@angular/router";
 import { ISubscription } from "rxjs/Subscription";
 import { Broadcaster } from "./shared/broadcaster";
 import { SearchService } from "./services/search.service";
@@ -59,10 +59,18 @@ export class AppComponent {
         const { url = "" } = route || {};
         const isT4Route = url.includes("/t4");
         this.isT4User = isT4Route;
+        console.log('Route change end detected');
+        window.userpilot.reload();
         if (isT4Route)
           this.searchService.setCurrentT4Tab(/[^/]*$/.exec(url)[0]);
       });
-
+      this.router.events.subscribe((ev) => {
+        if (ev instanceof NavigationStart) {
+          console.log('Route change start detected');
+          window.userpilot.reload();
+           /* Your code goes here on every router change */
+          }
+      });
     // In case of authentication for FPS and T4 applications, use below code to set access (first param for FPS and second for T4)
     this.appService.redirectCo2App().subscribe((res) => {
       if (res) {
