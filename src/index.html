@@ -340,5 +340,34 @@
 			window.userpilotSettings = {token: "42hp24e7"};
 		  </script>
 		  <script src = "https://js.userpilot.io/sdk/latest.js"></script>
+		  <script>
+  const { origin, protocol, hostname } = window.location;
+
+  			window.__SIDE_NAV_CONFIG__ = {
+    		version: '1',
+    		application: 'co2emission',
+  		};
+
+ 	 const baseUrl = hostname === 'localhost'
+      ? 'https://ttsm-002-sit.traxtech.com'
+    	  : origin;
+
+  
+  // Dynamically load SideNav CSS
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = `${baseUrl}/side-nav/lib/side-nav.css`;
+
+  // Load SideNav script after CSS is ready
+  link.onload = () => {
+    const script = document.createElement('script');
+    script.id = 'side-nav-script';
+    script.src = `${baseUrl}/side-nav/lib/side-nav.umd.js`;
+    document.body.appendChild(script);
+  };
+
+  // Attach CSS to the document
+  document.head.appendChild(link);
+</script>
 	</body>
 </html>
